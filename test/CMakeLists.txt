@@ -1,0 +1,83 @@
+
+# Add "test" target to make
+enable_testing()
+
+# Custom "check" target that enable Boost unit test output on CTest failure
+add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure)
+
+# Find library Boost for unit test framework
+find_package(Boost 1.50 REQUIRED COMPONENTS unit_test_framework)
+message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
+message(STATUS "Boost include directory: ${Boost_INCLUDE_DIRS}")
+
+
+# Function to compile a test against Boost Unit Test and add a
+# CTest entry.
+#
+# Arguments:
+#
+# name
+#   Name of the test
+#
+# SOURCES <src...>
+#   Source files (excluding test source file)
+#
+# TEST_LIBRARIES <lib...>
+#   List of libraries to add to the test target
+#
+# TEST_INCLUDES <includes...>
+#   List of includes to add to the test target
+#
+function(add_custom_test name)
+  # Parse input parameters
+  set(options "")
+  set(one_value_args "")
+  set(multi_values_args
+    SOURCES
+    TEST_LIBRARIES
+    TEST_INCLUDES
+    )
+  cmake_parse_arguments(ARG
+    "${options}"
+    "${one_value_args}"
+    "${multi_values_args}"
+    ${ARGN})
+
+  set(target_name "test_${name}")
+  set(sources "test_${name}.cpp")
+  list(APPEND sources ${ARG_SOURCES})
+
+  # Compile and link test program
+  add_executable(${target_name} ${sources})
+  target_include_directories(${target_name} PRIVATE
+    "${PROJECT_SOURCE_DIR}/src/shared"
+    "${PROJECT_SOURCE_DIR}/src/client"
+    "${PROJECT_SOURCE_DIR}/src/server"
+    )
+  target_compile_definitions(${target_name} PRIVATE
+    BOOST_TEST_MAIN
+    BOOST_TEST_DYN_LINK
+    BOOST_TEST_MODULE=${name}
+    )
+  target_link_libraries(${target_name} PRIVATE
+    ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
+    ${ARG_TEST_LIBRARIES}
+    )
+  target_include_directories(${target_name} PRIVATE
+    ${Boost_INCLUDE_DIRS}
+    ${ARG_TEST_INCLUDES}
+    )
+
+  # Add test to CTest
+  add_test(NAME ${target_name}
+    COMMAND $<TARGET_FILE:${target_name}>
+    )
+endfunction()
+
+add_subdirectory(shared)
+add_subdirectory(client)
+#add_subdirectory(server)
+
+
+# vim: set sw=2 sts=2 et:
+

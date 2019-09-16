@@ -69,3 +69,12 @@ find_library(
 )
 #target_link_libraries(server ${MHD_LIBRARY})
 
+# Unit tests
+set(BUILD_TESTING ON)	# Set BUILD_TESTING to OFF in CMakeCache to disable tests
+if(BUILD_TESTING)
+  # Include tests scripts
+  add_subdirectory(test)
+endif()
+
+# vim: set sw=2 sts=2 et:
+
