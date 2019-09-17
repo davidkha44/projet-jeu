@@ -2,7 +2,7 @@
 
 HEADERS:=$(shell find src -type f -name '*.h')
 
-all: | clean extern configure build
+all: | clean configure build
 
 clean:
 	@rm -rf bin build
@@ -10,12 +10,6 @@ clean:
 
 distclean: clean
 	@rm -rf bin
-	@make -s -C extern clean
-
-extern: bin/dia2code
-
-bin/dia2code:
-	@make -s -j4 -C extern dia2code
 
 configure:
 	@mkdir -p build 
@@ -61,4 +55,4 @@ rapport/module.pdf: src/module.dia
 	ps2pdf rapport/module.ps $@
 	rm -f rapport/module.ps
 
-.PHONY: configure build clean extern test 
+.PHONY: configure build clean test

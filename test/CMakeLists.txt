@@ -49,6 +49,7 @@ function(add_custom_test name)
 
   # Compile and link test program
   add_executable(${target_name} ${sources})
+  add_dependencies(${target_name} generate-headers)
   target_include_directories(${target_name} PRIVATE
     "${PROJECT_SOURCE_DIR}/src/shared"
     "${PROJECT_SOURCE_DIR}/src/client"

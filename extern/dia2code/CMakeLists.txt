@@ -12,6 +12,17 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 IF(CMAKE_COMPILER_IS_GNUCC)
 	SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}  -std=c99   -pthread -g")
+	# Hide warnings
+	SET(dia2code_warnings
+		-Wno-unused-variable
+		-Wno-unused-function
+		-Wno-pointer-sign
+		-Wno-unused-but-set-variable
+		-Wno-stringop-truncation
+		-Wno-maybe-uninitialized
+		)
+	STRING(REPLACE ";" " " dia2code_warnings "${dia2code_warnings}")
+	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${dia2code_warnings}")
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
 # libxml2

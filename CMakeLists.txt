@@ -1,6 +1,9 @@
 cmake_minimum_required (VERSION 2.8)
 project (plt)
 
+# Include helper functions
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateDiaHeader.cmake)
+
 # Directories
 include_directories ("${PROJECT_SOURCE_DIR}/src/client")
 include_directories ("${PROJECT_SOURCE_DIR}/src/server")
@@ -20,15 +23,15 @@ IF(CMAKE_COMPILER_IS_GNUCC)
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -pthread -g")
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
+# Build dia2code
+add_subdirectory(extern/dia2code)
 
-# Generate headers
-set(DIA2CODE "${PROJECT_SOURCE_DIR}/bin/dia2code")
-exec_program(${DIA2CODE} ARGS -ns state  -d ../src/shared -t cpp ../src/state.dia)
-#exec_program(${DIA2CODE} ARGS -ns render -d ../src/client -t cpp ../src/render.dia)
-#exec_program(${DIA2CODE} ARGS -ns engine -d ../src/shared -t cpp ../src/engine.dia)
-#exec_program(${DIA2CODE} ARGS -ns ai     -d ../src/shared -t cpp ../src/ai.dia)
-#exec_program(${DIA2CODE} ARGS -ns client -d ../src/client -t cpp ../src/module.dia)
-#exec_program(${DIA2CODE} ARGS -ns server -d ../src/server -t cpp ../src/module.dia)
+generate_dia_header(state shared)
+#generate_dia_header(render client)
+#generate_dia_header(engine shared)
+#generate_dia_header(ai shared)
+#generate_dia_header(client client)
+#generate_dia_header(server server)
 
 # Sources
 file(GLOB_RECURSE client_sources src/client/*.cpp)
@@ -42,7 +45,9 @@ file(GLOB_RECURSE shared_sources src/shared/*.cpp)
 
 # Executables
 add_executable(client ${client_sources} ${shared_sources})
+add_dependencies(client generate-headers)
 #add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources})
+#add_dependencies(server generate-headers)
 
 # SFML
 if(WIN32)
