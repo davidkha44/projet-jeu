@@ -8,13 +8,7 @@ cmake_policy(SET CMP0074 NEW)
 # Include helper functions
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateDiaHeader.cmake)
 
-# Directories
-include_directories ("${PROJECT_SOURCE_DIR}/src/client")
-include_directories ("${PROJECT_SOURCE_DIR}/src/server")
-include_directories ("${PROJECT_SOURCE_DIR}/src/shared")
-
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+# Export executables to "bin" directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 # Enable C++11
@@ -30,30 +24,11 @@ ENDIF(CMAKE_COMPILER_IS_GNUCC)
 # Build dia2code
 add_subdirectory(extern/dia2code)
 
-generate_dia_header(state shared)
-#generate_dia_header(render client)
-#generate_dia_header(engine shared)
-#generate_dia_header(ai shared)
-#generate_dia_header(client client)
-#generate_dia_header(server server)
+# Find library jsoncpp
+set(jsoncpp_include_dir "${PROJECT_SOURCE_DIR}/extern/jsoncpp-1.8.0")
+file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
 
-# Sources
-file(GLOB_RECURSE client_sources src/client/*.cpp)
-#file(GLOB_RECURSE server_sources src/server/*.cpp)
-file(GLOB_RECURSE shared_sources src/shared/*.cpp)
-
-#jsoncpp
-#include_directories ("${PROJECT_SOURCE_DIR}/extern/jsoncpp-1.8.0")
-#file(GLOB_RECURSE jsoncpp_sources extern/jsoncpp-1.8.0/*.cpp)
-
-
-# Executables
-add_executable(client ${client_sources} ${shared_sources})
-add_dependencies(client generate-headers)
-#add_executable(server ${server_sources} ${shared_sources} ${jsoncpp_sources})
-#add_dependencies(server generate-headers)
-
-# SFML
+# Find library SFML
 if(WIN32)
   set(SFML_ROOT "D:/Utils/SFML-2.3" CACHE STRING
     "Root directory for SFML library")
@@ -65,19 +40,19 @@ if($ENV{MACHINE_ENSEA})
   set(SFML_ROOT "/usr/lsa")
   set(CMAKE_MODULE_PATH "${SFML_ROOT}/share/SFML/cmake/Modules/" ${CMAKE_MODULE_PATH})
 endif($ENV{MACHINE_ENSEA})
-  find_package(SFML 2 COMPONENTS graphics network)
-if(SFML_FOUND)
-  include_directories(${SFML_INCLUDE_DIR})
-  target_link_libraries(client sfml-graphics sfml-network)
-endif()
+find_package(SFML 2 COMPONENTS graphics network)
 
-# libmicrohttpd
+# Find library libmicrohttpd
 find_library(
   MHD_LIBRARY
   NAMES microhttpd microhttpd-10 libmicrohttpd libmicrohttpd-dll
   DOC "microhttpd library"
 )
-#target_link_libraries(server ${MHD_LIBRARY})
+
+# Add source subdirectories
+add_subdirectory(src/shared)
+add_subdirectory(src/client)
+#add_subdirectory(src/server)
 
 # Rapport generation
 add_subdirectory(rapport)

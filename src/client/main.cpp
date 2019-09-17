@@ -9,12 +9,12 @@ void testSFML() {
 
 // Fin test SFML
 
-#include "state.h"
+#include <state.h>
 
 using namespace std;
 using namespace state;
 
-int main(int argc,char* argv[]) 
+int main(int argc,char* argv[])
 {
     Exemple exemple;
     exemple.setX(53);

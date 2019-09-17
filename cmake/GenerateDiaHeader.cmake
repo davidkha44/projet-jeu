@@ -8,19 +8,15 @@ add_custom_target(generate-headers)
 #
 # Arguments:
 #
-# namespace
+# dia_file
 #   Name of the dia file. Must also be the name of the namespace contained
 #   inside the dia file.
 #
-# output
-#   Name of the output directory where the cpp header should be generated.
-#   This directory should exist inside the "src" folder of the project root.
-#
-function(generate_dia_header namespace output)
+function(generate_dia_header dia_file)
   # Path to the .dia file used to generate the cpp headers
-  set(dia_file "${PROJECT_SOURCE_DIR}/src/${namespace}.dia")
+  get_filename_component(namespace ${dia_file} NAME_WE)
   # Path to the output directory
-  set(output_dir "${PROJECT_SOURCE_DIR}/src/${output}")
+  set(output_dir ${CMAKE_CURRENT_SOURCE_DIR})
 
   # Stamp file that take care of the dependency chain
   set(stamp ${CMAKE_CURRENT_BINARY_DIR}/generate_header_${namespace}.stamp)

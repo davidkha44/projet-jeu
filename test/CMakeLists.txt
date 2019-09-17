@@ -50,11 +50,6 @@ function(add_custom_test name)
   # Compile and link test program
   add_executable(${target_name} ${sources})
   add_dependencies(${target_name} generate-headers)
-  target_include_directories(${target_name} PRIVATE
-    "${PROJECT_SOURCE_DIR}/src/shared"
-    "${PROJECT_SOURCE_DIR}/src/client"
-    "${PROJECT_SOURCE_DIR}/src/server"
-    )
   target_compile_definitions(${target_name} PRIVATE
     BOOST_TEST_MAIN
     BOOST_TEST_DYN_LINK
@@ -63,6 +58,9 @@ function(add_custom_test name)
   target_link_libraries(${target_name} PRIVATE
     ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
     ${ARG_TEST_LIBRARIES}
+    $<TARGET_NAME:shared_static>
+    $<TARGET_NAME:client_static>
+    #$<TARGET_NAME:server_static>
     )
   target_include_directories(${target_name} PRIVATE
     ${Boost_INCLUDE_DIRS}
