@@ -23,11 +23,6 @@ bin/client:
 bin/server:
 	@make -s -j4 -C build server
 
-test:
-	docker build -t plt-initial -f docker/plt-initial .
-	./docker/validate.sh plt-test
-	./docker/run_docker_bash.sh plt-test
-
 diapdf: rapport/state.pdf rapport/render.pdf rapport/engine.pdf rapport/ai.pdf rapport/module.pdf
 
 rapport/state.pdf: src/state.dia
@@ -55,4 +50,4 @@ rapport/module.pdf: src/module.dia
 	ps2pdf rapport/module.ps $@
 	rm -f rapport/module.ps
 
-.PHONY: configure build clean test
+.PHONY: configure build clean
