@@ -68,6 +68,10 @@ function(add_custom_test name)
     ${Boost_INCLUDE_DIRS}
     ${ARG_TEST_INCLUDES}
     )
+  set_target_properties(${target_name}
+    PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    )
 
   # Add test to CTest
   add_test(NAME ${target_name}
