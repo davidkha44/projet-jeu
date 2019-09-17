@@ -2,8 +2,6 @@
 set(TEST_SFML_LIBS
   sfml-graphics
   sfml-network
-  sfml-system
-  sfml-window
   )
 
 # List of test functions
