@@ -1,6 +1,10 @@
 cmake_minimum_required (VERSION 2.8)
 project (plt)
 
+# CMP0074 policy enable find_* to use <PackageName>_ROOT variables to find
+# packages.
+cmake_policy(SET CMP0074 NEW)
+
 # Include helper functions
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateDiaHeader.cmake)
 
@@ -51,7 +55,8 @@ add_dependencies(client generate-headers)
 
 # SFML
 if(WIN32)
-  set(SFML_ROOT "D:/Utils/SFML-2.3")
+  set(SFML_ROOT "D:/Utils/SFML-2.3" CACHE STRING
+    "Root directory for SFML library")
   set(CMAKE_MODULE_PATH "${SFML_ROOT}/cmake/Modules" ${CMAKE_MODULE_PATH})
 else(WIN32)
   set(CMAKE_MODULE_PATH "/usr/share/SFML/cmake/Modules/" ${CMAKE_MODULE_PATH})
@@ -78,7 +83,9 @@ find_library(
 add_subdirectory(rapport)
 
 # Unit tests
-set(BUILD_TESTING ON)	# Set BUILD_TESTING to OFF in CMakeCache to disable tests
+# Set BUILD_TESTING to OFF in CMakeCache to disable tests
+set(BUILD_TESTING ON CACHE BOOL
+  "Set BUILD_TESTING to OFF to disable tests")
 if(BUILD_TESTING)
   # Include tests scripts
   add_subdirectory(test)
