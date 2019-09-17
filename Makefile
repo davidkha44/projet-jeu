@@ -23,31 +23,4 @@ bin/client:
 bin/server:
 	@make -s -j4 -C build server
 
-diapdf: rapport/state.pdf rapport/render.pdf rapport/engine.pdf rapport/ai.pdf rapport/module.pdf
-
-rapport/state.pdf: src/state.dia
-	dia -e rapport/state.ps $<
-	ps2pdf rapport/state.ps $@
-	rm -f rapport/state.ps
-
-rapport/render.pdf: src/render.dia
-	dia -e rapport/render.ps $<
-	ps2pdf rapport/render.ps $@
-	rm -f rapport/render.ps
-
-rapport/engine.pdf: src/engine.dia
-	dia -e rapport/engine.ps $<
-	ps2pdf rapport/engine.ps $@
-	rm -f rapport/engine.ps
-
-rapport/ai.pdf: src/ai.dia
-	dia -e rapport/ai.ps $<
-	ps2pdf rapport/ai.ps $@
-	rm -f rapport/ai.ps
-
-rapport/module.pdf: src/module.dia
-	dia -e rapport/module.ps $<
-	ps2pdf rapport/module.ps $@
-	rm -f rapport/module.ps
-
 .PHONY: configure build clean

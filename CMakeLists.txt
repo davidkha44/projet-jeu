@@ -74,6 +74,9 @@ find_library(
 )
 #target_link_libraries(server ${MHD_LIBRARY})
 
+# Rapport generation
+add_subdirectory(rapport)
+
 # Unit tests
 set(BUILD_TESTING ON)	# Set BUILD_TESTING to OFF in CMakeCache to disable tests
 if(BUILD_TESTING)
