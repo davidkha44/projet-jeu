@@ -5,4 +5,3 @@ nbproject
 src/*/*.h
 src/*/*/*.h
 .idea
-cmake-build-debug
