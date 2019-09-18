@@ -3,7 +3,9 @@ project (plt)
 
 # CMP0074 policy enable find_* to use <PackageName>_ROOT variables to find
 # packages.
-cmake_policy(SET CMP0074 NEW)
+if(POLICY CMP0074)
+  cmake_policy(SET CMP0074 NEW)
+endif()
 
 # Include helper functions
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/GenerateDiaHeader.cmake)
