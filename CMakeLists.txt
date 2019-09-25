@@ -51,6 +51,10 @@ if(BUILD_CODE_COVERAGE)
     '/usr/*'
     '${PROJECT_SOURCE_DIR}/test/*'
     '${PROJECT_SOURCE_DIR}/extern/*')
+  set(COVERAGE_GCOVR_EXCLUDES
+    /usr/
+    "${PROJECT_SOURCE_DIR}/test/"
+    "${PROJECT_SOURCE_DIR}/extern/")
   # Create script to run tests for code coverage
   set(test_runner "${CMAKE_CURRENT_BINARY_DIR}/run_test.sh")
   file(WRITE ${test_runner}
@@ -60,6 +64,11 @@ if(BUILD_CODE_COVERAGE)
   # Create target for code coverage
   SETUP_TARGET_FOR_COVERAGE_LCOV(
     NAME code-coverage
+    EXECUTABLE sh ${test_runner}
+    DEPENDS ${test_runner}
+    )
+  SETUP_TARGET_FOR_COVERAGE_GCOVR_XML(
+    NAME code-coverage-gcov
     EXECUTABLE sh ${test_runner}
     DEPENDS ${test_runner}
     )
