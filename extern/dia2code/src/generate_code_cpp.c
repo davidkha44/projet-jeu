@@ -689,6 +689,7 @@ struct stdlib_includes {
    int unordered_set;
    int stack;
    int queue;
+   int function;
    int array;   
    int thread;
    int mutex;
@@ -731,6 +732,10 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            print ("#include <map>\n");
            si->map = 1;
        }
+        if (!si->function && strstr(name,"std::function")) {
+            print ("#include <functional>\n");
+            si->function = 1;
+        }
        if (!si->set && strstr(name,"std::set")) {
            print ("#include <set>\n");
            si->set = 1;
@@ -755,7 +760,7 @@ void print_include_stdlib(struct stdlib_includes* si,char* name) {
            print ("#include <thread>\n");
            si->thread = 1;
        }
-       if (!si->memory 
+       if (!si->queue
        && (strstr(name,"std::queue")
        ||  strstr(name,"std::priority_queue"))) {
            print ("#include <queue>\n");
