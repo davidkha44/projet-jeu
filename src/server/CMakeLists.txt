@@ -12,7 +12,7 @@ list(REMOVE_ITEM server_sources "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 add_library(${lib_server_target} STATIC ${server_sources} ${jsoncpp_sources})
 add_dependencies(${lib_server_target} generate-headers)
 target_include_directories(${lib_server_target} PUBLIC
-  ${CMAKE_CURRENT_SOUCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}
   ${jsoncpp_include_dir}
   )
 target_link_libraries(${lib_server_target} PUBLIC
