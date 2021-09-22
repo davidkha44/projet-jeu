@@ -19,7 +19,7 @@ int main(int argc,char* argv[])
     Exemple exemple;
     exemple.setX(53);
 
-    cout << "It works !" << endl;
+    cout << "It works ! XDXD" << endl;
 
     return 0;
 }
