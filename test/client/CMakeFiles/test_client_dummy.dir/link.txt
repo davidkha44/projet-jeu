@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/test_client_dummy.dir/test_client_dummy.cpp.o  -o test_client_dummy  /usr/lib/x86_64-linux-gnu/libboost_unit_test_framework.so.1.71.0 -lshared_static -lclient_static 
