@@ -1,4 +1,5 @@
 #include <iostream>
+#include <client.h>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -16,10 +17,14 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
-    Exemple exemple;
-    exemple.setX(53);
+    string displayMessage("Hello !\n");
+    cout << displayMessage;
 
-    cout << "It works ! XDXD" << endl;
+    Handler::HandlerCount = 0;
+    Handler::HandlerCount++;
+    PRINTLN(Handler::HandlerCount);
+    MainFrame* mf = new MainFrame("TEST",800,600);
 
+    
     return 0;
 }
