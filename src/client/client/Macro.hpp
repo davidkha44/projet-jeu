@@ -8,3 +8,4 @@
 #define PRINTLN(str) std::cout << str << endl;
 #define STATIC(vardecl) public : static inline vardecl;
 #define COLOR(c) sf::Color::c;
+#define RUN_ASYNC(ins) { ins };
