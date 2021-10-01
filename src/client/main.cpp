@@ -20,10 +20,10 @@ int main(int argc,char* argv[])
     string displayMessage("Hello !\n");
     cout << displayMessage;
 
-    Handler::HandlerCount = 0;
-    Handler::HandlerCount++;
-    PRINTLN(Handler::HandlerCount);
-    MainFrame* mf = new MainFrame("TEST",800,600);
+    // Handler::HandlerCount = 0;
+    // Handler::HandlerCount++;
+    // PRINTLN(Handler::HandlerCount);
+    // MainFrame* mf = new MainFrame("TEST",800,600);
 
     
     return 0;
