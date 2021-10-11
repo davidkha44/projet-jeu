@@ -1,16 +1,22 @@
 #include "Macro.hpp"
+#include "Manageable.hpp"
 
-template<typename T>
 class Manager
 {
     ATTRIBUTE(std::string,Name);
-    ATTRIBUTE(int,id);
-    ATTRIBUTE(std::vector<T>,elements);
+    ATTRIBUTE(int,ID);
+    ATTRIBUTE(std::vector<Manageable*>*,Elements);
     STATIC(std::vector<Manager> Managers);
 
     public :
-    std::vector<T> GetByName(std::string name);
-    T GetByID(int id);
-    void Add(T element);
-    void Remove(T element);
+    Manager(std::string name);
+    
+    std::vector<Manageable*> GetByName(std::string name);
+    Manageable GetByID(int id);
+    void Add(Manageable* element);
+
+    void Remove(Manageable* element);
+
+    void Draw(sf::RenderWindow* rw);
+
 };

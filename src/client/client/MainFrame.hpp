@@ -1,14 +1,15 @@
 #include "Macro.hpp"
+#include "Manager.hpp"
 #include <SFML/Graphics.hpp>
 
 class MainFrame
 {
-    ATTRIBUTE(std::string,Name);
-    ATTRIBUTE(std::string,Path);
-    ATTRIBUTE(sf::RenderWindow*,Window);
-    ATTRIBUTE(int,Height);
-    ATTRIBUTE(int,Width);
-    ATTRIBUTE(int,Framerate);
+    ATTRIBUTE(std::string,Name)
+    ATTRIBUTE(std::string,Path)
+    ATTRIBUTE(sf::RenderWindow*,Window)
+    ATTRIBUTE(int,Height)
+    ATTRIBUTE(int,Width)
+    ATTRIBUTE(int,Framerate)
 
 
 
