@@ -12,6 +12,7 @@ Manageable::Manageable(std::string name,std::string path)
     Texture(new sf::Texture());
     Sprite(new sf::Sprite());
     Texture()->loadFromFile(path);
+    Render(false);
     //std::thread asth(&Manageable::Load,this);
     Sprite()->setTexture(*Texture());
 }
