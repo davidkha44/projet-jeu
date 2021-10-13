@@ -1,5 +1,5 @@
 #include "SelectionHandler.hpp"
-
+#include <iostream>
 
 
 void SelectionHandler::Add(Manageable* m)
@@ -10,6 +10,7 @@ void SelectionHandler::Add(Manageable* m)
             return;
     }
     Selection.push_back(m);
+    std::cout << "Added " << m->Name() << std::endl; 
     m->OnSelectionAdd();
 }
 
@@ -21,6 +22,7 @@ void SelectionHandler::Remove(Manageable* m)
         {
             Selection.erase(Selection.begin() + i);
             m->OnSelectionRemove();
+            std::cout << "Removed " << m->Name() << std::endl; 
             return;
         }
     }
