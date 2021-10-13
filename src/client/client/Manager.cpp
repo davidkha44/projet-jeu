@@ -30,8 +30,20 @@ Manager* Manager::GetMgrByName(std::string name)
 {
     for(Manager* m : Managers)
     {
-        if(!m->Name().compare(name))
+        if(m->Name() == name)
             return m;
     }
     return NULL;
+}
+
+std::vector<Manageable*>* Manager::GetByName(std::string name)
+{
+    std::vector<Manageable*>* output = new std::vector<Manageable*>;
+    for(Manageable* m : *Elements())
+    {
+        if(m->Name() == name)
+            output->push_back(m);
+
+    }
+    return output;
 }

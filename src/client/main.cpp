@@ -38,7 +38,7 @@ int main(int argc,char* argv[])
     bg_tile->Sprite()->setScale(0.1,0.1);
     //actor_mgr->Add(actor0);
     //cout << "Resource added" << bg_mgr->Elements()->size() << endl;
-    MainFrame* mf = new MainFrame("TEST",800,800);
+    MainFrame* mf = new MainFrame("TEST",779,779);
     
     
     return 0;

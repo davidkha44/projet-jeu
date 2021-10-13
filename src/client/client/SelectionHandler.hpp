@@ -3,16 +3,16 @@
 
 class SelectionHandler : public Handler
 {
-    ATTRIBUTE(std::vector<Manageable>,Selection);
+    STATIC(std::vector<Manageable*> Selection);
 
     public :
         SelectionHandler();
-        void Add(Manageable);
-        void Remove(Manageable);
+        static void Add(Manageable*);
+        static void Remove(Manageable*);
         void OnTurnBegin() override;
         static sf::Vector2i GetBGWpos(sf::Vector2i uv)
         {
-            float csize = 555/20;
+            float csize = 41;
             sf::Vector2i output(uv.x/csize,uv.y/csize);
             return output;
         }

@@ -12,7 +12,7 @@ MainFrame::MainFrame(std::string name,int h,int w)
     OnStart();
     while(win.isOpen())
     {
-        MainFrame::Window->clear(sf::Color::Blue);
+        MainFrame::Window->clear(sf::Color::Black);
         for(Manager* m : Manager::Managers)
             m->Draw(MainFrame::Window); 
         if(MainFrame::Window->hasFocus()) 
@@ -37,10 +37,13 @@ void MainFrame::OnStart()
 void MainFrame::Tick()
 {
     
-    // ON_MOUSE_LEFT(
-       
-    //     printf("{ X : %d ; Y : %d }\n",SelectionHandler::GetBGWpos(MousePos).x,SelectionHandler::GetBGWpos(MousePos).y);
-    // )
+    ON_MOUSE_LEFT(
+
+        SelectionHandler::Add(BG_TILE(SelectionHandler::GetBGWpos(MousePos).x,SelectionHandler::GetBGWpos(MousePos).y));
+    )
+    ON_MOUSE_RIGHT(
+        SelectionHandler::Remove(BG_TILE(SelectionHandler::GetBGWpos(MousePos).x,SelectionHandler::GetBGWpos(MousePos).y));
+    )
 
     ON_KEY_DBG(X,
     printf("Close Game !");

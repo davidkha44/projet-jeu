@@ -61,11 +61,25 @@ void FileHandler::InitWorld(std::string path)
         if(line.find('#') == std::string::npos)
         {
             std::vector<std::string> strs = SplitString(line,",");
-            for(std::string s : strs)
+            for(int i = 0; i < strs.size();i++)
             {
-                Manageable* item = new Manageable("TILE_"+std::to_string(lines)+"_"+std::to_string(col),"/home/ensea/PLT/projet-jeu/res/bridge.png");
+                std::string respath,bg_tile_str;
+                switch(std::stoi(strs[i]))
+                {
+                    case 1 :
+                        bg_tile_str = "WATER";
+                    break;
+                    case 2 :
+                        bg_tile_str = "BRIDGE";
+                    break;
+                    default :
+                        bg_tile_str = "GRASS";
+                    break;
+                }
+                respath = Manager::GetMgrByName("BG_MGR")->GetByName("BG_TILE_"+bg_tile_str)->front()->ResPath();
+                Manageable* item = new Manageable("TILE_"+std::to_string(col)+"_"+std::to_string(lines),respath);
                 item->Sprite()->setScale(0.5,0.5);
-                item->Sprite()->setPosition(col*40,lines*40);
+                item->Sprite()->setPosition(col*41,lines*41);
                 item->Render(true);
                 mgr->Add(item);
                 col++;

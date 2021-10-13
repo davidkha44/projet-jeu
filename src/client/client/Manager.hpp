@@ -11,7 +11,7 @@ class Manager
     public :
     Manager(std::string name);
     
-    std::vector<Manageable*> GetByName(std::string name);
+    std::vector<Manageable*>* GetByName(std::string name);
     static Manager* GetMgrByName(std::string name);
     Manageable GetByID(int id);
     void Add(Manageable* element);

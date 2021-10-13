@@ -11,3 +11,9 @@
 #define PRINTLN(str) std::cout << str << endl;
 #define STATIC(vardecl) public : static inline vardecl;
 #define COLOR(c) sf::Color::c;
+#define BG_TILE(x,y) Manager::GetMgrByName("BG_MGR")->GetByName("TILE_"+std::to_string(x)+"_"+std::to_string(y))->front()
+#define FETCH_FROM_MGR(mgr,item) Manager::GetMgrByName(mgr)->GetByName(item)
+
+
+
+

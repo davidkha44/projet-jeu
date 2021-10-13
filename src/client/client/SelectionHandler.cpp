@@ -1,23 +1,36 @@
 #include "SelectionHandler.hpp"
 
-SelectionHandler::SelectionHandler() : Handler("Selection Handler")
+
+
+void SelectionHandler::Add(Manageable* m)
 {
-    Selection(*(new std::vector<Manageable>));
+    for(int i = 0; i < Selection.size();i++)
+    {
+        if(Selection.data()[i] == m)
+            return;
+    }
+    Selection.push_back(m);
+    m->OnSelectionAdd();
 }
 
-void SelectionHandler::Add(Manageable m)
+void SelectionHandler::Remove(Manageable* m)
 {
-    Selection().push_back(m);
+    for(int i = 0; i < Selection.size();i++)
+    {
+        if(Selection.data()[i] == m)
+        {
+            Selection.erase(Selection.begin() + i);
+            m->OnSelectionRemove();
+            return;
+        }
+    }
 }
 
-void SelectionHandler::OnTurnBegin()
+
+
+sf::Vector2i GetBGWpos(sf::Vector2i uv)
 {
-    *this = *(new SelectionHandler());
+    sf::Vector2i output(uv.x,uv.y);
+
+    return output;
 }
-
-// sf::Vector2i GetBGWpos(sf::Vector2i uv)
-// {
-//     sf::Vector2i output(uv.x/20,uv.y/20);
-
-//     return output;
-// }
