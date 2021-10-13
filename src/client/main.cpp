@@ -32,13 +32,13 @@ int main(int argc,char* argv[])
     for(Manager* m : Manager::Managers)
         std::cout << m->Name() << endl;
     FileHandler::InitVisuals("/home/ensea/PLT/projet-jeu/src/client/tables/ManageablesVisuals.csv");
-    FileHandler::InitWorld("/home/ensea/PLT/projet-jeu/src/client/maps/DefaultWorld.csv");
     //bg_mgr->Add(bg_map);
     //bg_mgr->Add(bg_tile);
     bg_tile->Sprite()->setScale(0.1,0.1);
     //actor_mgr->Add(actor0);
     //cout << "Resource added" << bg_mgr->Elements()->size() << endl;
-    MainFrame* mf = new MainFrame("TEST",779,779);
+    MainFrame* mf;
+    FileHandler::InitArgs(mf,"/home/ensea/PLT/projet-jeu/src/client/tables/LaunchArgs.csv");
     
     
     return 0;

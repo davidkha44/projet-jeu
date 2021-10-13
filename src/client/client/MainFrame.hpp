@@ -1,5 +1,4 @@
 #include "Macro.hpp"
-#include "Manager.hpp"
 #include <SFML/Graphics.hpp>
 
 class MainFrame

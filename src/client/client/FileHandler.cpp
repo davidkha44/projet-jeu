@@ -1,6 +1,6 @@
 #include "FileHandler.hpp"
 #include "Manager.hpp"
-#include "Manageable.hpp"
+
 #include <fstream>
 #include <iostream>
 
@@ -45,13 +45,52 @@ void FileHandler::InitVisuals(std::string path)
             Manager* mgr = Manager::GetMgrByName(strs[1]);
             std::cout << "Added" << strs[0] << "to " << strs[1] << std::endl;
             Manageable* item = new Manageable(strs[0],strs[2]);
-            item->Sprite()->setScale(std::stof(strs[3]),std::stof(strs[4]));
+            sf::Vector2f _scale(std::stof(strs[3]),std::stof(strs[4]));
+            item->Sprite()->setScale(_scale.x,_scale.y);
+            item->Scale(_scale);
             mgr->Add(item);
         }
     }
 
 }
-void FileHandler::InitWorld(std::string path)
+void FileHandler::InitArgs(MainFrame* mf,std::string path)
+{
+    std::ifstream file(path);
+    for( std::string line; getline( file, line ); )
+    {
+        if(line.find('#') == std::string::npos)
+        {
+            std::vector<std::string> strs = SplitString(line,",");
+            if(strs[0] == "SCENE")
+                mf = InitWorlds("/home/ensea/PLT/projet-jeu/src/client/tables/Worlds.csv",strs[1]);
+
+            
+        }
+    }
+
+}
+
+MainFrame* FileHandler::InitWorlds(std::string path,std::string wname)
+{
+    MainFrame* mf;
+    std::ifstream file(path);
+    for( std::string line; getline( file, line ); )
+    {
+        if(line.find('#') == std::string::npos)
+        {
+            std::vector<std::string> strs = SplitString(line,",");
+            if(strs[0] == wname)
+            {
+                InitWorld(strs[1],std::stoi(strs[2]),std::stoi(strs[3]),std::stoi(strs[4]),std::stoi(strs[5]));
+                mf = new MainFrame("PLT",std::stoi(strs[2]) * std::stoi(strs[4]),std::stoi(strs[3]) * std::stoi(strs[5]));    
+            }
+                
+        }
+    }
+    return mf;
+}
+
+void FileHandler::InitWorld(std::string path,int csx,int csy,int ncx,int ncy)
 {
     std::ifstream file(path);
     Manager* mgr = Manager::GetMgrByName("BG_MGR");
@@ -61,7 +100,7 @@ void FileHandler::InitWorld(std::string path)
         if(line.find('#') == std::string::npos)
         {
             std::vector<std::string> strs = SplitString(line,",");
-            for(int i = 0; i < strs.size();i++)
+            for(int i = 0; i < ncx;i++)
             {
                 std::string respath,bg_tile_str;
                 switch(std::stoi(strs[i]))
@@ -78,8 +117,8 @@ void FileHandler::InitWorld(std::string path)
                 }
                 respath = Manager::GetMgrByName("BG_MGR")->GetByName("BG_TILE_"+bg_tile_str)->front()->ResPath();
                 Manageable* item = new Manageable("TILE_"+std::to_string(col)+"_"+std::to_string(lines),respath);
-                item->Sprite()->setScale(0.5,0.5);
-                item->Sprite()->setPosition(col*41,lines*41);
+                item->Sprite()->setScale(FETCH_FROM_MGR("BG_MGR","BG_TILE_"+bg_tile_str)->front()->Scale());
+                item->Sprite()->setPosition(col*csx,lines*csy);
                 item->Render(true);
                 mgr->Add(item);
                 col++;
@@ -87,6 +126,8 @@ void FileHandler::InitWorld(std::string path)
         }
         col = 0;
         lines++;
+        if(lines == ncy)
+            return;
     }
 
 }
