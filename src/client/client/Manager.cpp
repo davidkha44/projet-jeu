@@ -11,9 +11,7 @@ Manager::Manager(std::string name)
 
 void Manager::Add(Manageable* m)
 {
-    std::cout << "before" << Elements()->size();
     Elements()->push_back(m);
-    std::cout << "after" << Elements()->size() << std::endl;
 }
 
 void Manager::Draw(sf::RenderWindow* rw)
@@ -22,8 +20,7 @@ void Manager::Draw(sf::RenderWindow* rw)
     {
         if(m->Render())
             rw->draw(*(m->Sprite()));
-    }
-        
+    }      
 }
 
 Manager* Manager::GetMgrByName(std::string name)
@@ -43,7 +40,6 @@ std::vector<Manageable*>* Manager::GetByName(std::string name)
     {
         if(m->Name() == name)
             output->push_back(m);
-
     }
     return output;
 }

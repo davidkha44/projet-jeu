@@ -3,20 +3,16 @@
 
 class Handler
 {
-    ATTRIBUTE(std::string,Name)
-    ATTRIBUTE(int,ID)
-    STATIC(int HandlerCount)
+
+    STATIC(std::vector<void*> Handlers)
     
     public : 
-        Handler(std::string n);
-        static Handler GetByID(int id);
-        static Handler GetByName(std::string name);
-        virtual void OnTurnBegin();
-        virtual void OnTurnEnd();
-        virtual void OnTurnBeginAsync();
-        virtual void OnTurnEndAsync();
-        virtual void RunAsync();
-        virtual void Start();
-        virtual void Update();
-        virtual void ProcessInput();
+        virtual void OnTurnBegin() = 0;
+        virtual void OnTurnEnd() = 0;
+        virtual void OnTurnBeginAsync() = 0;
+        virtual void OnTurnEndAsync() = 0;
+        virtual void RunAsync() = 0;
+        virtual void Start() = 0;
+        virtual void Update() = 0;
+        virtual void ProcessInput() = 0;
 };

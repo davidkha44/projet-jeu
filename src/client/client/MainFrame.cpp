@@ -5,13 +5,13 @@
 
 MainFrame::MainFrame(std::string name,int h,int w)
 {
-    sf::VideoMode frame_vm(h,w);
-    sf::RenderWindow win(frame_vm,name,sf::Style::Default);
-    MainFrame::Window = &win;
     Height(h);
     Width(w);
+    sf::VideoMode frame_vm(Height(),Width());
+    sf::RenderWindow win(frame_vm,name,sf::Style::Default);
+    MainFrame::Window = &win;
     OnStart();
-    while(win.isOpen())
+    while(MainFrame::Window->isOpen())
     {
         MainFrame::Window->clear(sf::Color::Black);
         for(Manager* m : Manager::Managers)
@@ -32,6 +32,7 @@ void DrawBGWorld(Manager* bgmgr)
 
 void MainFrame::OnStart()
 {
+    
 
 }
 
@@ -39,7 +40,6 @@ void MainFrame::Tick()
 {
     
     ON_MOUSE_LEFT(
-
         SelectionHandler::Add(BG_TILE(SelectionHandler::GetBGWpos(MousePos).x,SelectionHandler::GetBGWpos(MousePos).y));
     )
     ON_MOUSE_RIGHT(

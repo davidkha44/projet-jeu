@@ -120,6 +120,7 @@ void FileHandler::InitWorld(std::string path,int csx,int csy,int ncx,int ncy)
                 item->Sprite()->setScale(FETCH_FROM_MGR("BG_MGR","BG_TILE_"+bg_tile_str)->front()->Scale());
                 item->Sprite()->setPosition(col*csx,lines*csy);
                 item->Render(true);
+                item->Position(*(new sf::Vector2i(col,lines)));
                 mgr->Add(item);
                 col++;
             } 

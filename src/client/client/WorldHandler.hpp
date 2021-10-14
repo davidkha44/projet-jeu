@@ -1,10 +1,10 @@
 #include "Macro.hpp"
+#include "Handler.hpp"
 
 class WorldHandler : public Handler
 {
     
 
-    public :
-        static LoadWorld(std::string path);
+    
 
 };

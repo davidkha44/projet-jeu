@@ -15,7 +15,7 @@ class Manageable
     ATTRIBUTE(bool,Async)
     ATTRIBUTE(sf::Texture*,Texture)
     ATTRIBUTE(sf::Sprite*,Sprite)
-    ATTRIBUTE(sf::Vector2f,Position)
+    ATTRIBUTE(sf::Vector2i,Position)
     ATTRIBUTE(sf::Vector2f,Scale)
 
     public :
