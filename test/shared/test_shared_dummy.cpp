@@ -3,7 +3,7 @@
 
 #include "../../src/shared/state/Exemple.h"
 
-using namespace ::state;
+using namespace :: state;
 
 BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {

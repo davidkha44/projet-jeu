@@ -18,7 +18,7 @@ using namespace state;
 int main(int argc,char* argv[])
 {
     
-    Manageable* bg_map = new Manageable("BG_MAP","/home/ensea/PLT/projet-jeu/rapport/map_simple2.png");
+    /*Manageable* bg_map = new Manageable("BG_MAP","/home/ensea/PLT/projet-jeu/rapport/map_simple2.png");
     Manageable* bg_tile = new Manageable("BG_TILE","/home/ensea/PLT/projet-jeu/res/texture/Ground/grass2.png");
     Manageable* actor0 = new Manageable("ACTOR0","/home/ensea/PLT/projet-jeu/res/texture/Characters/Champions/Arthax.png");
     cout << "Resource loaded" << endl;
@@ -31,7 +31,7 @@ int main(int argc,char* argv[])
     //actor_mgr->Add(actor0);
     cout << "Resource added" << bg_mgr->Elements()->size() << endl;
     MainFrame* mf = new MainFrame("TEST",800,800);
-    
+    */
     
     return 0;
 }
