@@ -1,10 +1,10 @@
 #include "Macro.hpp"
-#include <string>
+
 
 class Handler
 {
 
-    STATIC(std::vector<void*> Handlers)
+    //STATIC(std::vector<void*> Handlers)
     
     public : 
         virtual void OnTurnBegin() = 0;
