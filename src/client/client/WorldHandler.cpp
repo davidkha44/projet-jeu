@@ -2,5 +2,15 @@
 
 void WorldHandler::OnTurnBegin()
 {
-    ++Turn %= Players->size();
+    Turn((Turn()+1) % InputSources->size());
+}
+
+void WorldHandler::Event_Turn()
+{
+
+}
+void WorldHandler::Event_CurrentWorld()
+{
+    for(Manager* m : Manager::Managers)
+        m->Elements()->clear();
 }

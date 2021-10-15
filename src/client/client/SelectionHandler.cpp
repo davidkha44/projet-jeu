@@ -32,6 +32,6 @@ void SelectionHandler::Remove(Manageable* m)
 
 sf::Vector2i SelectionHandler::GetBGWpos(sf::Vector2i uv)
 {
-    sf::Vector2i output(uv.x/WorldHandler::CurrentWorld->CellSize().x,uv.y/WorldHandler::CurrentWorld->CellSize().y);
+    sf::Vector2i output(uv.x/WorldHandler::CurrentWorld()->CellSize().x,uv.y/WorldHandler::CurrentWorld()->CellSize().y);
     return output;
 }

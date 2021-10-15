@@ -1,13 +1,14 @@
 #include "Macro.hpp"
 #include "Handler.hpp"
 #include "World.hpp"
-#include "Player.hpp"
+#include "Manager.hpp"
+#include "InputSource.hpp"
 
 class WorldHandler : public Handler
 {
-    STATIC(World* CurrentWorld)
-    STATIC(int Turn)
-    STATIC(std::vector<Player*>* Players)
+    STATIC_EVENT(World*,CurrentWorld)
+    STATIC_EVENT(int,Turn)
+    STATIC(std::vector<InputSource>* InputSources)
 
     public :
         void OnTurnBegin() override;
