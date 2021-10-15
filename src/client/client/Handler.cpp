@@ -2,7 +2,3 @@
 
 
 
-void Handler::Update()
-{
-
-}

@@ -1,3 +1,4 @@
+
 #include "Manager.hpp"
 #include <iostream>
 
@@ -43,3 +44,4 @@ std::vector<Manageable*>* Manager::GetByName(std::string name)
     }
     return output;
 }
+

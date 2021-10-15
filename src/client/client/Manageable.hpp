@@ -1,5 +1,5 @@
-#ifndef MYHEADEFILE_H
-#define MYHEADEFILE_H
+#ifndef MANAGEABLE_H
+#define MANAGEABLE_H
 #include "Macro.hpp"
 #include <SFML/Graphics.hpp>
 
@@ -28,7 +28,6 @@ class Manageable
     void OnSelectAsync();
     void OnSelectionAddAsync();
     void OnSelectionRemoveAsync();
-    void Load();
 };
 
 #endif

@@ -1,5 +1,5 @@
-#include "Handler.hpp"
-#include "Manageable.hpp"
+#include "WorldHandler.hpp"
+
 
 class SelectionHandler : public Handler
 {
@@ -10,10 +10,5 @@ class SelectionHandler : public Handler
         static void Add(Manageable*);
         static void Remove(Manageable*);
         void OnTurnBegin() override;
-        static sf::Vector2i GetBGWpos(sf::Vector2i uv)
-        {
-            float csize = 41;
-            sf::Vector2i output(uv.x/csize,uv.y/csize);
-            return output;
-        }
+        static sf::Vector2i GetBGWpos(sf::Vector2i uv);
 };

@@ -1,3 +1,5 @@
+#ifndef MANAGER_H
+#define MANAGER_H
 #include "Macro.hpp"
 #include "Manageable.hpp"
 
@@ -21,3 +23,5 @@ class Manager
     void Draw(sf::RenderWindow* rw);
 
 };
+
+#endif

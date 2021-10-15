@@ -1,5 +1,5 @@
 #include "FileHandler.hpp"
-#include "Manager.hpp"
+
 
 #include <fstream>
 #include <iostream>
@@ -81,6 +81,9 @@ MainFrame* FileHandler::InitWorlds(std::string path,std::string wname)
             std::vector<std::string> strs = SplitString(line,",");
             if(strs[0] == wname)
             {
+                WorldHandler::CurrentWorld = new World(strs[0],strs[1],std::stoi(strs[2]),std::stoi(strs[3]),std::stoi(strs[4]),std::stoi(strs[5]));
+                WorldHandler::CurrentWorld->BackgroundManager(Manager::GetMgrByName("BG_MGR"));
+                std::cout << "Loaded World : " << WorldHandler::CurrentWorld->Name() << std::endl;
                 InitWorld(strs[1],std::stoi(strs[2]),std::stoi(strs[3]),std::stoi(strs[4]),std::stoi(strs[5]));
                 mf = new MainFrame("PLT",std::stoi(strs[2]) * std::stoi(strs[4]),std::stoi(strs[3]) * std::stoi(strs[5]));    
             }

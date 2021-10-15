@@ -1,4 +1,5 @@
 #include "Macro.hpp"
+#include "Manager.hpp"
 
 class World 
 {
@@ -6,10 +7,12 @@ class World
     ATTRIBUTE(std::string,ResPath)
     ATTRIBUTE(sf::Vector2i,CellSize)
     ATTRIBUTE(sf::Vector2i,CellN)
-    ATTRIBUTE(Manageable***,Background)
-    ATTRIBUTE(Manageable***,Foreground)
+    ATTRIBUTE(Manager*,BackgroundManager)
+    ATTRIBUTE(Manager*,ForegroundManager)
 
-    
+    public :
+    World(std::string name,std::string respath,int csx,int csy,int ncx,int ncy);
+    void PrintWorldInfo();
 
     
 };

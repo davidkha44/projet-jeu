@@ -1,5 +1,5 @@
 #MV_NAME,MGR_NAME,PATH,SCALE_X,SCALE_Y
-BG_TILE_GRASS,BG_MGR,/home/ensea/PLT/projet-jeu/res/grass.png,0.5,0.5
-BG_TILE_SAND,BG_MGR,/home/ensea/PLT/projet-jeu/res/road.png,0.5,0.5
-BG_TILE_WATER,BG_MGR,/home/ensea/PLT/projet-jeu/res/water.png,0.5,0.5
-BG_TILE_BRIDGE,BG_MGR,/home/ensea/PLT/projet-jeu/res/bridge.png,0.5,0.5
+BG_TILE_GRASS,BG_MGR,/home/ensea/PLT/projet-jeu/res/texture/grass.png,0.5,0.5
+BG_TILE_SAND,BG_MGR,/home/ensea/PLT/projet-jeu/res/texture/road.png,0.5,0.5
+BG_TILE_WATER,BG_MGR,/home/ensea/PLT/projet-jeu/res/texture/water.png,0.5,0.5
+BG_TILE_BRIDGE,BG_MGR,/home/ensea/PLT/projet-jeu/res/texture/bridge.png,0.5,0.5

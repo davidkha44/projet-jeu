@@ -1,6 +1,5 @@
 #include "MainFrame.hpp"
 #include "SelectionHandler.hpp"
-#include "Manager.hpp"
 #include <iostream>
 
 MainFrame::MainFrame(std::string name,int h,int w)

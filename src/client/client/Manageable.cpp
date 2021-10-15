@@ -1,4 +1,3 @@
-#include "Manageable.hpp"
 #include "Manager.hpp"
 #include <thread>
 
@@ -17,16 +16,13 @@ Manageable::Manageable(std::string name,std::string path)
     Sprite()->setTexture(*Texture());
 }
 
-void Manageable::Load()
-{
-    Texture()->loadFromFile(ResPath());
-}
-
 void Manageable::OnSelectionAdd()
 {
     Sprite()->setTexture(*(FETCH_FROM_MGR("BG_MGR","BG_TILE_SAND")->front()->Texture()));
+    Selected(true);
 }
 void Manageable::OnSelectionRemove()
 {
     Sprite()->setTexture(*Texture());
+    Selected(false);
 }
