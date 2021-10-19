@@ -19,7 +19,10 @@ class Manageable
     ATTRIBUTE(sf::Vector2f,Scale)
 
     public :
-    Manageable(std::string n,std::string respath);
+    Manageable(std::string n,std::string visual);
+    Manageable(std::string n,std::string mgr_name,std::string respath);
+    Manageable(std::string name,int id,std::string path);
+    virtual std::string Flush();
     void Tick();
     void Start();
     void OnSelect();

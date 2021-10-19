@@ -18,26 +18,23 @@ using namespace std;
 
 int main(int argc,char* argv[])
 {
-    
+    Handler::Register<SelectionHandler>();
+    Handler::RegisterMouseLeftEvent<SelectionHandler>();
+    Handler::RegisterMouseRightEvent<SelectionHandler>();
+    Handler::Register<WorldHandler>();
     
     cout << "Resource loaded" << endl;
-    FileHandler::InitManagers("/home/ensea/PLT/projet-jeu/src/client/tables/Managers.csv");
+    FileHandler::InitManagers("/home/ensea/PLT_proper/projet-jeu/src/client/tables/Managers.csv");
     
 
-    // Manager* bg_mgr = new Manager("BG_MGR");
-    // Manager* actor_mgr = new Manager("ACTOR_MGR");
     cout << "MGR loaded" << Manager::Managers.size() << endl;
     for(Manager* m : Manager::Managers)
         std::cout << m->Name() << endl;
-    FileHandler::InitVisuals("/home/ensea/PLT/projet-jeu/src/client/tables/ManageablesVisuals.csv");
-    //bg_mgr->Add(bg_map);
-    //bg_mgr->Add(bg_tile);
 
-    //actor_mgr->Add(actor0);
-    //cout << "Resource added" << bg_mgr->Elements()->size() << endl;
     MainFrame* mf;
-    FileHandler::InitArgs(mf,"/home/ensea/PLT/projet-jeu/src/client/tables/LaunchArgs.csv");
     
+    FileHandler::InitArgs(mf,"/home/ensea/PLT_proper/projet-jeu/src/client/tables/LaunchArgs.csv");
+    Handler::RoutineTurnBegin();
     
     return 0;
 }

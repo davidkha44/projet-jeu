@@ -13,8 +13,7 @@ MainFrame::MainFrame(std::string name,int h,int w)
     while(MainFrame::Window->isOpen())
     {
         MainFrame::Window->clear(sf::Color::Black);
-        for(Manager* m : Manager::Managers)
-            m->Draw(MainFrame::Window); 
+        Draw();
         if(MainFrame::Window->hasFocus()) 
             Tick();
 
@@ -23,26 +22,27 @@ MainFrame::MainFrame(std::string name,int h,int w)
             
 }
 
-void DrawBGWorld(Manager* bgmgr)
-{
-   
-        
-}
 
 void MainFrame::OnStart()
 {
     
-
+    
+}
+void MainFrame::Draw()
+{
+    for(int i = 0; i < Manager::Managers.size();i++)
+        Manager::GetMgrByID(i)->Draw(MainFrame::Window);
 }
 
 void MainFrame::Tick()
 {
     
     ON_MOUSE_LEFT(
-        SelectionHandler::Add(BG_TILE(SelectionHandler::GetBGWpos(MousePos).x,SelectionHandler::GetBGWpos(MousePos).y));
+        //SelectionHandler::Add(BG_TILE(SelectionHandler::GetBGWpos(MousePos).x,SelectionHandler::GetBGWpos(MousePos).y));
+        Handler::RoutineMouseLeft(MousePos);
     )
     ON_MOUSE_RIGHT(
-        SelectionHandler::Remove(BG_TILE(SelectionHandler::GetBGWpos(MousePos).x,SelectionHandler::GetBGWpos(MousePos).y));
+        Handler::RoutineMouseRight(MousePos);
     )
 
     ON_KEY_DBG(X,

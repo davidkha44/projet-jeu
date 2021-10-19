@@ -28,10 +28,45 @@ void SelectionHandler::Remove(Manageable* m)
     }
 }
 
-
+void SelectionHandler::OnTurnBeginAsync()
+{
+    //Flush();
+    std::cout << "ON_TURN_BEGIN_ASYNC_SH" << std::endl;
+}
+void SelectionHandler::OnTurnBegin()
+{
+    //Flush();
+    std::cout << "ON_TURN_BEGIN_SH" << std::endl;
+}
 
 sf::Vector2i SelectionHandler::GetBGWpos(sf::Vector2i uv)
 {
     sf::Vector2i output(uv.x/WorldHandler::CurrentWorld()->CellSize().x,uv.y/WorldHandler::CurrentWorld()->CellSize().y);
     return output;
+}
+
+void SelectionHandler::OnMouseLeft(sf::Vector2i MousePos)
+{
+    for(Manager* m : Manager::Managers)
+    {
+        Manageable* item = m->GetByPos(MousePos);
+        if(item)
+        {
+            if(item->Render())
+                Add(item);
+        }
+            
+    }
+}
+void SelectionHandler::OnMouseRight(sf::Vector2i MousePos)
+{
+    for(Manager* m : Manager::Managers)
+    {
+        Manageable* item = m->GetByPos(MousePos);
+        if(item)
+        {
+            if(item->Render())
+                Remove(item);
+        }
+    }
 }

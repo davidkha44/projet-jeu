@@ -12,10 +12,14 @@ class Manager
 
     public :
     Manager(std::string name);
+    Manager(std::string name,int id);
     
     std::vector<Manageable*>* GetByName(std::string name);
     static Manager* GetMgrByName(std::string name);
-    Manageable GetByID(int id);
+    static Manager* GetMgrByID(int id);
+    Manageable* GetByID(int id);
+    Manageable* GetByPos(sf::Vector2i pos);
+    void Flush(int instance,int turn);
     void Add(Manageable* element);
 
     void Remove(Manageable* element);

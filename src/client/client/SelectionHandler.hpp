@@ -1,14 +1,16 @@
 #include "WorldHandler.hpp"
 
 
-class SelectionHandler : public Handler
+class SelectionHandler
 {
     STATIC(std::vector<Manageable*> Selection);
 
     public :
-        SelectionHandler();
         static void Add(Manageable*);
         static void Remove(Manageable*);
-        void OnTurnBegin() override;
+        static void OnTurnBeginAsync();
+        static void OnTurnBegin();
+        static void OnMouseLeft(sf::Vector2i MousePos);
+        static void OnMouseRight(sf::Vector2i MousePos);
         static sf::Vector2i GetBGWpos(sf::Vector2i uv);
 };

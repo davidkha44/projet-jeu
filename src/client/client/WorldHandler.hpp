@@ -4,14 +4,18 @@
 #include "Manager.hpp"
 #include "InputSource.hpp"
 
-class WorldHandler : public Handler
+class WorldHandler 
 {
-    STATIC_EVENT(World*,CurrentWorld)
+    STATIC_EVENT(World*, CurrentWorld)
     STATIC_EVENT(int,Turn)
+    STATIC(int Instance)
+    STATIC(std::string FlushPath)
     STATIC(std::vector<InputSource>* InputSources)
-
+    private : WorldHandler();
     public :
-        void OnTurnBegin() override;
+        static void OnTurnBegin();
+        static void OnTurnBeginAsync();
+        static void Flush();
     
     
 

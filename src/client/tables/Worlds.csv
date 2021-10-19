@@ -1,7 +1,7 @@
 #WORLD_NAME,MAP_PATH,CELL_X,CELL_Y,N_CELL_X,N_CELL_Y
-STD_WORLD,/home/ensea/PLT/projet-jeu/src/client/maps/DefaultWorld.csv,41,41,19,19
-O_WORLD,/home/ensea/PLT/projet-jeu/src/client/maps/OtherWorld.csv,41,41,19,19
-EVERGREEN,/home/ensea/PLT/projet-jeu/src/client/maps/Evergreen.csv,41,41,10,10
-POOL,/home/ensea/PLT/projet-jeu/src/client/maps/Pool.csv,41,41,11,10
+STD_WORLD,/home/ensea/PLT_proper/projet-jeu/src/client/maps/DefaultWorld.csv,41,41,19,19
+O_WORLD,/home/ensea/PLT_proper/projet-jeu/src/client/maps/OtherWorld.csv,41,41,19,19
+EVERGREEN,/home/ensea/PLT_proper/projet-jeu/src/client/maps/Evergreen.csv,41,41,10,10
+POOL,/home/ensea/PLT_proper/projet-jeu/src/client/maps/Pool.csv,41,41,11,10
 
 
