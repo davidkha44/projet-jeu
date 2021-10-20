@@ -4,33 +4,33 @@
 
 void WorldHandler::OnTurnBegin()
 {
-    Flush();
+    Turn++;
     std::cout << "ON_TURN_BEGIN_WH" << std::endl;
-
 }
 void WorldHandler::OnTurnBeginAsync()
 {
-    
+    Flush2CSV();
     std::cout << "ON_TURN_BEGIN_ASYNC_WH" << std::endl;
 }
 
 
-void WorldHandler::Event_Turn()
-{
 
-}
 void WorldHandler::Event_CurrentWorld()
 {
 
 }
 
-void WorldHandler::Flush()
+void WorldHandler::Flush2CSV()
 {
     PRINTLN("FLUSH START")
+
    for(Manager* m : Manager::Managers)
    {
-       std::cout << m->Name() << std::endl;
-        m->Flush(0,0);
+       if(m->Flush())
+        {
+            std::cout << m->Name() << std::endl;
+            m->Flush2CSV(0,Turn);
+        }
    }
     PRINTLN("FLUSH DONE")
     

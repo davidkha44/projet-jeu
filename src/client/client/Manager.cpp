@@ -80,7 +80,7 @@ Manageable* Manager::GetByPos(sf::Vector2i pos)
     return NULL;
 }
 
-void Manager::Flush(int instance,int turn)
+void Manager::Flush2CSV(int instance,int turn)
 {   
     if(!Elements()->size())
         return;
@@ -88,8 +88,8 @@ void Manager::Flush(int instance,int turn)
     mfile.open ("/home/ensea/PLT_proper/projet-jeu/src/client/BoardSnapshot/Snapshots/"+Name()+"_"+std::to_string(instance)+"_"+std::to_string(turn)+"_"+".csv");
     for(Manageable* m : *Elements())
     {
-        std::cout << m->Flush() << std::endl;
-        mfile << m->Flush() << std::endl;
+        std::cout << m->Flush2CSV() << std::endl;
+        mfile << m->Flush2CSV() << std::endl;
     }
         
     mfile.close();

@@ -1,5 +1,6 @@
 #include "MainFrame.hpp"
 #include "SelectionHandler.hpp"
+#include "InputHandler.hpp"
 #include <iostream>
 
 MainFrame::MainFrame(std::string name,int h,int w)
@@ -25,8 +26,7 @@ MainFrame::MainFrame(std::string name,int h,int w)
 
 void MainFrame::OnStart()
 {
-    
-    
+    InputHandler::Initialize();
 }
 void MainFrame::Draw()
 {
@@ -39,17 +39,22 @@ void MainFrame::Tick()
     
     ON_MOUSE_LEFT(
         //SelectionHandler::Add(BG_TILE(SelectionHandler::GetBGWpos(MousePos).x,SelectionHandler::GetBGWpos(MousePos).y));
-        Handler::RoutineMouseLeft(MousePos);
+        InputHandler::RoutineMouseLeft(MousePos);
     )
     ON_MOUSE_RIGHT(
-        Handler::RoutineMouseRight(MousePos);
+        InputHandler::RoutineMouseRight(MousePos);
     )
 
     ON_KEY_DBG(X,
     printf("Close Game !");
     MainFrame::Window->close();
     )
-    ON_KEY_DBG(M,
-    printf("Change Turn !");
-    )
+    unsigned char* buffer = InputHandler::RegisterKeyboardInputs();
+    if(buffer[sf::Keyboard::M])
+    {
+        Handler::RoutineTurnBegin();
+        Handler::RoutineTurnBeginAsync();
+    }
+    free(buffer);
+    
 }

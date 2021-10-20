@@ -22,12 +22,14 @@ class Manageable
     Manageable(std::string n,std::string visual);
     Manageable(std::string n,std::string mgr_name,std::string respath);
     Manageable(std::string name,int id,std::string path);
-    virtual std::string Flush();
+    virtual std::string Flush2CSV();
     void Tick();
+    virtual void AssignPosition(sf::Vector2i pos);
+    virtual void AssignPosition(int px,int py);
     void Start();
     void OnSelect();
-    void OnSelectionAdd();
-    void OnSelectionRemove(); 
+    virtual void OnSelectionAdd();
+    virtual void OnSelectionRemove(); 
     void OnSelectAsync();
     void OnSelectionAddAsync();
     void OnSelectionRemoveAsync();

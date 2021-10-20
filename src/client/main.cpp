@@ -18,10 +18,13 @@ using namespace std;
 
 int main(int argc,char* argv[])
 {
-    Handler::Register<SelectionHandler>();
-    Handler::RegisterMouseLeftEvent<SelectionHandler>();
-    Handler::RegisterMouseRightEvent<SelectionHandler>();
-    Handler::Register<WorldHandler>();
+
+    Handler::RegisterTurnBeginEvent<Actor>();
+    Handler::RegisterTurnBeginEvent<SelectionHandler>();
+    InputHandler::RegisterMouseLeftEvent<SelectionHandler>();
+    InputHandler::RegisterMouseRightEvent<SelectionHandler>();
+    Handler::RegisterTurnBeginEvent<WorldHandler>();
+    Handler::RegisterTurnBeginAsyncEvent<WorldHandler>();
     
     cout << "Resource loaded" << endl;
     FileHandler::InitManagers("/home/ensea/PLT_proper/projet-jeu/src/client/tables/Managers.csv");
@@ -34,7 +37,6 @@ int main(int argc,char* argv[])
     MainFrame* mf;
     
     FileHandler::InitArgs(mf,"/home/ensea/PLT_proper/projet-jeu/src/client/tables/LaunchArgs.csv");
-    Handler::RoutineTurnBegin();
     
     return 0;
 }

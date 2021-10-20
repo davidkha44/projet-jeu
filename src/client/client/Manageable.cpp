@@ -1,4 +1,5 @@
 #include "Manager.hpp"
+#include "WorldHandler.hpp"
 #include <thread>
 
 Manageable::Manageable(std::string name,std::string visual)
@@ -54,7 +55,17 @@ void Manageable::OnSelectionRemove()
     Selected(false);
 }
 
-std::string Manageable::Flush()
+std::string Manageable::Flush2CSV()
 {
     return Name()+","+std::to_string(ID())+","+std::to_string(Position().x)+","+std::to_string(Position().y);
+}
+
+void Manageable::AssignPosition(sf::Vector2i pos)
+{
+    AssignPosition(pos.x,pos.y);
+}
+void Manageable::AssignPosition(int px,int py)
+{
+    Sprite()->setPosition(px*WorldHandler::CurrentWorld()->CellSize().x,py*WorldHandler::CurrentWorld()->CellSize().y);
+    Position(*(new sf::Vector2i(px,py)));
 }

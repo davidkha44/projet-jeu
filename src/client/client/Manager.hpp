@@ -7,6 +7,7 @@ class Manager
 {
     ATTRIBUTE(std::string,Name);
     ATTRIBUTE(int,ID);
+    ATTRIBUTE(bool,Flush);
     ATTRIBUTE(std::vector<Manageable*>*,Elements);
     STATIC(std::vector<Manager*> Managers);
 
@@ -19,7 +20,8 @@ class Manager
     static Manager* GetMgrByID(int id);
     Manageable* GetByID(int id);
     Manageable* GetByPos(sf::Vector2i pos);
-    void Flush(int instance,int turn);
+    void Flush2CSV(int instance,int turn);
+    void LoadFromCSV(int instance,int turn);
     void Add(Manageable* element);
 
     void Remove(Manageable* element);

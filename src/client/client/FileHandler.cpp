@@ -1,5 +1,4 @@
 #include "FileHandler.hpp"
-#include "Actor.hpp"
 
 
 #include <fstream>
@@ -34,10 +33,11 @@ void FileHandler::InitManagers(std::string path)
         {
             std::vector<std::string> strs = SplitString(line,",");
             Manager* mgr = new Manager(strs[0],std::stoi(strs[1]));
-            
+            mgr->Flush(false);
+            if(std::stoi(strs[2]))
+            mgr->Flush(true);  
         }
     }
-
 }
 void FileHandler::InitVisuals(std::string path)
 {
@@ -65,14 +65,10 @@ void FileHandler::InitActors(std::string path)
         if(line.find('#') == std::string::npos)
         {
             std::vector<std::string> strs = SplitString(line,",");
-            sf::Vector2i v0(7,10);
-            sf::Vector2i v1(0,5);
-            sf::Vector2i v2(15,16);
-            sf::Vector2i v3(10,10);
-            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs,v0));
-            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs,v1));
-            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs,v2));
-            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs,v3));
+            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs));
+            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs));
+            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs));
+            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs));
         }
     }
 }

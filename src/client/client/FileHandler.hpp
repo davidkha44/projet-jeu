@@ -2,6 +2,10 @@
 #include "SelectionHandler.hpp"
 #include <vector>
 #include "MainFrame.hpp"
+#include "Actor.hpp"
+#include "InputHandler.hpp"
+
+
 class FileHandler
 {
     public :
