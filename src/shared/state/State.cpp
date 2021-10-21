@@ -1,21 +1,28 @@
 # include "State.h"
 using namespace state;
 
+State::State(){};
+State::~State(){};
 ElementTab& State::getGrid (){};
 ElementTab& State::getChars (){};
 int State::getTurn (){
     return turn;
 }
-int State::getEnd (){
+bool State::getEnd (){
     return end;
 }
 void State::setTurn (int newTurn){
     turn=newTurn;
 }
-void State::setEnd (bool result){
+void State::setEnd (bool newEnd){
+    end=newEnd;
+}
+void State::setWin(bool result){
     win=result;
 }
-State::~State (){};
+bool State::getWin(){
+    return win;
+}
 void State::initializeCharacters (){
 
 };

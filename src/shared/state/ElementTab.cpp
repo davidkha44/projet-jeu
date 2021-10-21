@@ -16,6 +16,7 @@ size_t const ElementTab :: getHeight (){
 
 size_t ElementTab::add (Element* e){
     list.insert(list.end(), e);
+    return list.size();
 };
 
 void ElementTab::resize (size_t w, size_t h){

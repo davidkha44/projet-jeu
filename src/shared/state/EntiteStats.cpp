@@ -3,7 +3,6 @@
 
 using namespace state;
 
-EntiteStats::EntiteStats(EntiteTypeID newId){};
 EntiteStats::EntiteStats(){};
 EntiteStats::~EntiteStats(){};
 

@@ -20,4 +20,7 @@ void Element::setY (int newY){
 int Element::getTypeID(){
     return id;
 }
+void Element::setTypeID(int newid){
+    id=newid;
+}
 }
