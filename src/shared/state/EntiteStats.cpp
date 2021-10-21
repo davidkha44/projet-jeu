@@ -1,6 +1,11 @@
-#include "Entite.h"
+#include "EntiteStats.h"
+
 
 using namespace state;
+
+EntiteStats::EntiteStats(EntiteTypeID newId){};
+EntiteStats::EntiteStats(){};
+EntiteStats::~EntiteStats(){};
 
 int EntiteStats::getAtk(){
 	return atk;
@@ -37,7 +42,4 @@ void EntiteStats::setDef (int newDef){
 }
 void EntiteStats::setMag (int newMag){
     mag=newMag;
-}
-void EntiteStats::setMoney (int Cost){
-    cost=cost;
 }

@@ -15,16 +15,17 @@ Entite :: Entite(EntiteTypeID id, int newX, int newY, EntiteStatusID status, Ent
 	Status=status;
 	Stats=stats;
 }
+Entite ::~Entite(){}
 
-EntiteStatusID Entite::getTypeId (){
-	return StatusID;
+EntiteTypeID Entite::getTypeId (){
+	return typeID;
+}
+void Entite::setTypeID(EntiteTypeID newTypeID){
+	typeID=newTypeID;
 }
 
 void Entite::setStatus (EntiteStatusID newStatus){
 	StatusID=newStatus;
-}
-void Entite:: setCharacterDeplacement (int newDeplacement){
-
 }
 
 EntiteStats& Entite::getStats (){
@@ -35,9 +36,15 @@ bool const Entite :: isPersonnage (){
 }
     // Setters and Getters
 
-
+EntiteStatusID Entite::getStatusID(){
+	return StatusID;
+}
 void Entite::setEntiteStatusID(EntiteStatusID newStatusID){
 	StatusID=newStatusID;
+}
+
+const EntiteStats& Entite:: getEntiteStats() const{
+	return Stats;
 }
 
 void Entite:: setEntiteStats(const EntiteStats& EntiteStats){
@@ -45,17 +52,10 @@ void Entite:: setEntiteStats(const EntiteStats& EntiteStats){
 }
 Direction Entite::getDirection() const{
 	return direction;
-};
+}
 void Entite:: setDirection(Direction newDirection){
 	direction=newDirection;
 }
-EntiteStatusID Entite:: getStatusID(){
-	return StatusID;
-};
 
-EntiteTypeID Entite::getTypeID() const{
-	return typeID;
-}
-void Entite::setTypeID(EntiteTypeID newTypeID){
-	typeID=newTypeID;
-}
+
+

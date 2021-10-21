@@ -8,4 +8,18 @@
 using namespace std;
 using namespace state;
 
-Space::Space(SpaceTypeId id){};
+Space::Space(SpaceTypeId id): Spaceid(id){};
+Space::~Space(){};
+bool const SpaceisSpace (){
+    return true;
+}
+
+bool const Space:: equals (const Element& other){
+
+}
+SpaceTypeId const Space ::getSpaceTypeId (){
+    return Spaceid;
+}
+void Space:: setSpaceTypeId (SpaceTypeId id){
+    Spaceid=id;
+}
