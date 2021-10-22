@@ -1,4 +1,5 @@
 #include "Manager.h"
+#include "Manageable.h"
 #include "../../client/client/Macro.hpp"
 
 GET_SET(state::Manager,std::string,Name)
@@ -11,6 +12,10 @@ state::Manager::Manager()
     Elements(new std::vector<state::Manageable*>);
     ID(0);
     Managers.push_back(this);
+}
+state::Manager::~Manager()
+{
+
 }
 
 state::Manager::Manager(std::string name,char id)
@@ -46,7 +51,7 @@ state::Manager* state::Manager::GetMgrByName(std::string name)
 }
 state::Manager* state::Manager::GetMgrByID(int id)
 {
-    for(state::Manager* m : Managers)
+    for(state::Manager* m : state::Manager::Managers)
     {
         if(m->ID() == id)
             return m;
@@ -71,10 +76,5 @@ state::Manageable* state::Manager::GetByID(int id)
         if(m->ID() == id)
             return m;
     }
-    return NULL;
-}
-state::Manageable* state::Manager::GetByPos(sf::Vector2i pos)
-{
-    //POUR PLUS TARD
     return NULL;
 }

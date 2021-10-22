@@ -4,6 +4,7 @@
 GET_SET(state::Manageable,std::string,Name)
 GET_SET(state::Manageable,std::string,ResPath)
 GET_SET(state::Manageable,bool,Render)
+GET_SET(state::Manageable,bool,Selected)
 GET_SET(state::Manageable,int,ID)
 GET_SET(state::Manageable,sf::Texture*,Texture)
 GET_SET(state::Manageable,sf::Sprite*,Sprite)
@@ -22,6 +23,10 @@ state::Manageable::Manageable()
     sf::Vector2f vs(0,0);
     Position(vp);
     Scale(vs);
+}
+state::Manageable::~Manageable()
+{
+
 }
 
 state::Manageable::Manageable(std::string name,std::string visual)
@@ -75,6 +80,14 @@ void state::Manageable::OnSelectionRemove()
     Selected(false);
 }
 
-
+void state::Manageable::AssignPosition(int posx,int posy)
+{
+    sf::Vector2i v0(posx,posy);
+    Position(v0);
+}
+void state::Manageable::AssignPosition(sf::Vector2i v0)
+{
+    Position(v0);
+}
 
 
