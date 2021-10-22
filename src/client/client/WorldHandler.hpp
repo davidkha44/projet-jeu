@@ -8,14 +8,18 @@ class WorldHandler
 {
     STATIC_EVENT(World*, CurrentWorld)
     STATIC(int Turn)
+    STATIC(int MyID)
     STATIC(int Instance)
     STATIC(std::string FlushPath)
-    STATIC(std::vector<InputSource>* InputSources)
+    STATIC(std::vector<InputSource*> InputSources)
     private : WorldHandler();
     public :
         static void OnTurnBegin();
         static void OnTurnBeginAsync();
         static void Flush2CSV();
+        static InputSource* GetActiveInputSource();
+        static InputSource* GetMyInputSource();
+
     
     
 

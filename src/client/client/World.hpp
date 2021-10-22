@@ -11,7 +11,6 @@ class World
 
     public :
     World(std::string name,std::string respath,int csx,int csy,int ncx,int ncy);
-    void PrintWorldInfo();
 
     
 };

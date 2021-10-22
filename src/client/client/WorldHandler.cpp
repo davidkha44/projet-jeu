@@ -9,11 +9,18 @@ void WorldHandler::OnTurnBegin()
 }
 void WorldHandler::OnTurnBeginAsync()
 {
-    Flush2CSV();
+    //Flush2CSV();
     std::cout << "ON_TURN_BEGIN_ASYNC_WH" << std::endl;
 }
 
-
+InputSource* WorldHandler::GetActiveInputSource()
+{
+    return InputSources[Turn % InputSources.size()];
+}
+InputSource* WorldHandler::GetMyInputSource()
+{
+    return InputSources[MyID];
+}
 
 void WorldHandler::Event_CurrentWorld()
 {

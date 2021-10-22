@@ -39,8 +39,3 @@ void InputHandler::RegisterMouseRightEvent()
 {
     MouseRightEvents.push_back(T::OnMouseRight);
 }
-template <class T>
-void InputHandler::RegisterMouseRightEvent()
-{
-    KeyboardEvents.push_back(T::OnKeyboard);
-}

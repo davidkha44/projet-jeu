@@ -3,11 +3,11 @@
 class InputSource
 {
     ATTRIBUTE(int,ID);
+    ATTRIBUTE(unsigned char*,In);
+    ATTRIBUTE(unsigned char*,Out);
     
     public :
         InputSource(int id);
-        int Out(unsigned char* buffer,int length);
-        int In(unsigned char* buffer,int length);
         
 
 

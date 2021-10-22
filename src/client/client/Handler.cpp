@@ -21,9 +21,7 @@ void Handler::RoutineTurnBeginAsync()
 
 void* Handler::Exec(void* arg)
 {
-    //PRINTLN("EXEC STARTED " << *((int*)arg))
     PRINTLN("EXEC STARTED ")
-    //TurnBeginAsync[*((int*)arg)]();
     (*((std::function<void()>*)arg))();
     PRINTLN("EXEC DONE")
     return NULL;
