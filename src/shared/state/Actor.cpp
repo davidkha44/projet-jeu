@@ -15,3 +15,8 @@ state::Actor::Actor() : state::Manageable()
     DMG(0);
     DEF(0);
 }
+
+state::Actor::~Actor() 
+{
+    
+}

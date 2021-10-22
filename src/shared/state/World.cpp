@@ -14,6 +14,10 @@ state::World::World()
     CellSize(zero);
     CellN(zero);
 }
+state::World::~World()
+{
+
+}
 
 state::World::World (std::string name, std::string respath, int csx, int csy, int ncx, int ncy)
 {
