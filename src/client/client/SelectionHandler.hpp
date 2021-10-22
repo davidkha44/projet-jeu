@@ -1,19 +1,16 @@
-#include "Handler.hpp"
-#include "Manageable.hpp"
+#include "WorldHandler.hpp"
 
-class SelectionHandler : public Handler
+
+class SelectionHandler
 {
-    ATTRIBUTE(std::vector<Manageable>,Selection);
+    STATIC(std::vector<Manageable*> Selection);
 
     public :
-        SelectionHandler();
-        void Add(Manageable);
-        void Remove(Manageable);
-        void OnTurnBegin() override;
-        static sf::Vector2i GetBGWpos(sf::Vector2i uv)
-        {
-            float csize = 555/20;
-            sf::Vector2i output(uv.x/csize,uv.y/csize);
-            return output;
-        }
+        static void Add(Manageable*);
+        static void Remove(Manageable*);
+        static void OnTurnBeginAsync();
+        static void OnTurnBegin();
+        static void OnMouseLeft(sf::Vector2i MousePos);
+        static void OnMouseRight(sf::Vector2i MousePos);
+        static sf::Vector2i GetBGWpos(sf::Vector2i uv);
 };

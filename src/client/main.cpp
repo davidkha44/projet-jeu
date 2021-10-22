@@ -1,8 +1,10 @@
 #include <iostream>
 #include <client.h>
+#include <string.h>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
+
 
 void testSFML() {
     sf::Texture texture;
@@ -13,25 +15,38 @@ void testSFML() {
 #include <state.h>
 
 using namespace std;
-using namespace state;
+
 
 int main(int argc,char* argv[])
 {
-    
-    Manageable* bg_map = new Manageable("BG_MAP","/home/ensea/PLT/projet-jeu/rapport/map_simple2.png");
-    Manageable* bg_tile = new Manageable("BG_TILE","/home/ensea/PLT/projet-jeu/res/texture/Ground/grass2.png");
-    Manageable* actor0 = new Manageable("ACTOR0","/home/ensea/PLT/projet-jeu/res/texture/Characters/Champions/Arthax.png");
-    cout << "Resource loaded" << endl;
-    Manager* bg_mgr = new Manager("BG_MGR");
-    Manager* actor_mgr = new Manager("ACTOR_MGR");
-    cout << "MGR loaded" << Manager::Managers.size() << endl;
-    //bg_mgr->Add(bg_map);
-    bg_mgr->Add(bg_tile);
-    bg_tile->Sprite()->setScale(0.1,0.1);
-    //actor_mgr->Add(actor0);
-    cout << "Resource added" << bg_mgr->Elements()->size() << endl;
-    MainFrame* mf = new MainFrame("TEST",800,800);
-    
+
+    cout << "Hello" << endl;
+    if(argc > 1)
+        cout << "No args. Exit" << endl;
+
+    if(!strcmp(argv[1],"state"))
+    {
+        cout << "Begin State Unit Tests" << endl;
+    }
+
     
     return 0;
 }
+    //     Handler::RegisterTurnBeginEvent<Actor>();
+    // Handler::RegisterTurnBeginEvent<SelectionHandler>();
+    // InputHandler::RegisterMouseLeftEvent<SelectionHandler>();
+    // InputHandler::RegisterMouseRightEvent<SelectionHandler>();
+    // Handler::RegisterTurnBeginEvent<WorldHandler>();
+    // Handler::RegisterTurnBeginAsyncEvent<WorldHandler>();
+    
+    // cout << "Resource loaded" << endl;
+    // FileHandler::InitManagers("/home/ensea/PLT_proper/projet-jeu/src/client/tables/Managers.csv");
+    
+
+    // cout << "MGR loaded" << Manager::Managers.size() << endl;
+    // for(Manager* m : Manager::Managers)
+    //     std::cout << m->Name() << endl;
+
+    // MainFrame* mf;
+    
+    // FileHandler::InitArgs(mf,"/home/ensea/PLT_proper/projet-jeu/src/client/tables/LaunchArgs.csv");

@@ -1,5 +1,4 @@
 #include "Macro.hpp"
-#include "Manager.hpp"
 #include <SFML/Graphics.hpp>
 
 class MainFrame
@@ -18,10 +17,7 @@ class MainFrame
     void OnStart();
     void Tick();
     void Draw();
-    void DrawActors();
-    void DrawBGWorld();
-    void DrawFGWorld();
-    void DrawUI();
+
     
 
 };

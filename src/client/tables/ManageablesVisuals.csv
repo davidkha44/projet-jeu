@@ -1,0 +1,6 @@
+#MV_NAME,MGR_NAME,MV_ID,PATH,SCALE_X,SCALE_Y
+BG_TILE_GRASS,ASSET_MGR,0,/home/ensea/PLT_proper/projet-jeu/res/texture/grass.png,0.5,0.5
+BG_TILE_SAND,ASSET_MGR,3,/home/ensea/PLT_proper/projet-jeu/res/texture/road.png,0.5,0.5
+BG_TILE_WATER,ASSET_MGR,1,/home/ensea/PLT_proper/projet-jeu/res/texture/water.png,0.5,0.5
+BG_TILE_BRIDGE,ASSET_MGR,2,/home/ensea/PLT_proper/projet-jeu/res/texture/bridge.png,0.5,0.5
+ACTOR_KNIGHT,ASSET_MGR,4,/home/ensea/PLT_proper/projet-jeu/res/texture/knight.png,0.036,0.036

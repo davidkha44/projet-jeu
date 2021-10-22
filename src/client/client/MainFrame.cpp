@@ -1,20 +1,20 @@
 #include "MainFrame.hpp"
 #include "SelectionHandler.hpp"
+#include "InputHandler.hpp"
 #include <iostream>
 
 MainFrame::MainFrame(std::string name,int h,int w)
 {
-    sf::VideoMode frame_vm(h,w);
-    sf::RenderWindow win(frame_vm,name,sf::Style::Default);
-    MainFrame::Window = &win;
     Height(h);
     Width(w);
+    sf::VideoMode frame_vm(Height(),Width());
+    sf::RenderWindow win(frame_vm,name,sf::Style::Default);
+    MainFrame::Window = &win;
     OnStart();
-    while(win.isOpen())
+    while(MainFrame::Window->isOpen())
     {
-        MainFrame::Window->clear(sf::Color::Blue);
-        for(Manager m : Manager::Managers)
-            m.Draw(MainFrame::Window); 
+        MainFrame::Window->clear(sf::Color::Black);
+        Draw();
         if(MainFrame::Window->hasFocus()) 
             Tick();
 
@@ -23,30 +23,38 @@ MainFrame::MainFrame(std::string name,int h,int w)
             
 }
 
-void DrawBGWorld(Manager* bgmgr)
-{
-   
-        
-}
 
 void MainFrame::OnStart()
 {
-
+    InputHandler::Initialize();
+}
+void MainFrame::Draw()
+{
+    for(int i = 0; i < Manager::Managers.size();i++)
+        Manager::GetMgrByID(i)->Draw(MainFrame::Window);
 }
 
 void MainFrame::Tick()
 {
     
     ON_MOUSE_LEFT(
-       
-        printf("{ X : %d ; Y : %d }\n",SelectionHandler::GetBGWpos(MousePos).x,SelectionHandler::GetBGWpos(MousePos).y);
+        //SelectionHandler::Add(BG_TILE(SelectionHandler::GetBGWpos(MousePos).x,SelectionHandler::GetBGWpos(MousePos).y));
+        InputHandler::RoutineMouseLeft(MousePos);
+    )
+    ON_MOUSE_RIGHT(
+        InputHandler::RoutineMouseRight(MousePos);
     )
 
     ON_KEY_DBG(X,
     printf("Close Game !");
     MainFrame::Window->close();
     )
-    ON_KEY_DBG(M,
-    printf("Change Turn !");
-    )
+    unsigned char* buffer = InputHandler::RegisterKeyboardInputs();
+    if(buffer[sf::Keyboard::M])
+    {
+        Handler::RoutineTurnBegin();
+        Handler::RoutineTurnBeginAsync();
+    }
+    free(buffer);
+    
 }
