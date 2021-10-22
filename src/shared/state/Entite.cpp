@@ -8,50 +8,42 @@
 using namespace std;
 using namespace state;
 
-Entite :: Entite(EntiteTypeID id, int newX, int newY, EntiteStatusID status, EntiteStats stats){
-	typeID=id;
+Entite :: Entite( int newX, int newY){
 	x=newX;
 	y=newY;
-	Status=status;
-	Stats=stats;
+	
 }
 Entite ::~Entite(){}
 
-EntiteTypeID Entite::getTypeId (){
+EntiteTypeID Entite::getTypeID (){
 	return typeID;
 }
 void Entite::setTypeID(EntiteTypeID newTypeID){
 	typeID=newTypeID;
 }
 
-void Entite::setStatus (EntiteStatusID newStatus){
-	StatusID=newStatus;
-}
-
-EntiteStats& Entite::getStats (){
-return Stats;
-}
-bool const Entite :: isPersonnage (){
-	return true;
-}
-    // Setters and Getters
-
-EntiteStatusID Entite::getStatusID(){
-	return StatusID;
-}
-void Entite::setEntiteStatusID(EntiteStatusID newStatusID){
+void Entite::setStatusID (EntiteStatusID newStatusID){
 	StatusID=newStatusID;
 }
 
-const EntiteStats& Entite:: getEntiteStats() const{
-	return Stats;
+EntiteStatusID Entite::getStatusID() {
+	return StatusID;
+}
+
+EntiteStats& Entite::getEntiteStats(){
+	return stats;
 }
 
 void Entite:: setEntiteStats(const EntiteStats& EntiteStats){
-	Stats=EntiteStats;
+	stats=EntiteStats;
 }
-Direction Entite::getDirection() const{
-	return direction;
+
+bool const Entite :: isPersonnage (){
+	return true;
+}
+
+Direction const Entite::getDirection(){
+	return Direction;
 }
 void Entite:: setDirection(Direction newDirection){
 	direction=newDirection;

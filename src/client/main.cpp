@@ -32,8 +32,9 @@ int main(int argc,char* argv[])
     cout << "Resource added" << bg_mgr->Elements()->size() << endl;
     MainFrame* mf = new MainFrame("TEST",800,800);
     */
-    cout << "Bonjour " << ((argv[1]) ? argv[1] : "Monsieur/Madame ") << endl;
-
-
+   if (argv[1]=="hello"){
+       cout<<"Bonjour le monde"<<(argv[1])<<endl;
+   }
+    //cout << "Bonjour le monde!" << ((argv[1]) ? argv[1] : "hello") << endl;
     return 0;
 }
