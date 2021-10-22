@@ -67,22 +67,22 @@ void* state::WorldHandler::RunAsync(void* func)
 }
 
 template <class T> 
-void state::WorldHandler::Suscribe2TurnBegin()
+void state::WorldHandler::Subscribe2TurnBegin()
 {
     TurnBeginEvents.push_back(T::OnTurnBegin);
 }
 template <class T> 
-void state::WorldHandler::Suscribe2TurnBeginAsync()
+void state::WorldHandler::Subscribe2TurnBeginAsync()
 {
     TurnBeginEvents.push_back(T::OnTurnBeginAsync);
 }
 template <class T> 
-void state::WorldHandler::Suscribe2TurnEnd()
+void state::WorldHandler::Subscribe2TurnEnd()
 {
     TurnEndEvents.push_back(T::OnTurnEnd);
 }
 template <class T> 
-void state::WorldHandler::Suscribe2TurnEndAsync()
+void state::WorldHandler::Subscribe2TurnEndAsync()
 {
     TurnEndEvents.push_back(T::OnTurnEndAsync);
 }

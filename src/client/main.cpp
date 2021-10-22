@@ -20,32 +20,33 @@ using namespace std;
 int main(int argc,char* argv[])
 {
 
-    // cout << "Hello" << endl;
-    // if(argc > 1)
-    //     cout << "No args. Exit" << endl;
+    cout << "Hello" << endl;
+    if(argc > 1)
+        cout << "No args. Exit" << endl;
 
-    // if(!strcmp(argv[1],"state"))
-    // {
-    //     cout << "Begin State Unit Tests" << endl;
-    // }
-        Handler::RegisterTurnBeginEvent<Actor>();
-    Handler::RegisterTurnBeginEvent<SelectionHandler>();
-    InputHandler::RegisterMouseLeftEvent<SelectionHandler>();
-    InputHandler::RegisterMouseRightEvent<SelectionHandler>();
-    Handler::RegisterTurnBeginEvent<WorldHandler>();
-    Handler::RegisterTurnBeginAsyncEvent<WorldHandler>();
-    
-    cout << "Resource loaded" << endl;
-    FileHandler::InitManagers("/home/ensea/PLT_proper/projet-jeu/src/client/tables/Managers.csv");
-    
+    if(!strcmp(argv[1],"state"))
+    {
+        cout << "Begin State Unit Tests" << endl;
+    }
 
-    cout << "MGR loaded" << Manager::Managers.size() << endl;
-    for(Manager* m : Manager::Managers)
-        std::cout << m->Name() << endl;
-
-    MainFrame* mf;
-    
-    FileHandler::InitArgs(mf,"/home/ensea/PLT_proper/projet-jeu/src/client/tables/LaunchArgs.csv");
     
     return 0;
 }
+    //     Handler::RegisterTurnBeginEvent<Actor>();
+    // Handler::RegisterTurnBeginEvent<SelectionHandler>();
+    // InputHandler::RegisterMouseLeftEvent<SelectionHandler>();
+    // InputHandler::RegisterMouseRightEvent<SelectionHandler>();
+    // Handler::RegisterTurnBeginEvent<WorldHandler>();
+    // Handler::RegisterTurnBeginAsyncEvent<WorldHandler>();
+    
+    // cout << "Resource loaded" << endl;
+    // FileHandler::InitManagers("/home/ensea/PLT_proper/projet-jeu/src/client/tables/Managers.csv");
+    
+
+    // cout << "MGR loaded" << Manager::Managers.size() << endl;
+    // for(Manager* m : Manager::Managers)
+    //     std::cout << m->Name() << endl;
+
+    // MainFrame* mf;
+    
+    // FileHandler::InitArgs(mf,"/home/ensea/PLT_proper/projet-jeu/src/client/tables/LaunchArgs.csv");
