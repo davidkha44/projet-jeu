@@ -20,7 +20,7 @@
 #define COLOR(c) sf::Color::c;
 #define BG_TILE(x,y) Manager::GetMgrByName("BG_MGR")->GetByName("TILE_"+std::to_string(x)+"_"+std::to_string(y))->front()
 #define FETCH_FROM_MGR(mgr,item) Manager::GetMgrByName(mgr)->GetByName(item)
-
+#define GET_SET(c,type,var) type c::var() {return _##var;} void c::var(type value) {_##var = value;}
 
  
 

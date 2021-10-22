@@ -1,5 +1,6 @@
 #include <iostream>
 #include <client.h>
+#include <string.h>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -19,7 +20,15 @@ using namespace std;
 int main(int argc,char* argv[])
 {
 
-    Handler::RegisterTurnBeginEvent<Actor>();
+    // cout << "Hello" << endl;
+    // if(argc > 1)
+    //     cout << "No args. Exit" << endl;
+
+    // if(!strcmp(argv[1],"state"))
+    // {
+    //     cout << "Begin State Unit Tests" << endl;
+    // }
+        Handler::RegisterTurnBeginEvent<Actor>();
     Handler::RegisterTurnBeginEvent<SelectionHandler>();
     InputHandler::RegisterMouseLeftEvent<SelectionHandler>();
     InputHandler::RegisterMouseRightEvent<SelectionHandler>();
