@@ -27,6 +27,7 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"state"))
     {
         cout << "Begin State Unit Tests" << endl;
+        system("make test");
     }
 
     
