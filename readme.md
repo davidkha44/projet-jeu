@@ -142,49 +142,49 @@ plt$ bin/client render
 <!-- RELEASE HISTORY-->
 ## Release History
 
-* <a href="/davidkha44/projet-jeu/releases/tag/1.1">1.1</a>
+* <a href="https://github.com/davidkha44/projet-jeu/releases/tag/1.1">1.1</a>
     * Environnement de développement
     * Ressources
     * Rapport section 1 : Présentation générale
     * Code : affichage message `./bin/client hello`
 
-* <a href="/davidkha44/projet-jeu/releases/tag/1.final">1.final</a>
+* <a href="https://github.com/davidkha44/projet-jeu/releases/tag/1.final">1.final</a>
     * Rapport section 2 : Description et Conception des états
     * Code : implantation et tests unitaires états `./bin/client state`
 
-* <a href="/davidkha44/projet-jeu/releases/tag/2.1">2.1</a>
+* <a href="https://github.com/davidkha44/projet-jeu/releases/tag/2.1">2.1</a>
     * Rapport section 3 : Description et Conception du Rendu
     * Code : rendu d’un état `./bin/client render`
 
-* <a href="/davidkha44/projet-jeu/releases/tag/2.2">2.2</a>
+* <a href="https://github.com/davidkha44/projet-jeu/releases/tag/2.2">2.2</a>
     * Rapport section 4 : Règles de changement d’états et moteur de jeu
     * Code : changement d’état `./bin/client engine`
 
-* <a href="/davidkha44/projet-jeu/releases/tag/2.final">2.final</a>
+* <a href="https://github.com/davidkha44/projet-jeu/releases/tag/2.final">2.final</a>
     * Rapport section 5 : Intelligence Artificielle
     * Code : IA `./bin/client random_ai`
 
-* <a href="/davidkha44/projet-jeu/releases/tag/3.1">3.1</a>
+* <a href="https://github.com/davidkha44/projet-jeu/releases/tag/3.1">3.1</a>
     * Rapport section 5 : Intelligence Artificielle
     * Code : IA `./bin/client heuristic_ai`
 
-* <a href="/davidkha44/projet-jeu/releases/tag/3.final">3.final</a>
+* <a href="https://github.com/davidkha44/projet-jeu/releases/tag/3.final">3.final</a>
     * Rapport section 5 : Intelligence Artificielle
     * Code : IA `./bin/client rollback`
     * Code : IA `./bin/client deep_ai`
 
-* <a href="/davidkha44/projet-jeu/releases/tag/4.1">4.1</a>
+* <a href="https://github.com/davidkha44/projet-jeu/releases/tag/4.1">4.1</a>
     * Rapport section 6 : Modularisation
     * Code : Threads `./bin/client thread`
     * Code : Enregistrer `./bin/server record`
     * Code : Rejouer `./bin/client play`
 
-* <a href="/davidkha44/projet-jeu/releases/tag/4.2">4.2</a>
+* <a href="https://github.com/davidkha44/projet-jeu/releases/tag/4.2">4.2</a>
     * Rapport section 6 : Modularisation
     * Code : Serveur `./bin/server listen`
     * Code : Client réseau `./bin/client network`
 
-* <a href="/davidkha44/projet-jeu/releases/tag/4.final">4.final</a>
+* <a href="https://github.com/davidkha44/projet-jeu/releases/tag/4.final">4.final</a>
     * Rapport section 6 : Modularisation
     * Code : Serveur `./bin/server listen`
     * Code : Client réseau  `./bin/client network`
