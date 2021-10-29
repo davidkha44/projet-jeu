@@ -116,12 +116,12 @@ cd projet-jeu
 
 2. Build it
 ```sh
-plt$ make
+projet-jeu$ make
 ```
 
 3. Test it
 ```sh
-plt$ make test
+projet-jeu$ make test
 ``` 
 
 <!-- USAGE -->
@@ -131,12 +131,12 @@ plt$ make test
 
 Print a hello world message
 ```sh
-plt$ bin/client hello
+projet-jeu$ bin/client hello
 ```
 
 Render demo
 ```sh
-plt$ bin/client render
+projet-jeu$ bin/client render
 ```
 
 <!-- RELEASE HISTORY-->
