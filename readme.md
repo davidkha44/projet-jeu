@@ -7,7 +7,7 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
-# ENSEA PLT Project 2021-2022: ?
+# ENSEA PLT Project 2021-2022: Royal War
 
 <p align="center">
  
@@ -49,20 +49,24 @@ The [*PLT*] **P**rojet **L**ogiciel **T**ransversal (Transversal Software Projec
 
 ## Presentation
 
-* Genre : ?
-* Players : ? to N players
+* Genre : Strategy Game
+* Players : 1 to 2 players
 
-*Game presentation here ...*
+Royal War is a strategy game that can be played solo against the AI or against an opponent. 
 
-*Object of the game here ...*
+Your main objective is to destroy your opponent base.
 
-*Gameplay here ...*
+You have a base and several buildings where you can spawn your troops.
+To spawn your troops, you need the right buildings and enough gold. 
+You get 100 gold / turn and you can get more by capturing a special building.
+Each troops have their own strength and weakness, it falls to you to choose what kind of troops you want.
 
 ## Rules
 
 ### Starting
 
-*When the game starts ...*
+You start with 500 gold, you base, a farm and a garrison. 
+It's just enough to get you started with a few low tier units or one high tier unit.
  
 ### Permitted moves
  
@@ -106,8 +110,8 @@ pip install gcovr
 
 1. Clone the repo
 ```sh
-git clone https://github.com/[username]/[reponame]
-cd plt
+git clone https://github.com/davidkha44/projet-jeu
+cd projet-jeu
 ```
 
 2. Build it
@@ -138,49 +142,49 @@ plt$ bin/client render
 <!-- RELEASE HISTORY-->
 ## Release History
 
-* <a href="/[username]/[reponame]/releases/tag/1.1">1.1</a>
-    * Environnement de d´eveloppement
+* <a href="/davidkha44/projet-jeu/releases/tag/1.1">1.1</a>
+    * Environnement de développement
     * Ressources
     * Rapport section 1 : Présentation générale
     * Code : affichage message `./bin/client hello`
 
-* <a href="/[username]/[reponame]/releases/tag/1.final">1.final</a>
+* <a href="/davidkha44/projet-jeu/releases/tag/1.final">1.final</a>
     * Rapport section 2 : Description et Conception des états
     * Code : implantation et tests unitaires états `./bin/client state`
 
-* <a href="/[username]/[reponame]/releases/tag/2.1">2.1</a>
+* <a href="/davidkha44/projet-jeu/releases/tag/2.1">2.1</a>
     * Rapport section 3 : Description et Conception du Rendu
     * Code : rendu d’un état `./bin/client render`
 
-* <a href="/[username]/[reponame]/releases/tag/2.2">2.2</a>
+* <a href="/davidkha44/projet-jeu/releases/tag/2.2">2.2</a>
     * Rapport section 4 : Règles de changement d’états et moteur de jeu
     * Code : changement d’état `./bin/client engine`
 
-* <a href="/[username]/[reponame]/releases/tag/2.final">2.final</a>
+* <a href="/davidkha44/projet-jeu/releases/tag/2.final">2.final</a>
     * Rapport section 5 : Intelligence Artificielle
     * Code : IA `./bin/client random_ai`
 
-* <a href="/[username]/[reponame]/releases/tag/3.1">3.1</a>
+* <a href="/davidkha44/projet-jeu/releases/tag/3.1">3.1</a>
     * Rapport section 5 : Intelligence Artificielle
     * Code : IA `./bin/client heuristic_ai`
 
-* <a href="/[username]/[reponame]/releases/tag/3.final">3.final</a>
+* <a href="/davidkha44/projet-jeu/releases/tag/3.final">3.final</a>
     * Rapport section 5 : Intelligence Artificielle
     * Code : IA `./bin/client rollback`
     * Code : IA `./bin/client deep_ai`
 
-* <a href="/[username]/[reponame]/releases/tag/4.1">4.1</a>
+* <a href="/davidkha44/projet-jeu/releases/tag/4.1">4.1</a>
     * Rapport section 6 : Modularisation
     * Code : Threads `./bin/client thread`
     * Code : Enregistrer `./bin/server record`
     * Code : Rejouer `./bin/client play`
 
-* <a href="/[username]/[reponame]/releases/tag/4.2">4.2</a>
+* <a href="/davidkha44/projet-jeu/releases/tag/4.2">4.2</a>
     * Rapport section 6 : Modularisation
     * Code : Serveur `./bin/server listen`
     * Code : Client réseau `./bin/client network`
 
-* <a href="/[username]/[reponame]/releases/tag/4.final">4.final</a>
+* <a href="/davidkha44/projet-jeu/releases/tag/4.final">4.final</a>
     * Rapport section 6 : Modularisation
     * Code : Serveur `./bin/server listen`
     * Code : Client réseau  `./bin/client network`
@@ -212,25 +216,25 @@ Distributed under the *license* License. See [LICENSE](license-url) for more inf
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/[username]/[reponame].svg?style=flat-square
-[contributors-url]: https://github.com/[username]/[reponame]/graphs/contributors
+[contributors-shield]: https://img.shields.io/github/contributors/davidkha44/projet-jeu.svg?style=flat-square
+[contributors-url]: https://github.com/davidkha44/projet-jeu/graphs/contributors
 
-[forks-shield]: https://img.shields.io/github/forks/[username]/[reponame].svg?style=flat-square
-[forks-url]: https://github.com/[username]/[reponame]/network/members
+[forks-shield]: https://img.shields.io/github/forks/davidkha44/projet-jeu.svg?style=flat-square
+[forks-url]: https://github.com/davidkha44/projet-jeu/network/members
 
-[stars-shield]: https://img.shields.io/github/stars/[username]/[reponame].svg?style=flat-square
-[stars-url]: https://github.com/[username]/[reponame]/stargazers
+[stars-shield]: https://img.shields.io/github/stars/davidkha44/projet-jeu.svg?style=flat-square
+[stars-url]: https://github.com/davidkha44/projet-jeu/stargazers
 
-[issues-shield]: https://img.shields.io/github/issues/[username]/[reponame].svg?style=flat-square
-[issues-url]: https://github.com/[username]/[reponame]/issues
+[issues-shield]: https://img.shields.io/github/issues/davidkha44/projet-jeu.svg?style=flat-square
+[issues-url]: https://github.com/davidkha44/projet-jeu/issues
 
-[license-shield]: https://img.shields.io/github/license/[username]/[reponame].svg?style=flat-square
-[license-url]: https://github.com/[username]/[reponame]/blob/[branch]/LICENSE
+[license-shield]: https://img.shields.io/github/license/davidkha44/projet-jeu.svg?style=flat-square
+[license-url]: https://github.com/davidkha44/projet-jeu/blob/[branch]/LICENSE
 
 [cpp-ver-shield]: https://img.shields.io/badge/C%2B%2B-11-blue.svg
 [cpp-ver]: https://en.wikipedia.org/wiki/C%2B%2B11
 
-[build-status-shield]: https://github.com/[username]/[reponame]/workflows/CI/badge.svg
-[build-status]: https://github.com/[username]/[reponame]/actions
+[build-status-shield]: https://github.com/davidkha44/projet-jeu/workflows/CI/badge.svg
+[build-status]: https://github.com/davidkha44/projet-jeu/actions
 
 [version-shield]: https://img.shields.io/badge/version-0.0-blue.svg?cacheSeconds=2592000
