@@ -21,7 +21,7 @@ int main(int argc,char* argv[])
 {
 
     cout << "Hello" << endl;
-    if(argc > 1)
+    if(argc < 1)
         cout << "No args. Exit" << endl;
 
     if(!strcmp(argv[1],"state"))
