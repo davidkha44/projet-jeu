@@ -10,7 +10,7 @@ void SelectionHandler::Add(Manageable* m)
             return;
     }
     Selection.push_back(m);
-    std::cout << "Added " << m->Name() << std::endl; 
+    std::cout << "Added " << m->Name() <<"::"<< std::hex <<m->ID() << std::endl; 
     m->OnSelectionAdd();
 }
 
@@ -22,7 +22,7 @@ void SelectionHandler::Remove(Manageable* m)
         {
             Selection.erase(Selection.begin() + i);
             m->OnSelectionRemove();
-            std::cout << "Removed " << m->Name() << std::endl; 
+            std::cout << "Removed " << m->Name() <<"::"<< std::hex << m->ID() << std::endl; 
             return;
         }
     }
@@ -41,7 +41,7 @@ void SelectionHandler::OnTurnBegin()
 
 sf::Vector2i SelectionHandler::GetBGWpos(sf::Vector2i uv)
 {
-    sf::Vector2i output(uv.x/WorldHandler::CurrentWorld()->CellSize().x,uv.y/WorldHandler::CurrentWorld()->CellSize().y);
+    sf::Vector2i output(uv.x/WorldHandler::CurrentWorld->CellSize().x,uv.y/WorldHandler::CurrentWorld->CellSize().y);
     return output;
 }
 

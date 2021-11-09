@@ -22,10 +22,6 @@ InputSource* WorldHandler::GetMyInputSource()
     return InputSources[MyID];
 }
 
-void WorldHandler::Event_CurrentWorld()
-{
-
-}
 
 void WorldHandler::Flush2CSV()
 {

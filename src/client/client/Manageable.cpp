@@ -1,12 +1,11 @@
 #include "Manager.hpp"
-#include "WorldHandler.hpp"
+#include "SelectionHandler.hpp"
 #include <thread>
 
 Manageable::Manageable(std::string name,std::string visual)
 {
     
     Name(name);
-    ID(0xDEAD0000);
     Texture(new sf::Texture());
     Sprite(new sf::Sprite());
     Render(true);
@@ -46,6 +45,13 @@ Manageable::Manageable(std::string name,int id,std::string path)
 
 void Manageable::OnSelectionAdd()
 {
+    for(Manageable* m : SelectionHandler::Selection)
+    {
+        if(Manager::GetMgrByName("ACTOR_MGR")->PartOf(m))
+        {
+            m->AssignPosition(Position());
+        }
+    }
     Sprite()->setTexture(*(FETCH_FROM_MGR("ASSET_MGR","BG_TILE_SAND")->front()->Texture()));
     Selected(true);
 }
@@ -66,6 +72,6 @@ void Manageable::AssignPosition(sf::Vector2i pos)
 }
 void Manageable::AssignPosition(int px,int py)
 {
-    Sprite()->setPosition(px*WorldHandler::CurrentWorld()->CellSize().x,py*WorldHandler::CurrentWorld()->CellSize().y);
+    Sprite()->setPosition(px*WorldHandler::CurrentWorld->CellSize().x,py*WorldHandler::CurrentWorld->CellSize().y);
     Position(*(new sf::Vector2i(px,py)));
 }

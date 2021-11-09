@@ -24,6 +24,38 @@ std::vector<std::string> FileHandler::SplitString(std::string str,std::string se
     return res;
 }
 
+void FileHandler::LoadCSVFile(std::string path,int (*Callback)(std::vector<std::string>))
+{
+    std::ifstream file(path);
+    for( std::string line; getline( file, line ); )
+    {
+        if(line.find('#') == std::string::npos)
+        {
+            std::vector<std::string> strs = SplitString(line,",");
+            Callback(strs);
+        }
+    }
+}
+int FileHandler::OnLoadManagerFromCSV(std::vector<std::string> strs)
+{
+    Manager* mgr = new Manager(strs[0],std::stoi(strs[1]));
+    mgr->Flush(false);
+    if(std::stoi(strs[2]))
+        mgr->Flush(true);  
+    return 0;
+}
+int FileHandler::OnLoadVisualsFromCSV(std::vector<std::string> strs)
+{
+    Manager* mgr = Manager::GetMgrByName(strs[1]);
+    Manageable* item = new Manageable(strs[0],std::stoi(strs[2]),strs[3]);
+    mgr->Add(item);
+    std::cout << "Added " << strs[0] << "to " << strs[1] << "::" << mgr->Elements()->size() << std::endl;
+    sf::Vector2f _scale(std::stof(strs[4]),std::stof(strs[5]));
+    item->Sprite()->setScale(_scale.x,_scale.y);
+    item->Scale(_scale);
+    return 0;
+}
+
 void FileHandler::InitManagers(std::string path)
 {
     std::ifstream file(path);
@@ -35,7 +67,7 @@ void FileHandler::InitManagers(std::string path)
             Manager* mgr = new Manager(strs[0],std::stoi(strs[1]));
             mgr->Flush(false);
             if(std::stoi(strs[2]))
-            mgr->Flush(true);  
+                mgr->Flush(true);  
         }
     }
 }
@@ -108,7 +140,7 @@ MainFrame* FileHandler::InitWorlds(std::string path,std::string wname)
             std::vector<std::string> strs = SplitString(line,",");
             if(strs[0] == wname)
             {
-                WorldHandler::CurrentWorld(new World(strs[0],strs[1],std::stoi(strs[2]),std::stoi(strs[3]),std::stoi(strs[4]),std::stoi(strs[5])));
+                WorldHandler::CurrentWorld = new World(strs[0],strs[1],std::stoi(strs[2]),std::stoi(strs[3]),std::stoi(strs[4]),std::stoi(strs[5]));
                 InitWorld(strs[1],std::stoi(strs[2]),std::stoi(strs[3]),std::stoi(strs[4]),std::stoi(strs[5]));
                 InitActors("/home/ensea/PLT_proper/projet-jeu/src/client/tables/Actors.csv");
                 mf = new MainFrame("PLT",std::stoi(strs[2]) * std::stoi(strs[4]),std::stoi(strs[3]) * std::stoi(strs[5]));    
@@ -122,7 +154,7 @@ MainFrame* FileHandler::InitWorlds(std::string path,std::string wname)
 void FileHandler::InitWorld(std::string path,int csx,int csy,int ncx,int ncy)
 {
     std::ifstream file(path);
-    Manager* mgr = Manager::GetMgrByName("ASSET_MGR");
+    Manager* mgr = Manager::GetMgrByID(0);
     int lines = 0,col = 0;
     for( std::string line; getline( file, line ); )
     {
@@ -131,15 +163,14 @@ void FileHandler::InitWorld(std::string path,int csx,int csy,int ncx,int ncy)
             std::vector<std::string> strs = SplitString(line,",");
             for(int i = 0; i < ncx;i++)
             {
-                std::string respath,bg_tile_str;
                 Manageable* ref = mgr->GetByID(std::stoi(strs[i]));
-                respath = mgr->GetByID(std::stoi(strs[i]))->ResPath();
-                Manageable* item = new Manageable("TILE_"+std::to_string(col)+"_"+std::to_string(lines),mgr->GetByID(std::stoi(strs[i]))->Name());
+                Manageable* item = new Manageable("TILE_"+std::to_string(col)+"_"+std::to_string(lines),ref->Name());
                 item->Sprite()->setScale(ref->Scale());
                 item->Sprite()->setPosition(col*csx,lines*csy);
                 item->Render(true);
+                item->ID(0xFF000000 + ((col & 0xFF) << 8) + (lines & 0xFF));
                 item->Position(*(new sf::Vector2i(col,lines)));
-                Manager::GetMgrByName("BG_MGR")->Add(item);
+                Manager::GetMgrByID(1)->Add(item);
                 col++;
             } 
         }

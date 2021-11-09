@@ -23,6 +23,7 @@ class Manager
     void Flush2CSV(int instance,int turn);
     void LoadFromCSV(int instance,int turn);
     void Add(Manageable* element);
+    bool PartOf(Manageable* m);
 
     void Remove(Manageable* element);
 

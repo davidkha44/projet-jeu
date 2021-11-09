@@ -21,6 +21,7 @@ Manager::Manager(std::string name,int id)
 void Manager::Add(Manageable* m)
 {
     Elements()->push_back(m);
+    m->ID(m->ID()+(ID() << 16));
 }
 
 void Manager::Draw(sf::RenderWindow* rw)
@@ -93,4 +94,11 @@ void Manager::Flush2CSV(int instance,int turn)
     }
         
     mfile.close();
+}
+
+bool Manager::PartOf(Manageable* m)
+{
+    if(GetByID(m->ID()))
+        return true;
+    return false;
 }
