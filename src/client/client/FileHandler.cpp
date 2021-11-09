@@ -114,8 +114,8 @@ void FileHandler::InitArgs(MainFrame* mf,std::string path)
             std::vector<std::string> strs = SplitString(line,",");
             if(strs[0] == "SCENE")
             {
-                InitVisuals("/home/ensea/PLT_proper/projet-jeu/src/client/tables/ManageablesVisuals.csv");
-                mf = InitWorlds("/home/ensea/PLT_proper/projet-jeu/src/client/tables/Worlds.csv",strs[1]);
+                InitVisuals("src/client/tables/ManageablesVisuals.csv");
+                mf = InitWorlds("src/client/tables/Worlds.csv",strs[1]);
             }
             if(strs[0] == "FLUSH_PATH")
             {
@@ -142,7 +142,7 @@ MainFrame* FileHandler::InitWorlds(std::string path,std::string wname)
             {
                 WorldHandler::CurrentWorld = new World(strs[0],strs[1],std::stoi(strs[2]),std::stoi(strs[3]),std::stoi(strs[4]),std::stoi(strs[5]));
                 InitWorld(strs[1],std::stoi(strs[2]),std::stoi(strs[3]),std::stoi(strs[4]),std::stoi(strs[5]));
-                InitActors("/home/ensea/PLT_proper/projet-jeu/src/client/tables/Actors.csv");
+                InitActors("src/client/tables/Actors.csv");
                 mf = new MainFrame("PLT",std::stoi(strs[2]) * std::stoi(strs[4]),std::stoi(strs[3]) * std::stoi(strs[5]));    
             }
                 

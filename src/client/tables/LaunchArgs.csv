@@ -1,4 +1,4 @@
 SCENE,STD_WORLD
 IP_SERVER,127.0.0.1
 IP_PORT,XXXX
-FLUSH_PATH,/home/ensea/PLT_proper/projet-jeu/src/client/BoardSnapshot
+FLUSH_PATH,src/client/BoardSnapshot

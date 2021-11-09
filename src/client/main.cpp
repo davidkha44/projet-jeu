@@ -14,7 +14,6 @@ void testSFML() {
 // Fin test SFML
 
 //#include <state.h>
-#include "FileHandler.hpp"
 
 using namespace std;
 
@@ -42,7 +41,7 @@ int main(int argc,char* argv[])
     
         cout << "Resource loaded" << endl;
         //FileHandler::InitManagers("/home/ensea/PLT_proper/projet-jeu/src/client/tables/Managers.csv");
-        FileHandler::LoadCSVFile("/home/ensea/PLT_proper/projet-jeu/src/client/tables/Managers.csv",&FileHandler::OnLoadManagerFromCSV);
+        FileHandler::LoadCSVFile("/home/ensea/PLT/projet-jeu/src/client/tables/Managers.csv",&FileHandler::OnLoadManagerFromCSV);
 
         cout << "MGR loaded" << Manager::Managers.size() << endl;
         for(Manager* m : Manager::Managers)
@@ -50,7 +49,7 @@ int main(int argc,char* argv[])
 
         MainFrame* mf;
     
-        FileHandler::InitArgs(mf,"/home/ensea/PLT_proper/projet-jeu/src/client/tables/LaunchArgs.csv");
+        FileHandler::InitArgs(mf,"/home/ensea/PLT/projet-jeu/src/client/tables/LaunchArgs.csv");
     }
 
     
