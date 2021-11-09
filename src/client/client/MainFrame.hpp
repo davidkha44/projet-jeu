@@ -10,7 +10,7 @@ class MainFrame
     ATTRIBUTE(int,Framerate)
 
     STATIC(sf::RenderWindow* Window)
-
+    
 
     public :
     MainFrame(std::string name,int h,int w); 

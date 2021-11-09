@@ -14,7 +14,6 @@ void Handler::RoutineTurnBeginAsync()
     for(int i = 0; i < TurnBeginAsync.size();i++)
     {
         pthread_t* th_id = (pthread_t*)malloc(sizeof(pthread_t));
-        int* arg = new int(i);
         pthread_create(th_id,NULL,Exec,&TurnBeginAsync[i]);
     }
 }

@@ -6,7 +6,7 @@
 
 class WorldHandler 
 {
-    STATIC_EVENT(World*, CurrentWorld)
+    STATIC(World* CurrentWorld)
     STATIC(int Turn)
     STATIC(int MyID)
     STATIC(int Instance)

@@ -55,6 +55,62 @@ void MainFrame::Tick()
         Handler::RoutineTurnBegin();
         Handler::RoutineTurnBeginAsync();
     }
+    if(buffer[sf::Keyboard::Z])
+    {
+        for(Manageable* m : SelectionHandler::Selection)
+        {
+            if(Manager::GetMgrByName("ACTOR_MGR")->PartOf(m))
+            {
+                int px = m->Position().x;
+                int py = m->Position().y;
+                py--;
+                RANGE(py,0,WorldHandler::CurrentWorld->CellN().y)
+                m->AssignPosition(px,py);
+            }
+        }
+    }
+    if(buffer[sf::Keyboard::S])
+    {
+        for(Manageable* m : SelectionHandler::Selection)
+        {
+            if(Manager::GetMgrByName("ACTOR_MGR")->PartOf(m))
+            {
+                int px = m->Position().x;
+                int py = m->Position().y;
+                py++;
+                RANGE(py,0,WorldHandler::CurrentWorld->CellN().y)
+                m->AssignPosition(px,py);
+            }
+        }
+    }
+    if(buffer[sf::Keyboard::Q])
+    {
+        for(Manageable* m : SelectionHandler::Selection)
+        {
+            if(Manager::GetMgrByName("ACTOR_MGR")->PartOf(m))
+            {
+                int px = m->Position().x;
+                int py = m->Position().y;
+                px--;
+                RANGE(px,0,WorldHandler::CurrentWorld->CellN().x)
+                m->AssignPosition(px,py);
+            }
+        }
+    }
+    if(buffer[sf::Keyboard::D])
+    {
+        for(Manageable* m : SelectionHandler::Selection)
+        {
+            if(Manager::GetMgrByName("ACTOR_MGR")->PartOf(m))
+            {
+                int px = m->Position().x;
+                int py = m->Position().y;
+                px++;
+                RANGE(px,0,WorldHandler::CurrentWorld->CellN().x)
+                m->AssignPosition(px,py);
+            }
+        }
+    }
     free(buffer);
     
 }
