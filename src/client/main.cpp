@@ -13,7 +13,8 @@ void testSFML() {
 
 // Fin test SFML
 
-#include <state.h>
+//#include <state.h>
+#include "FileHandler.hpp"
 
 using namespace std;
 
