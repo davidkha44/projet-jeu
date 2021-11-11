@@ -30,7 +30,7 @@ int main(int argc,char* argv[])
         cout << "Begin State Unit Tests" << endl;
         system("make test");
     }
-    if(!strcmp(argv[1],"PROTOTYPE"))
+    if(!strcmp(argv[1],"Rendre"))
     {
         Handler::RegisterTurnBeginEvent<Actor>();
         Handler::RegisterTurnBeginEvent<SelectionHandler>();

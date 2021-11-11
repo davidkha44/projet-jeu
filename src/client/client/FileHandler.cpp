@@ -97,10 +97,37 @@ void FileHandler::InitActors(std::string path)
         if(line.find('#') == std::string::npos)
         {
             std::vector<std::string> strs = SplitString(line,",");
-            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs));
-            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs));
-            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs));
-            Manager::GetMgrByName("ACTOR_MGR")->Add(new Actor(strs));
+            Actor* actor=new Actor(strs);
+            Manager::GetMgrByName("ACTOR_MGR")->Add(actor);
+            /*if(actor->Name().find("BUILDING")!=std::string::npos){
+                actor->AssignPosition(0,0);
+            }*/
+             std::vector<std::string> s = SplitString(actor->Name(),"_");
+             if(!strcmp(s[0].c_str(),"BUILDING")){
+                 if(!strcmp(s[1].c_str(),"MAUSOLEUM")) actor->AssignPosition(2,8);
+                 if(!strcmp(s[1].c_str(),"MAUSOLEUM2")) actor->AssignPosition(22,4);
+                 if(!strcmp(s[1].c_str(),"CYANKEEP")) actor->AssignPosition(3,8);
+                 if(!strcmp(s[1].c_str(),"CYANRESSOURCE")) actor->AssignPosition(4,8);
+                 if(!strcmp(s[1].c_str(),"REDKEEP")) actor->AssignPosition(21,4);
+                 if(!strcmp(s[1].c_str(),"REDRESSOURCE")) actor->AssignPosition(20,4);
+                }
+            if(!strcmp(s[0].c_str(),"HERO")){
+                 //if(!strcmp(s[1].c_str(),"KNIGHT")) actor->AssignPosition(4,7);
+                 //if(!strcmp(s[1].c_str(),"CYANSWORDSMAN")) actor->AssignPosition(5,10);
+                 //if(!strcmp(s[1].c_str(),"REDSWORDSMAN")) actor->AssignPosition(19,6);
+                 if(!strcmp(s[1].c_str(),"CYANBOWMAN")) actor->AssignPosition(3,11);
+                 if(!strcmp(s[1].c_str(),"REDBOWMAN")) actor->AssignPosition(20,7);
+                 if(!strcmp(s[1].c_str(),"CYANMAGE")) actor->AssignPosition(4,9);
+                 if(!strcmp(s[1].c_str(),"REDMAGE")) actor->AssignPosition(21,5);
+                 if(!strcmp(s[1].c_str(),"CYANSPEARMAN")) actor->AssignPosition(4,10);
+                 if(!strcmp(s[1].c_str(),"REDSPEARMAN")) actor->AssignPosition(21,6);
+                 if(!strcmp(s[1].c_str(),"CYANKNIGHT")) actor->AssignPosition(5,11);
+                 if(!strcmp(s[1].c_str(),"REDKNIGHT")) actor->AssignPosition(22,7);
+                 if(!strcmp(s[1].c_str(),"CYANDRAGON")) actor->AssignPosition(1,7);
+                 if(!strcmp(s[1].c_str(),"REDDRAGON")) actor->AssignPosition(23,3);
+                }
+
+
         }
     }
 }

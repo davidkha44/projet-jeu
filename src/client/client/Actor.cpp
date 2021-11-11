@@ -52,14 +52,14 @@ std::string Actor::Flush2CSV()
 
 void Actor::OnTurnBegin()
 {
-    std::random_device rd;
+    /*std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> distrx(0,WorldHandler::CurrentWorld->CellN().x - 1);
     std::uniform_int_distribution<> distry(0,WorldHandler::CurrentWorld->CellN().y - 1);
 
 
     for(Manageable* m : *(Manager::GetMgrByName("ACTOR_MGR")->Elements()))
-        m->AssignPosition(distrx(gen),distry(gen));
+        m->AssignPosition(distrx(gen),distry(gen));*/
     
 }
 
