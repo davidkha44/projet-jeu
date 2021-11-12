@@ -12,6 +12,7 @@
 
 std::vector<std::string> render::FileHandler::SplitString(std::string str,std::string separator)
 {
+    //Utile pour casser une chaine de caractères
     size_t pos_start = 0, pos_end, delim_len = separator.length();
     std::string token;
     std::vector<std::string> res;
@@ -28,6 +29,7 @@ std::vector<std::string> render::FileHandler::SplitString(std::string str,std::s
 
 render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
 {
+    //Charge et parcours le fichiers de configuration LaunchArgs.csv
     render::MainFrame* mf;
     PARSE_CSV_LINES(path,'#',
 
@@ -41,7 +43,7 @@ render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
             {
                 std::cout << "WORLD : " << w->Name() << std::endl;
                 state::WorldHandler::CurrentWorld = w;
-                mf = new render::MainFrame("PLT",w->CellN().y*w->CellSize().y,w->CellN().x*w->CellSize().x);
+                mf = new render::MainFrame("PLT",w->CellN().x*w->CellSize().x,w->CellN().y*w->CellSize().y);
             }
         }
     }
@@ -53,6 +55,10 @@ render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
 template <class T>
 std::vector<T*> render::FileHandler::DeserializeTable(std::string path, std::string format)
 {   
+    //Déserialise une classe en objet de classe T
+    // Utile pour transformer une table en objets
+    // Retourne la liste des objets créés si on souhaite les utiliser
+    // La classe T doit posséder un constructeur T(std::vector<std::string>) pour être déserialisable
     std::vector<T*> Output;
     if(format == "CSV")
     {
@@ -68,7 +74,7 @@ std::vector<T*> render::FileHandler::DeserializeTable(std::string path, std::str
     }
     return Output;
 }
-template std::vector<state::Manager*> render::FileHandler::DeserializeTable<state::Manager>(std::string path, std::string format);
-template std::vector<state::Manageable*> render::FileHandler::DeserializeTable<state::Manageable>(std::string path, std::string format);
-template std::vector<state::World*> render::FileHandler::DeserializeTable<state::World>(std::string path, std::string format);
-template std::vector<state::Actor*> render::FileHandler::DeserializeTable<state::Actor>(std::string path, std::string format);
+DESERIALIZE(state::Manager)
+DESERIALIZE(state::Manageable)
+DESERIALIZE(state::World)
+DESERIALIZE(state::Actor)

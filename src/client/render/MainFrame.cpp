@@ -9,6 +9,7 @@ GET_SET(render::MainFrame,std::string,Name)
 GET_SET(render::MainFrame,int,Height)
 GET_SET(render::MainFrame,int,Width)
 GET_SET(render::MainFrame,int,Framerate)
+GET_SET(render::MainFrame,sf::RenderWindow*,Window)
 
 render::MainFrame::MainFrame(std::string name, int h, int w)
 {
@@ -19,51 +20,52 @@ render::MainFrame::MainFrame(std::string name, int h, int w)
 
 void render::MainFrame::Draw()
 {
+    //Demande à chaque Manager de dessiner ses éléments
     for (int i = 0; i < state::Manager::Managers.size(); i++)
     {
        if(state::Manager::GetMgrByID(i)->Elements().size())
-       {
-            //std::cout << state::Manager::GetMgrByID(i)->Name() << "::" <<(int)state::Manager::GetMgrByID(i)->ID() << "::" << state::Manager::GetMgrByID(i)->Elements().size()<< std::endl;
-            state::Manager::GetMgrByID(i)->Draw(MainFrame::Window);
-       }
+            state::Manager::GetMgrByID(i)->Draw(Window());
 
     }
 }
 void render::MainFrame::Tick()
 {
-
+    //Appelée à chaque frame
 }
 
 void render::MainFrame::Start()
 {
+    //Lancement de la fenetre + Remplissage des Managers 
     InitWorld();
     InitActors();
-    sf::VideoMode frame_vm(Width(),Height());
-    MainFrame::Window = new sf::RenderWindow(frame_vm, Name(), sf::Style::Default);
-    while (MainFrame::Window->isOpen())
+    sf::VideoMode frame_vm(Height(),Width());
+    Window(new sf::RenderWindow(frame_vm, Name(), sf::Style::Default));
+    while (Window()->isOpen())
     {
         sf::Event event;
-        MainFrame::Window->clear(sf::Color::Black);
+         Window()->clear(sf::Color::Black);
         Draw();
-        if (MainFrame::Window->hasFocus())
+        if ( Window()->hasFocus())
             Tick();
-        while (Window->pollEvent(event))
+        while (Window()->pollEvent(event))
         {
             // Request for closing the window
             if (event.type == sf::Event::Closed)
-                Window->close();
+                Window()->close();
         }
-        MainFrame::Window->display();
+         Window()->display();
     }
 }
 
 void render::MainFrame::InitActors()
 {
+    //Initialise les acteurs sera rempli plus tard
     std::vector<state::Actor*> _actors = render::FileHandler::DeserializeTable<state::Actor>("src/client/tables/Actors.csv","CSV");
 }
 
 void render::MainFrame::InitWorld()
 {
+    //Place les Manageables qui composent la map
     state::World* w = state::WorldHandler::CurrentWorld;
     std::ifstream file(w->ResPath());
     std::cout << "W DIM : " << w->CellN().x <<"::"<< w->CellN().y << std::endl;
@@ -90,3 +92,5 @@ void render::MainFrame::InitWorld()
             return;
     }
 }
+
+

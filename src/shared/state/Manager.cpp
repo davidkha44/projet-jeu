@@ -24,7 +24,6 @@ state::Manager::Manager(std::string name,char id)
     Name(name);
     ID(id);
     Elements( *(new std::vector<state::Manageable*>));
-    //Elements(std::vector<state::Manageable*>());
     Managers.push_back(this);
 }
 state::Manager::Manager(std::vector<std::string> args)
@@ -38,7 +37,6 @@ void state::Manager::Add(state::Manageable* m)
 {
     std::vector<state::Manageable*>* v = &_Elements;
     v->push_back(m);
-    //std::cout << "PUSH : " << m->Name() << "::" << Elements().size() << std::endl;
 }
 
 void state::Manager::Draw(sf::RenderWindow* rw)

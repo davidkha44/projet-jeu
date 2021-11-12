@@ -37,6 +37,8 @@
 #define CASE(S) } else if (strcmp(_S, S) == 0) {switch(1) { case 1
 #define BREAK }
 #define DEFAULT } else {switch(1) { case 1
+#define DESERIALIZE(x) template std::vector<x*> render::FileHandler::DeserializeTable<x>(std::string path, std::string format);
+
 
 
 

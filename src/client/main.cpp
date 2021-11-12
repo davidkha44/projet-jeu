@@ -41,8 +41,7 @@ int main(int argc,char* argv[])
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
         Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
-        for(Manageable* m : Manager::GetMgrByName("ASSET_MGR")->Elements())
-            cout << m->Name() << endl;
+
         
         mf->Start();
         
