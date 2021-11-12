@@ -1,6 +1,8 @@
 #include "World.hpp"
 #include <iostream>
 
+//Le programme qui permet de créer le monde
+
 World::World(std::string name,std::string respath,int csx,int csy,int ncx,int ncy)
 {
     Name(name);

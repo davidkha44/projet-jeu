@@ -1,6 +1,7 @@
 #include "Manager.hpp"
 #include "SelectionHandler.hpp"
 #include <thread>
+#include "Actor.hpp"
 
 Manageable::Manageable(std::string name,std::string visual)
 {
@@ -47,7 +48,7 @@ void Manageable::OnSelectionAdd()
 {
     for(Manageable* m : SelectionHandler::Selection)
     {
-        if(Manager::GetMgrByName("ACTOR_MGR")->PartOf(m))
+        if(Manager::GetMgrByName("ACTOR_MGR")->PartOf(m) && ((Actor*)m)->MP())
         {
             m->AssignPosition(Position());
         }

@@ -61,7 +61,6 @@ std::vector<T*> render::FileHandler::DeserializeTable(std::string path, std::str
         {
             if(line.find('#') == std::string::npos)
             {
-                std::cout << line << std::endl;
                 std::vector<std::string> strs = SplitString(line,",");
                 Output.push_back(new T(strs));
             }
@@ -72,3 +71,4 @@ std::vector<T*> render::FileHandler::DeserializeTable(std::string path, std::str
 template std::vector<state::Manager*> render::FileHandler::DeserializeTable<state::Manager>(std::string path, std::string format);
 template std::vector<state::Manageable*> render::FileHandler::DeserializeTable<state::Manageable>(std::string path, std::string format);
 template std::vector<state::World*> render::FileHandler::DeserializeTable<state::World>(std::string path, std::string format);
+template std::vector<state::Actor*> render::FileHandler::DeserializeTable<state::Actor>(std::string path, std::string format);

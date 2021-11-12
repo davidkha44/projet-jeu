@@ -2,6 +2,7 @@
 #include "MainFrame.h"
 #include "FileHandler.h"
 #include "../shared/state/Manager.h"
+#include "../shared/state/Actor.h"
 
 
 GET_SET(render::MainFrame,std::string,Name)
@@ -36,7 +37,8 @@ void render::MainFrame::Tick()
 void render::MainFrame::Start()
 {
     InitWorld();
-    sf::VideoMode frame_vm(Height(), Width());
+    InitActors();
+    sf::VideoMode frame_vm(Width(),Height());
     MainFrame::Window = new sf::RenderWindow(frame_vm, Name(), sf::Style::Default);
     while (MainFrame::Window->isOpen())
     {
@@ -55,10 +57,16 @@ void render::MainFrame::Start()
     }
 }
 
+void render::MainFrame::InitActors()
+{
+    std::vector<state::Actor*> _actors = render::FileHandler::DeserializeTable<state::Actor>("src/client/tables/Actors.csv","CSV");
+}
+
 void render::MainFrame::InitWorld()
 {
     state::World* w = state::WorldHandler::CurrentWorld;
     std::ifstream file(w->ResPath());
+    std::cout << "W DIM : " << w->CellN().x <<"::"<< w->CellN().y << std::endl;
     state::Manager* mgr = state::Manager::GetMgrByID(0);
     int lines = 0,col = 0;
     for( std::string line; getline( file, line ); )
@@ -69,12 +77,9 @@ void render::MainFrame::InitWorld()
             for(int i = 0; i < w->CellN().x;i++)
             {
                 state::Manageable* ref = mgr->GetByID(std::stoi(strs[i]));
-                std::cout << ref->ResPath() << std::endl;
                 state::Manageable* item = new state::Manageable("TILE_"+std::to_string(col)+"_"+std::to_string(lines),ref->Name());
-                std::cout << item->Name() << std::endl;
                 item->ID(0xFF000000 + ((col & 0xFF) << 8) + (lines & 0xFF));
                 item->AssignPosition(col,lines);
-                //std::cout << item->Sprite()->getPosition().x << "::" << item->Sprite()->getPosition().y << std::endl;
                 state::Manager::GetMgrByID(1)->Add(item);
                 col++;
             } 

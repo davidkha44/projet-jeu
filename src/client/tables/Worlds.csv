@@ -3,3 +3,4 @@ STD_WORLD,src/client/maps/DefaultWorld.csv,41,41,19,19
 O_WORLD,src/client/maps/OtherWorld.csv,41,41,19,19
 EVERGREEN,src/client/maps/Evergreen.csv,41,41,10,10
 POOL,src/client/maps/Pool.csv,41,41,11,10
+WORLD_TEST,src/client/maps/WorldTest.csv,41,41,30,19
