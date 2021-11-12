@@ -90,7 +90,7 @@
         <dia:point val="1.35,1.3"/>
       </dia:attribute>
       <dia:attribute name="obj_bb">
-        <dia:rectangle val="1.3,0.25;33.75,22.7375"/>
+        <dia:rectangle val="1.3,0.25;78.55,37.4"/>
       </dia:attribute>
       <dia:attribute name="meta">
         <dia:composite type="dict"/>
@@ -99,10 +99,10 @@
         <dia:point val="1.35,1.3"/>
       </dia:attribute>
       <dia:attribute name="elem_width">
-        <dia:real val="32.350000000000001"/>
+        <dia:real val="77.150000000000006"/>
       </dia:attribute>
       <dia:attribute name="elem_height">
-        <dia:real val="21.387499999999999"/>
+        <dia:real val="36.050000000000004"/>
       </dia:attribute>
       <dia:attribute name="name">
         <dia:string>#client#</dia:string>

@@ -24,6 +24,7 @@ state::Manageable::Manageable()
     Position(vp);
     Scale(vs);
 }
+
 state::Manageable::~Manageable()
 {
 
@@ -31,19 +32,18 @@ state::Manageable::~Manageable()
 
 state::Manageable::Manageable(std::string name,std::string visual)
 {
-    
     Name(name);
     ID(0xDEAD0000);
-    Texture(new sf::Texture());
-    Sprite(new sf::Sprite());
+    ResPath(state::Manager::GetMgrByID(0)->GetByName(visual).front()->ResPath());
     Render(true);
-    Texture(state::Manager::GetMgrByName("ASSET_MGR")->GetByName(visual)->front()->Texture());
-    Sprite()->setTexture(*Texture());
-    Sprite()->setScale(state::Manager::GetMgrByName("ASSET_MGR")->GetByName(visual)->front()->Scale());
+    Scale(state::Manager::GetMgrByID(0)->GetByName(visual).front()->Scale());
+    Texture(state::Manager::GetMgrByID(0)->GetByName(visual).front()->Texture());
+    Sprite(new sf::Sprite());
+    Sprite()->setTexture(*(Texture()));
+    Sprite()->setScale(state::Manager::GetMgrByID(0)->GetByName(visual).front()->Scale());
 }
 state::Manageable::Manageable(std::string name,std::string mgr_name,std::string path)
-{
-    
+{  
     Name(name);
     ID(0xDEAD0000);
     ResPath(path);
@@ -55,10 +55,28 @@ state::Manageable::Manageable(std::string name,std::string mgr_name,std::string 
     Render(false);
     Sprite()->setTexture(*Texture());
     state::Manager::GetMgrByName(mgr_name)->Add(this);
+
+}
+state::Manageable::Manageable(std::vector<std::string> args)
+{
+    Name(args[0]);
+    ResPath(args[3]);
+    ID(std::stoi(args[2]));
+    sf::Vector2i vp(0,0);
+    Position(vp);
+    Texture(new sf::Texture());
+    Sprite(new sf::Sprite());
+    Render(false);
+    if(!Texture()->loadFromFile(ResPath()))
+        std::cout << "FAIL 2 LOAD" << std::endl;
+    Sprite()->setTexture(*Texture());
+    sf::Vector2f _scale(std::stof(args[4]),std::stof(args[5]));
+    Scale(_scale);
+    Sprite()->setScale(_scale.x,_scale.y);
+    //state::Manager::GetMgrByName(args[1])->Add(this);
 }
 state::Manageable::Manageable(std::string name,int id,std::string path)
-{
-    
+{ 
     Name(name);
     ID(id);
     ResPath(path);
@@ -84,10 +102,12 @@ void state::Manageable::AssignPosition(int posx,int posy)
 {
     sf::Vector2i v0(posx,posy);
     Position(v0);
+    Sprite()->setPosition(posx*WorldHandler::CurrentWorld->CellSize().x,posy*WorldHandler::CurrentWorld->CellSize().y);
+    Position(*(new sf::Vector2i(posx,posy)));
 }
 void state::Manageable::AssignPosition(sf::Vector2i v0)
 {
-    Position(v0);
+    AssignPosition(v0.x,v0.y);
 }
 
 
