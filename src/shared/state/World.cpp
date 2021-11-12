@@ -28,3 +28,13 @@ state::World::World (std::string name, std::string respath, int csx, int csy, in
     CellSize(v0);
     CellN(v1);
 }
+
+state::World::World (std::vector<std::string> args)
+{
+    Name(args[0]);
+    ResPath(args[1]);
+    sf::Vector2i v0(std::stoi(args[2]),std::stoi(args[3]));
+    sf::Vector2i v1(std::stoi(args[4]),std::stoi(args[5]));
+    CellSize(v0);
+    CellN(v1);
+}

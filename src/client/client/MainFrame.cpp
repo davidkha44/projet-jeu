@@ -10,8 +10,13 @@ MainFrame::MainFrame(std::string name, int h, int w)
     sf::VideoMode frame_vm(Height(), Width());
     sf::RenderWindow win(frame_vm, name, sf::Style::Default);
     MainFrame::Window = &win;
-    OnStart();
-    while (MainFrame::Window->isOpen())
+
+}
+
+void MainFrame::OnStart()
+{
+    InputHandler::Initialize();
+        while (MainFrame::Window->isOpen())
     {
         sf::Event event;
         MainFrame::Window->clear(sf::Color::Black);
@@ -27,11 +32,6 @@ MainFrame::MainFrame(std::string name, int h, int w)
         }
         MainFrame::Window->display();
     }
-}
-
-void MainFrame::OnStart()
-{
-    InputHandler::Initialize();
 }
 void MainFrame::Draw()
 {
