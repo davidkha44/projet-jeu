@@ -28,6 +28,8 @@ BG_TILE_WAY,ASSET_MGR,42,res/texture/way.png,0.5,0.5
 BG_TILE_BEACH,ASSET_MGR,43,res/texture/beach.png,0.5,0.5
 BG_TILE_FOREST,ASSET_MGR,44,res/texture/forest.png,0.5,0.5
 BG_TILE_WARSHIP,ASSET_MGR,45,res/texture/WarShip.png,0.5,0.5
+BG_TILE_FISHWATER,ASSET_MGR,47,res/texture/FishWater.png,1.26,1.25
+BG_TILE_TORTOISEWATER,ASSET_MGR,48,res/texture/TortoiseWater.png,2.5,2.5
 BG_TILE_BRIDGE11,ASSET_MGR,111,res/texture/bridge11.png,2.5,2.5
 BG_TILE_BRIDGE12,ASSET_MGR,112,res/texture/bridge12.png,2.5,2.5
 BG_TILE_BRIDGE21,ASSET_MGR,121,res/texture/bridge21.png,2.5,2.5
