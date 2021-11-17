@@ -55,3 +55,4 @@ ACTOR_REDKNIGHT,ASSET_MGR,210,res/texture/RedKnight.png,1.5,1.5
 ACTOR_CYANDRAGON,ASSET_MGR,211,res/texture/BlueDragon.png,1.5,1.5
 ACTOR_REDDRAGON,ASSET_MGR,212,res/texture/RedDragon.png,1.5,1.5
 BG_TILE_COCOTREE,ASSET_MGR,46,res/texture/cocoTree.png,2.5,2.5
+BG_TILE_BUTTON,ASSET_MGR,501,res/texture/button_bg.png,2.5,2.5
