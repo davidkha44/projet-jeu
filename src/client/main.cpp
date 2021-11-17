@@ -1,8 +1,8 @@
 #include <iostream>
 #include <client.h>
+#include <engine.h>
 #include "render.h"
 #include <state.h>
-//#include "client/FileHandler.hpp"
 #include <string.h>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
@@ -20,6 +20,7 @@ void testSFML() {
 using namespace std;
 using namespace state;
 using namespace render;
+using namespace engine;
 
 int main(int argc,char* argv[])
 {
@@ -44,6 +45,19 @@ int main(int argc,char* argv[])
 
         
         mf->Start();
+        
+    }
+    if(!strcmp(argv[1],"engine"))
+    {
+        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        cout << "ENGINE" << endl;
+        FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+        for(Manager* m : Manager::Managers)
+            cout << m->Name() << endl;
+        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+        mf->Start();
+
+
         
     }
 
