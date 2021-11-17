@@ -92,7 +92,7 @@ state::Manageable* state::Manager::GetByPos(int x,int y)
     for(state::Manageable* m : Elements())
     {
         if(m->Position().x == x && m->Position().y == y)
-            return m;
+         return m;   
     }
-    return (state::Manageable*)NULL;
+    return NULL;
 }
