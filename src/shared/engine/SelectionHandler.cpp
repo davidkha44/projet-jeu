@@ -10,24 +10,44 @@ void engine::SelectionHandler::Add(state::Manageable** m)
         if(Selection.data()[i][0]->Position().x == m[0]->Position().x && Selection.data()[i][0]->Position().y == m[0]->Position().y )
             return;
     }
+    for(int i = 1; i < state::Manager::Managers.size();i++)
+    {
+        if(m[i])
+            std::cout << "Added " << m[i]->Name() << std::endl;
+    }
     engine::SelectionHandler::Selection.push_back(m);
 }
 void engine::SelectionHandler::Remove(state::Manageable** m)
 {
-    
+    int index = 0;
+    for(int i = 0; i < Selection.size();i++)
+    {
+        if(Selection.data()[i][0]->Position().x == m[0]->Position().x && Selection.data()[i][0]->Position().y == m[0]->Position().y )
+        {
+            for(int j = 1; j < state::Manager::Managers.size();j++)
+            {
+                state::Manageable* _m = Selection.data()[i][j];
+                if(_m)
+                {
+                    std::cout << "Removed " << _m->Name() << std::endl;
+                    _m->OnSelectionRemove();
+                }
+            }
+            engine::SelectionHandler::Selection.erase(engine::SelectionHandler::Selection.begin() + i);
+        }
+    }
 }
 
 void engine::SelectionHandler::OnMouseLeft(int x,int y)
 {
-    //std::cout << "CLICK LEFT @ " << x << "::" << y << std::endl;
+    //std::cout << "CLICK LEFT a@ " << x << "::" << y << std::endl;
     state::Manageable** items = (state::Manageable**)calloc(state::Manager::Managers.size(), sizeof(state::Manageable*));
-    int i = 0;
     items[0] = new state::Manageable();
-    items[0]->AssignPosition(x,y);
-    for(i = 1; i < state::Manager::Managers.size(); i++)
+    sf::Vector2i cpos(x,y);
+    items[0]->Position(cpos);
+    for(int i = 1; i < state::Manager::Managers.size(); i++)
     {
         state::Manageable* m = state::Manager::GetMgrByID(i)->GetByPos(x,y);
-        
         if(m)
         {
             if(!m->Selected() && m->Render())
@@ -38,13 +58,18 @@ void engine::SelectionHandler::OnMouseLeft(int x,int y)
         }
     }
     engine::SelectionHandler::Add(items);
-    for(int j = 0; j < state::Manager::Managers.size(); j++)
-    {
-        if(items[j])
-            std::cout << "ITEM" << j << " = " << items[j]->Name() << std::endl;
-    }
+    // for(int j = 0; j < state::Manager::Managers.size(); j++)
+    // {
+    //     if(items[j])
+    //         std::cout << "ITEM" << j << " = " << items[j]->Name() << std::endl;
+    // }
 }
 void engine::SelectionHandler::OnMouseRight(int x,int y)
 {
     //std::cout << "CLICK RIGHT @ " << x << "::" << y << std::endl;
+    state::Manageable** items = (state::Manageable**)calloc(state::Manager::Managers.size(), sizeof(state::Manageable*));
+    items[0] = new state::Manageable();
+    sf::Vector2i cpos(x,y);
+    items[0]->Position(cpos);
+    engine::SelectionHandler::Remove(items);
 }
