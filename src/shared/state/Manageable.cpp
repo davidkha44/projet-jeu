@@ -92,6 +92,9 @@ state::Manageable::Manageable(std::string name,int id,std::string path)
 void state::Manageable::OnSelectionAdd()
 {
     Selected(true);
+    Sprite()->setTexture(*state::Manager::GetMgrByID(0)->GetByID(3)->Texture());
+    
+    
 }
 void state::Manageable::OnSelectionRemove()
 {
