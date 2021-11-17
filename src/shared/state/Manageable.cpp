@@ -99,6 +99,7 @@ void state::Manageable::OnSelectionAdd()
 void state::Manageable::OnSelectionRemove()
 {
     Selected(false);
+    Sprite()->setTexture(*Texture());
 }
 
 void state::Manageable::AssignPosition(int posx,int posy)
