@@ -1,0 +1,4 @@
+#PATTERN_NAME,PATTERN_PATH,SIZE_X,SIZE_Y
+PATTERN_CROSS,src/client/actions_patterns/PatternCrossSimple.csv,3,3
+PATTERN_DIAMOND4,src/client/actions_patterns/PatternDiamond4.csv,9,9
+PATTERN_DIAMOND2,src/client/actions_patterns/PatternDiamond2.csv,5,5

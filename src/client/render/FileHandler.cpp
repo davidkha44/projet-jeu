@@ -1,6 +1,7 @@
 #include "FileHandler.h"
 #include "MainFrame.h"
 #include "../../shared/state.h"
+#include "../../shared/engine.h"
 #include "../../client/client/Macro.hpp"
 
 
@@ -78,3 +79,5 @@ DESERIALIZE(state::Manager)
 DESERIALIZE(state::Manageable)
 DESERIALIZE(state::World)
 DESERIALIZE(state::Actor)
+DESERIALIZE(engine::Pattern)
+DESERIALIZE(engine::Action)

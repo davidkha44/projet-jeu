@@ -7,6 +7,8 @@
 #include "../shared/engine/InputHandler.h"
 #include "../shared/engine/SelectionHandler.h"
 #include "../shared/state/Actor.h"
+#include "../shared/engine/Action.h"
+#include "../shared/engine/Pattern.h"
 
 
 GET_SET(render::MainFrame,std::string,Name)
@@ -81,6 +83,8 @@ void render::MainFrame::Start()
 void render::MainFrame::InitActors()
 {
     //Initialise les acteurs sera rempli plus tard
+    render::FileHandler::DeserializeTable<engine::Pattern>("src/client/tables/Patterns.csv","CSV");
+    render::FileHandler::DeserializeTable<engine::Action>("src/client/tables/Actions.csv","CSV");
     std::vector<state::Actor*> _actors = render::FileHandler::DeserializeTable<state::Actor>("src/client/tables/Actors.csv","CSV");
 }
 

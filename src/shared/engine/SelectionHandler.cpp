@@ -12,7 +12,7 @@ void engine::SelectionHandler::Add(state::Manageable** m)
     }
     for(int i = 1; i < state::Manager::Managers.size();i++)
     {
-        if(m[i])
+        if(m[i] && m[i]->Render())
             std::cout << "Added " << m[i]->Name() << std::endl;
     }
     engine::SelectionHandler::Selection.push_back(m);
@@ -27,12 +27,14 @@ void engine::SelectionHandler::Remove(state::Manageable** m)
             for(int j = 1; j < state::Manager::Managers.size();j++)
             {
                 state::Manageable* _m = Selection.data()[i][j];
-                if(_m)
+                if(_m && _m->Render() && _m->Selected())
                 {
                     std::cout << "Removed " << _m->Name() << std::endl;
                     _m->OnSelectionRemove();
+                    
                 }
             }
+            delete Selection[i];
             engine::SelectionHandler::Selection.erase(engine::SelectionHandler::Selection.begin() + i);
         }
     }

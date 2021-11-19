@@ -3,6 +3,7 @@
 #include <string.h>
 #include "../../client/client/Macro.hpp"
 #include "../../client/render/FileHandler.h"
+#include "../engine/Pattern.h"
 
 GET_SET(state::Actor, int, HP)
 GET_SET(state::Actor, int, AP)
@@ -26,6 +27,10 @@ state::Actor::Actor(std::vector<std::string> args) : state::Manageable(args[0], 
     DEF(std::stoi(args[4]));
     AP(std::stoi(args[5]));
     MP(std::stoi(args[6]));
+    std::vector<std::string> _actions = render::FileHandler::SplitString(args[7],";");
+    for(std::string s : _actions)
+        _Actions[s] = engine::Action::Actions[s];
+
 
     state::Manager::GetMgrByName("ACTOR_MGR")->Add(this);
     std::vector<std::string> s = render::FileHandler::SplitString(Name(), "_");
@@ -74,4 +79,26 @@ state::Actor::Actor(std::vector<std::string> args) : state::Manageable(args[0], 
 
 state::Actor::~Actor()
 {
+}
+
+void state::Actor::OnSelectionAdd()
+{
+    Selected(true);
+    std::vector<state::Manageable*> pieces = std::vector<state::Manageable*>();
+    for(state::Manageable* m : _Actions["STD_ATTACK"]->BasePattern()->Map())
+    {
+        
+        state::Manageable* _m = new Manageable(m->Name(),"BG_TILE_SAND");
+        _m->AssignPosition(Position().x + m->Position().x, Position().y + m->Position().y);
+        _m->Render(true);
+        pieces.push_back(_m);
+        
+    }
+    state::Manager::GetMgrByName("ACTION_MGR")->Elements(pieces);
+}
+void state::Actor::OnSelectionRemove()
+{
+    Selected(false);
+    for(state::Manageable* m : state::Manager::GetMgrByName("ACTION_MGR")->Elements())
+        m->Render(false);
 }
