@@ -21,15 +21,14 @@ engine::Pattern::Pattern(std::vector<std::string> args)
                 case '1':
                 {
                     state::Manageable* _m = new state::Manageable("PIECE_"+std::to_string(_col)+"_"+std::to_string(_lines),"BG_TILE_SAND");
+                    _m->ID(0xDE000000 + (Patterns.size() << 16) + (_col << 8) + _lines);
                     _m->AssignPosition(_col,_lines);
                     _Map.push_back(_m);
-                    _m->ID(0xDE000000 + (Patterns.size() << 16) + (_col << 8) + _lines);
-                    break;
                 }
+                break;
 
                 case 'A':
                     _Origin = sf::Vector2i(_col,_lines);
-                    std::cout << "ORIGIN@" << _col << "::" << _lines << std::endl;
                 break;
             }
             _col++;
@@ -38,9 +37,6 @@ engine::Pattern::Pattern(std::vector<std::string> args)
         _lines++;
     )
     for(state::Manageable* m : _Map)
-    {
         m->AssignPosition(m->Position().x - _Origin.x,m->Position().y - _Origin.y);
-        std::cout << "PIECE @" << m->Position().x << "::" << m->Position().y << std::endl;
-    }
 
 }

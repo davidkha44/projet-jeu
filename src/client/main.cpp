@@ -63,25 +63,7 @@ int main(int argc,char* argv[])
 
     if(!strcmp(argv[1],"PROTOTYPE"))
     {
-        // Handler::RegisterTurnBeginEvent<Actor>();
-        // Handler::RegisterTurnBeginEvent<SelectionHandler>();
-        // InputHandler::RegisterMouseLeftEvent<SelectionHandler>();
-        // InputHandler::RegisterMouseRightEvent<SelectionHandler>();
-        // Handler::RegisterTurnBeginEvent<WorldHandler>();
-        // Handler::RegisterTurnBeginAsyncEvent<WorldHandler>();
-    
-        // cout << "Resource loaded" << endl;
-        // //FileHandler::InitManagers("/home/ensea/PLT_proper/projet-jeu/src/client/tables/Managers.csv");
-        // FileHandler::LoadCSVFile("src/client/tables/Managers.csv",&FileHandler::OnLoadManagerFromCSV);
-
-        // cout << "MGR loaded" << Manager::Managers.size() << endl;
-        // for(Manager* m : Manager::Managers)
-        //     std::cout << m->Name() << endl;
-
-        // MainFrame* mf;
-    
-        // FileHandler::InitArgs(mf,"src/client/tables/LaunchArgs.csv");
-        // mf->OnStart();
+        cout << "INDISPONIBLE" << endl;
     }
 
     

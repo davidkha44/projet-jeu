@@ -50,7 +50,6 @@ void state::WorldHandler::Initialize()
     Turn = 0;
     Instance = 0;
     Status = 0;
-    printf("Init DOne \n");
 }
 void state::WorldHandler::Initialize(World* w)
 {

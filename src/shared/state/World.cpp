@@ -23,18 +23,14 @@ state::World::World (std::string name, std::string respath, int csx, int csy, in
 {
     Name(name);
     ResPath(respath);
-    sf::Vector2i v0(csx,csy);
-    sf::Vector2i v1(ncx,ncy);
-    CellSize(v0);
-    CellN(v1);
+    CellSize(sf::Vector2i(csx,csy));
+    CellN(sf::Vector2i(ncx,ncy));
 }
 
 state::World::World (std::vector<std::string> args)
 {
     Name(args[0]);
     ResPath(args[1]);
-    sf::Vector2i v0(std::stoi(args[2]),std::stoi(args[3]));
-    sf::Vector2i v1(std::stoi(args[4]),std::stoi(args[5]));
-    CellSize(v0);
-    CellN(v1);
+    CellSize(sf::Vector2i(std::stoi(args[2]),std::stoi(args[3])));
+    CellN(sf::Vector2i(std::stoi(args[4]),std::stoi(args[5])));
 }

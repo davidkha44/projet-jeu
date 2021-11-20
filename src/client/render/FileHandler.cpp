@@ -36,9 +36,7 @@ render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
 
     if(!strcmp(items[0].c_str(),"SCENE"))
     {
-        std::vector<state::World*> _wrld = DeserializeTable<state::World>("src/client/tables/Worlds.csv","CSV");
-        std::cout << "OUT :" << _wrld.size() << std::endl;
-        for(state::World* w : _wrld)
+        for(state::World* w : DeserializeTable<state::World>("src/client/tables/Worlds.csv","CSV"))
         {
             if(w->Name() == items[1])
             {
@@ -63,15 +61,9 @@ std::vector<T*> render::FileHandler::DeserializeTable(std::string path, std::str
     std::vector<T*> Output;
     if(format == "CSV")
     {
-        std::ifstream file(path);
-        for( std::string line; getline( file, line ); )
-        {
-            if(line.find('#') == std::string::npos)
-            {
-                std::vector<std::string> strs = SplitString(line,",");
-                Output.push_back(new T(strs));
-            }
-        }  
+        PARSE_CSV_LINES(path,'#',
+            Output.push_back(new T(SplitString(line,",")));
+        )
     }
     return Output;
 }

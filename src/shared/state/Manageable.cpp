@@ -62,17 +62,15 @@ state::Manageable::Manageable(std::vector<std::string> args)
     Name(args[0]);
     ResPath(args[3]);
     ID(std::stoi(args[2]));
-    sf::Vector2i vp(0,0);
-    Position(vp);
+    Position(sf::Vector2i(0,0));
     Texture(new sf::Texture());
     Sprite(new sf::Sprite());
     Render(false);
     if(!Texture()->loadFromFile(ResPath()))
         std::cout << "FAIL 2 LOAD" << std::endl;
     Sprite()->setTexture(*Texture());
-    sf::Vector2f _scale(std::stof(args[4]),std::stof(args[5]));
-    Scale(_scale);
-    Sprite()->setScale(_scale.x,_scale.y);
+    Scale(sf::Vector2f(std::stof(args[4]),std::stof(args[5])));
+    Sprite()->setScale(Scale().x,Scale().y);
     //state::Manager::GetMgrByName(args[1])->Add(this);
 }
 state::Manageable::Manageable(std::string name,int id,std::string path)
@@ -104,10 +102,9 @@ void state::Manageable::OnSelectionRemove()
 
 void state::Manageable::AssignPosition(int posx,int posy)
 {
-    sf::Vector2i v0(posx,posy);
-    Position(v0);
+    Position(sf::Vector2i(posx,posy));
     Sprite()->setPosition(posx*WorldHandler::CurrentWorld->CellSize().x,posy*WorldHandler::CurrentWorld->CellSize().y);
-    Position(*(new sf::Vector2i(posx,posy)));
+    Position(sf::Vector2i(posx,posy));
 }
 void state::Manageable::AssignPosition(sf::Vector2i v0)
 {
