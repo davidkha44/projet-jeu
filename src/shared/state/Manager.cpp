@@ -87,4 +87,12 @@ state::Manageable* state::Manager::GetByID(int id)
     return NULL;
 }
 
-
+state::Manageable* state::Manager::GetByPos(int x,int y)
+{
+    for(state::Manageable* m : Elements())
+    {
+        if(m->Position().x == x && m->Position().y == y)
+         return m;   
+    }
+    return NULL;
+}

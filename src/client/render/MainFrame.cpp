@@ -2,6 +2,10 @@
 #include "MainFrame.h"
 #include "FileHandler.h"
 #include "../shared/state/Manager.h"
+#include "../shared/state/WorldHandler.h"
+#include "../shared/state/World.h"
+#include "../shared/engine/InputHandler.h"
+#include "../shared/engine/SelectionHandler.h"
 #include "../shared/state/Actor.h"
 
 
@@ -31,11 +35,28 @@ void render::MainFrame::Draw()
 void render::MainFrame::Tick()
 {
     //Appelée à chaque frame
+    ON_MOUSE_LEFT(
+       // std::cout << "MOUSE_LEFT" << std::endl;
+        //sf::Vector2i MousePos = sf::Mouse::getPosition(*Window());
+        int x = MousePos.x / state::WorldHandler::CurrentWorld->CellSize().x;
+        int y = MousePos.y / state::WorldHandler::CurrentWorld->CellSize().y;
+        engine::InputHandler::RoutineMouseLeft(x,y);
+    )
+    ON_MOUSE_RIGHT(
+        //std::cout << "MOUSE_RIGHT" << std::endl;
+        //sf::Vector2i MousePos = sf::Mouse::getPosition(*Window());
+        int x = MousePos.x / state::WorldHandler::CurrentWorld->CellSize().x;
+        int y = MousePos.y / state::WorldHandler::CurrentWorld->CellSize().y;
+        engine::InputHandler::RoutineMouseRight(x,y);
+    )
+
 }
 
 void render::MainFrame::Start()
 {
     //Lancement de la fenetre + Remplissage des Managers 
+    engine::InputHandler::Initialize();
+    engine::SelectionHandler::Selection = std::vector<state::Manageable**>();
     InitWorld();
     InitActors();
     sf::VideoMode frame_vm(Height(),Width());

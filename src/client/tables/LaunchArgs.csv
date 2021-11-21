@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 SCENE,WORLD_TEST
+=======
+SCENE,STD_WORLD
+>>>>>>> 61db9cc06b63abc323dea712507a4eac76a042be
 IP_SERVER,127.0.0.1
 IP_PORT,XXXX
 FLUSH_PATH,src/client/BoardSnapshot
