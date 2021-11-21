@@ -31,6 +31,16 @@ void engine::SelectionHandler::Remove(state::Manageable** m)
     }
 }
 
+void engine::SelectionHandler::Trash()
+{
+    for(state::Manageable** m : Selection)
+        Remove(m);
+}
+void engine::SelectionHandler::ProcessSelection()
+{
+    
+}
+
 void engine::SelectionHandler::OnMouseLeft(int x,int y)
 {
     state::Manageable** items = (state::Manageable**)calloc(state::Manager::Managers.size(), sizeof(state::Manageable*));

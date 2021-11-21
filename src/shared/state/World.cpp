@@ -1,10 +1,12 @@
 #include "World.h"
 #include "../../client/client/Macro.hpp"
+#include "../engine/Script.h"
 
 GET_SET(state::World,std::string,Name)
 GET_SET(state::World,std::string,ResPath)
 GET_SET(state::World,sf::Vector2i,CellSize)
 GET_SET(state::World,sf::Vector2i,CellN)
+GET_SET(state::World,engine::Script*,Behaviour)
 
 state::World::World()
 {
@@ -33,4 +35,10 @@ state::World::World (std::vector<std::string> args)
     ResPath(args[1]);
     CellSize(sf::Vector2i(std::stoi(args[2]),std::stoi(args[3])));
     CellN(sf::Vector2i(std::stoi(args[4]),std::stoi(args[5])));
+    (engine::Script::Scripts[args[6]] != NULL ? Behaviour(engine::Script::Scripts[args[6]]) : Behaviour(NULL));
+}
+
+void state::World::ApplyGridThickness(int gt)
+{
+    CellSize(sf::Vector2i(CellSize().x+gt,CellSize().y+gt));
 }

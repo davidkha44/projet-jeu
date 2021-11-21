@@ -1,11 +1,13 @@
 #include "InputHandler.h"
 #include "SelectionHandler.h"
+#include "../state.h"
 #include "../../client/client/Macro.hpp"
 #include <SFML/Graphics.hpp>
 #include <string.h>
 
 EVENT(engine::InputHandler,MouseLeft,engine::SelectionHandler)
 EVENT(engine::InputHandler,MouseRight,engine::SelectionHandler)
+EVENT(engine::InputHandler,Keyboard,state::Actor)
 
 
 template <class T>
@@ -18,6 +20,11 @@ void engine::InputHandler::RegisterMouseRightEvents()
 {
     MouseRightEvents.push_back(T::OnMouseRight);
 }
+template <class T>
+void engine::InputHandler::RegisterKeyboardEvents()
+{
+    KeyboardEvents.push_back(T::OnKey);
+}
 
 void engine::InputHandler::RoutineMouseLeft (int x,int y)
 {
@@ -28,6 +35,11 @@ void engine::InputHandler::RoutineMouseRight(int x,int y)
 {
     for(std::function<void(int,int)> f : MouseRightEvents)
         f(x,y);
+}
+void engine::InputHandler::RoutineKey(unsigned char* snapshot)
+{
+    for(std::function<void(unsigned char*)> f : KeyboardEvents)
+        f(snapshot);
 }
 
 
@@ -59,5 +71,6 @@ void engine::InputHandler::Initialize()
     CurrentSnapshot = (unsigned char*)malloc(SampleSize);
     RegisterMouseLeftEvents<engine::SelectionHandler>();
     RegisterMouseRightEvents<engine::SelectionHandler>();
+    RegisterKeyboardEvents<state::Actor>();
 }
 

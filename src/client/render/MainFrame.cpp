@@ -6,6 +6,7 @@
 #include "../shared/state/World.h"
 #include "../shared/engine/InputHandler.h"
 #include "../shared/engine/SelectionHandler.h"
+#include "../shared/engine/Script.h"
 #include "../shared/state/Actor.h"
 #include "../shared/engine/Action.h"
 #include "../shared/engine/Pattern.h"
@@ -51,6 +52,10 @@ void render::MainFrame::Tick()
         int y = MousePos.y / state::WorldHandler::CurrentWorld->CellSize().y;
         engine::InputHandler::RoutineMouseRight(x,y);
     )
+    engine::InputHandler::RegisterInputs();
+    unsigned char* kb_frame = engine::InputHandler::CompareSnapshots();
+    engine::InputHandler::RoutineKey(kb_frame);
+    delete kb_frame;
 
 }
 
@@ -85,12 +90,17 @@ void render::MainFrame::InitActors()
     //Initialise les acteurs sera rempli plus tard
     render::FileHandler::DeserializeTable<engine::Pattern>("src/client/tables/Patterns.csv","CSV");
     render::FileHandler::DeserializeTable<engine::Action>("src/client/tables/Actions.csv","CSV");
-    std::vector<state::Actor*> _actors = render::FileHandler::DeserializeTable<state::Actor>("src/client/tables/Actors.csv","CSV");
+    if(state::WorldHandler::CurrentWorld->Behaviour())
+        state::WorldHandler::CurrentWorld->Behaviour()->Run();
+    if(state::WorldHandler::Behaviour)
+        state::WorldHandler::Behaviour->Run();
+    //std::vector<state::Actor*> _actors = render::FileHandler::DeserializeTable<state::Actor>("src/client/tables/Actors.csv","CSV");
 }
 
 void render::MainFrame::InitWorld()
 {
     //Place les Manageables qui composent la map
+
     state::World* w = state::WorldHandler::CurrentWorld;
     std::ifstream file(w->ResPath());
     std::cout << "W DIM : " << w->CellN().x <<"::"<< w->CellN().y << std::endl;

@@ -1,5 +1,6 @@
 #include "Manager.h"
 #include "../../client/client/Macro.hpp"
+#include "engine/SelectionHandler.h"
 
 GET_SET(state::Manageable,std::string,Name)
 GET_SET(state::Manageable,std::string,ResPath)
@@ -90,9 +91,7 @@ state::Manageable::Manageable(std::string name,int id,std::string path)
 void state::Manageable::OnSelectionAdd()
 {
     Selected(true);
-    Sprite()->setTexture(*state::Manager::GetMgrByID(0)->GetByID(3)->Texture());
-    
-    
+    Sprite()->setTexture(*state::Manager::GetMgrByID(0)->GetByID(3)->Texture()); 
 }
 void state::Manageable::OnSelectionRemove()
 {
