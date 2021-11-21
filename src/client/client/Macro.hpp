@@ -1,4 +1,5 @@
 #include <vector>
+#include <string.h>
 #include <iostream>
 #include <fstream>
 
@@ -22,7 +23,7 @@
 #define FETCH_FROM_MGR(mgr,item) Manager::GetMgrByName(mgr)->GetByName(item)
 #define GET_SET(c,type,var) type c::var() {return _##var;} void c::var(type value) {_##var = value;}
 #define PARSE_CSV_LINES(path,comment,ins)       std::ifstream file(path); \
-                                                for( std::string line; getline( file, line ); ) {if(line.find(comment) == std::string::npos) { \
+                                                for( std::string line; getline( file, line ); ) {if(line.find(comment) == std::string::npos && line.find_first_not_of(' ') != std::string::npos) { \
                                                 std::string str = line;std::string separator(",");size_t pos_start = 0, pos_end, delim_len = separator.length();std::string token;std::vector<std::string> items;\
                                                 while ((pos_end = str.find (separator, pos_start)) != std::string::npos) { token = str.substr (pos_start, pos_end - pos_start);pos_start = pos_end + delim_len;items.push_back (token);}\
                                                 items.push_back (str.substr (pos_start));\
@@ -39,6 +40,18 @@
 #define DEFAULT } else {switch(1) { case 1
 #define DESERIALIZE(x) template std::vector<x*> render::FileHandler::DeserializeTable<x>(std::string path, std::string format);
 #define EVENT(cp,evt_name,cc) template void cp::Register##evt_name##Events<cc>(); 
+#define PARSE_BHV_SCRIPT(path,comment,ins)       std::ifstream file(path); \
+                                                for( std::string line; getline( file, line ); ) {if(line.find(comment) == std::string::npos && line.find_first_not_of(' ') != std::string::npos) { \
+                                                std::string str = line;std::string separator(" ");size_t pos_start = 0, pos_end, delim_len = separator.length();std::string token;std::vector<std::string> items;\
+                                                while ((pos_end = str.find (separator, pos_start)) != std::string::npos) { token = str.substr (pos_start, pos_end - pos_start);pos_start = pos_end + delim_len;items.push_back (token);}\
+                                                items.push_back (str.substr (pos_start));\
+                                                \
+                                                \
+                                                \
+                                                \
+                                                \
+                                                     ins} }\
+
 
 
 

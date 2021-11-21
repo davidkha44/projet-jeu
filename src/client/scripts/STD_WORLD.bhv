@@ -1,0 +1,14 @@
+
+
+#Place actors
+INT posx = 10
+INT posy = 10
+INT zero = 0
+
+
+ACTOR red_dragon HERO_REDDRAGON ACTOR_MGR posx posy
+ADD posx 5
+PRINT_INT posx
+SUB posy 5
+PRINT_INT posy
+ACTOR cyan_dragon HERO_CYANDRAGON ACTOR_MGR posx posy

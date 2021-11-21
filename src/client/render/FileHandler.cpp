@@ -1,6 +1,7 @@
 #include "FileHandler.h"
 #include "MainFrame.h"
 #include "../../shared/state.h"
+#include "../../shared/engine.h"
 #include "../../client/client/Macro.hpp"
 
 
@@ -30,26 +31,25 @@ std::vector<std::string> render::FileHandler::SplitString(std::string str,std::s
 render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
 {
     //Charge et parcours le fichiers de configuration LaunchArgs.csv
-    render::MainFrame* mf;
+    render::FileHandler::DeserializeTable<engine::Script>("src/client/tables/Scripts.csv","CSV");
     PARSE_CSV_LINES(path,'#',
 
-    if(!strcmp(items[0].c_str(),"SCENE"))
+    if(items[0] == "SCENE")
     {
-        std::vector<state::World*> _wrld = DeserializeTable<state::World>("src/client/tables/Worlds.csv","CSV");
-        std::cout << "OUT :" << _wrld.size() << std::endl;
-        for(state::World* w : _wrld)
+        for(state::World* w : DeserializeTable<state::World>("src/client/tables/Worlds.csv","CSV"))
         {
             if(w->Name() == items[1])
-            {
-                std::cout << "WORLD : " << w->Name() << std::endl;
                 state::WorldHandler::CurrentWorld = w;
-                mf = new render::MainFrame("PLT",w->CellN().x*w->CellSize().x,w->CellN().y*w->CellSize().y);
-            }
         }
     }
-    
+    if(items[0] == "GRID_THICKNESS")
+        state::WorldHandler::CurrentWorld->ApplyGridThickness(std::stoi(items[1]));
+    if(items[0] == "RULES")
+        state::WorldHandler::Behaviour = engine::Script::Scripts[items[1]];
+
     )
-    return mf;
+    return new render::MainFrame("PLT",state::WorldHandler::CurrentWorld->CellN().x*state::WorldHandler::CurrentWorld->CellSize().x,
+    state::WorldHandler::CurrentWorld->CellN().y*state::WorldHandler::CurrentWorld->CellSize().y);
 }
 
 template <class T>
@@ -62,15 +62,9 @@ std::vector<T*> render::FileHandler::DeserializeTable(std::string path, std::str
     std::vector<T*> Output;
     if(format == "CSV")
     {
-        std::ifstream file(path);
-        for( std::string line; getline( file, line ); )
-        {
-            if(line.find('#') == std::string::npos)
-            {
-                std::vector<std::string> strs = SplitString(line,",");
-                Output.push_back(new T(strs));
-            }
-        }  
+        PARSE_CSV_LINES(path,'#',
+            Output.push_back(new T(SplitString(line,",")));
+        )
     }
     return Output;
 }
@@ -78,3 +72,6 @@ DESERIALIZE(state::Manager)
 DESERIALIZE(state::Manageable)
 DESERIALIZE(state::World)
 DESERIALIZE(state::Actor)
+DESERIALIZE(engine::Pattern)
+DESERIALIZE(engine::Action)
+DESERIALIZE(engine::Script)

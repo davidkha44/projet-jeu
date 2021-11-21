@@ -3,7 +3,8 @@
 
 void state::WorldHandler::OnTurnBegin()
 {
-    Turn++;
+    Behaviour->RunFunction("OnTurnBegin");
+    Turn = Behaviour->INT("TURN");
     std::cout << "ON_TURN_BEGIN_WH" << std::endl;
 }
 void state::WorldHandler::OnTurnBeginAsync()
@@ -12,6 +13,7 @@ void state::WorldHandler::OnTurnBeginAsync()
 }
 void state::WorldHandler::OnTurnEnd()
 {
+    Behaviour->RunFunction("OnTurnEnd");
     std::cout << "ON_TURN_END_WH" << std::endl;
 }
 void state::WorldHandler::OnTurnEndAsync()
@@ -50,7 +52,6 @@ void state::WorldHandler::Initialize()
     Turn = 0;
     Instance = 0;
     Status = 0;
-    printf("Init DOne \n");
 }
 void state::WorldHandler::Initialize(World* w)
 {
@@ -63,6 +64,25 @@ void state::WorldHandler::Initialize(World* w)
 void* state::WorldHandler::RunAsync(void* func)
 {
     (*((std::function<void()>*)func))();
+    return NULL;
+}
+
+state::Player* state::WorldHandler::GetPlayerByName(std::string name)
+{
+    for(state::Player* p : Players)
+    {
+        if(p->Name() == name)
+            return p;
+    }
+    return NULL;
+}
+state::Player* state::WorldHandler::GetPlayerByID(int id)
+{
+    for(state::Player* p : Players)
+    {
+        if(p->ID() == id)
+            return p;
+    }
     return NULL;
 }
 
