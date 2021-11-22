@@ -90,13 +90,11 @@ state::Manageable::Manageable(std::string name,int id,std::string path)
 
 void state::Manageable::OnSelectionAdd()
 {
-    Selected(true);
-    Sprite()->setTexture(*state::Manager::GetMgrByID(0)->GetByID(3)->Texture()); 
+
 }
 void state::Manageable::OnSelectionRemove()
 {
-    Selected(false);
-    Sprite()->setTexture(*Texture());
+
 }
 
 void state::Manageable::AssignPosition(int posx,int posy)
@@ -109,5 +107,6 @@ void state::Manageable::AssignPosition(sf::Vector2i v0)
 {
     AssignPosition(v0.x,v0.y);
 }
+
 
 

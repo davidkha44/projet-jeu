@@ -1,5 +1,6 @@
 #include "SelectionHandler.h"
-#include "../shared/state/Manager.h"
+#include "../shared/state.h"
+#include "../../client/render.h"
 #include "../shared/state/Manageable.h"
 #include <iostream>
 
@@ -11,6 +12,8 @@ void engine::SelectionHandler::Add(state::Manageable** m)
             return;
     }
     engine::SelectionHandler::Selection.push_back(m);
+    ProcessSelection(m);
+
 }
 void engine::SelectionHandler::Remove(state::Manageable** m)
 {
@@ -35,10 +38,32 @@ void engine::SelectionHandler::Trash()
 {
     for(state::Manageable** m : Selection)
         Remove(m);
+    Selection.clear();
 }
-void engine::SelectionHandler::ProcessSelection()
+void engine::SelectionHandler::ProcessSelection(state::Manageable** m)
 {
-    
+    std::string _default;
+    for(std::string s : SelectionMask)
+    {
+        std::vector<std::string> items = render::FileHandler::SplitString(s," ");
+        if(items[0] == "DEFAULT") _default = items[1];
+        if(items[0] == SelectionState && m[state::Manager::GetMgrByName(items[2])->ID()]) 
+        {
+            FilteredSelection[SelectionState] = (state::Actor*)m[state::Manager::GetMgrByName(items[2])->ID()];
+            std::cout <<"ADDED : ["<<SelectionState<<"] = " <<FilteredSelection[SelectionState]->Name() << std::endl;
+            if(items[1] == "PROCESS")
+            {
+                std::cout << "ACTION" << std::endl;
+                SelectionState = _default;
+                FilteredSelection[SelectionState]->OnSelectionRemove();
+                Trash();
+                //FilteredSelection.clear();
+            } 
+            else SelectionState = items[1];
+            std::cout <<"NEXT STATE : " <<SelectionState << std::endl;
+            return;
+        }
+    }
 }
 
 void engine::SelectionHandler::OnMouseLeft(int x,int y)
@@ -54,9 +79,11 @@ void engine::SelectionHandler::OnMouseLeft(int x,int y)
         {
             m->OnSelectionAdd();
             items[i] = m;
+            
         }
     }
-    engine::SelectionHandler::Add(items);
+    engine::SelectionHandler::Add(items); 
+    
 }
 void engine::SelectionHandler::OnMouseRight(int x,int y)
 {

@@ -3,7 +3,9 @@
 #Place actors
 INT posx = 10
 INT posy = 10
-INT zero = 0
+INT zero = 1000
+STRING str = Fred
+
 
 
 ACTOR red_dragon HERO_REDDRAGON ACTOR_MGR posx posy
@@ -11,4 +13,25 @@ ADD posx 5
 PRINT_INT posx
 SUB posy 5
 PRINT_INT posy
+PRINT_INT red_dragon.HP
+PROPERTY ACTOR_MGR->red_dragon.HP zero
+EQUAL red_dragon.HP 1000 Test
+PRINT_INT red_dragon.DMG
+PRINT_INT red_dragon.DEF
 ACTOR cyan_dragon HERO_CYANDRAGON ACTOR_MGR posx posy
+
+SELECTION_MASK SM_ACTION  
+DEFAULT caster
+caster target ACTOR_MGR
+target PROCESS ACTION_MGR
+END SELECTION_MASK
+
+FUNCTION Test
+PRINT_STR str
+PRINT_INT red_dragon.HP
+END FUNCTION
+
+FUNCTION Move
+PROPERTY FILTERED_SELECTION->caster.X FILTERED_SELECTION->target.X
+PROPERTY FILTERED_SELECTION->caster.Y FILTERED_SELECTION->target.Y
+END FUNCTION

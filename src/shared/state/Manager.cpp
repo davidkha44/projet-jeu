@@ -130,3 +130,8 @@ state::Manageable* state::Manager::GetByPos(int x,int y)
     }
     return NULL;
 }
+
+state::Manageable* state::Manager::GetByPos(sf::Vector2i v0)
+{
+    return GetByPos(v0.x,v0.y);
+}

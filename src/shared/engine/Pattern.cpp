@@ -1,8 +1,8 @@
 #include "Pattern.h"
 #include "../../client/client/Macro.hpp"
-#include "../state/Manageable.h"
+#include "../state.h"
 
-GET_SET(engine::Pattern,std::vector<state::Manageable*>,Map)
+GET_SET(engine::Pattern,std::vector<state::Actor*>,Map)
 
 
 engine::Pattern::Pattern(std::vector<std::string> args)
@@ -20,7 +20,12 @@ engine::Pattern::Pattern(std::vector<std::string> args)
             {
                 case '1':
                 {
-                    state::Manageable* _m = new state::Manageable("PIECE_"+std::to_string(_col)+"_"+std::to_string(_lines),"BG_TILE_SAND");
+                    std::vector<std::string> args = std::vector<std::string>();
+                    args.push_back("PIECE_"+std::to_string(_col)+"_"+std::to_string(_lines));
+                    args.push_back("BG_TILE_SAND");
+                    args.push_back("0");args.push_back("0");args.push_back("0");args.push_back("0");args.push_back("0");
+                    args.push_back("STD_ATTACK;STD_MOVE");
+                    state::Actor* _m = new state::Actor(args);
                     _m->ID(0xDE000000 + (Patterns.size() << 16) + (_col << 8) + _lines);
                     _m->AssignPosition(_col,_lines);
                     _Map.push_back(_m);

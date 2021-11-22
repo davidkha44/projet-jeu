@@ -26,10 +26,15 @@ state::Actor::Actor(std::vector<std::string> args) : state::Manageable(args[0], 
     _Properties["DEF"] = std::stoi(args[4]);
     _Properties["AP"] = std::stoi(args[5]);
     _Properties["MP"] = std::stoi(args[6]);
+    _CurrentAction = NULL;
     ID(0xAC000000 + state::Manager::GetMgrByName("ACTOR_MGR")->Elements().size());
     std::vector<std::string> _actions = render::FileHandler::SplitString(args[7],";");
-    for(std::string s : _actions)
-        _Actions[s] = engine::Action::Actions[s];
+    if(_actions.size())
+    {
+        for(std::string s : _actions)
+            _Actions[s] = engine::Action::Actions[s];
+    }
+
 }
 
 state::Actor::~Actor()
@@ -42,17 +47,26 @@ int state::Actor::Property(std::string prop)
 void state::Actor::Property(std::string prop,int value)
 {
     _Properties[prop] = value;
+    if(prop == "X") AssignPosition(value,_Properties["Y"]);
+    if(prop == "Y") AssignPosition(_Properties["X"],value);
 }
 
 void state::Actor::OnSelectionAdd()
 {
     Selected(true);
+    state::Manageable* bg = state::Manager::GetMgrByID(1)->GetByPos(Position());
+    bg->Sprite()->setTexture(*state::Manager::GetMgrByID(0)->GetByID(3)->Texture()); 
+    bg->Selected(true);
+    ChangeAction("STD_MOVE");
     std::cout << Name() << "::"<< std::hex << ID() << "::OWNER : "<< Property("OWNER") << std::endl;
     
 }
 void state::Actor::OnSelectionRemove()
 {
     Selected(false);
+    state::Manageable* bg = state::Manager::GetMgrByID(1)->GetByPos(Position());
+    bg->Sprite()->setTexture(*bg->Texture()); 
+    bg->Selected(false);
     for(state::Manageable* m : state::Manager::GetMgrByName("ACTION_MGR")->Elements())
         m->Render(false);
 }
@@ -71,6 +85,7 @@ void state::Actor::ChangeAction(std::string new_action)
         pieces.push_back(_m);
         
     }
+    _CurrentAction = _Actions[new_action];
     state::Manager::GetMgrByName("ACTION_MGR")->Elements(pieces);
 }
 
@@ -86,4 +101,16 @@ void state::Actor::OnKey(unsigned char* snapshot)
         std::cout << "KEY M" << std::endl;
     }
         
+}
+void state::Actor::AssignPosition(int posx,int posy)
+{
+    Position(sf::Vector2i(posx,posy));
+    Sprite()->setPosition(posx*WorldHandler::CurrentWorld->CellSize().x,posy*WorldHandler::CurrentWorld->CellSize().y);
+    Position(sf::Vector2i(posx,posy));
+    _Properties["X"] = posx;
+    _Properties["Y"] = posy;
+}
+void state::Actor::AssignPosition(sf::Vector2i v0)
+{
+    AssignPosition(v0.x,v0.y);
 }

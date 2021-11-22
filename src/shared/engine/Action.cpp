@@ -1,12 +1,14 @@
 #include "Action.h"
 #include "Pattern.h"
 #include "../../client/client/Macro.hpp"
+#define COMMA ,
 
 GET_SET(engine::Action,std::string,Name)
 GET_SET(engine::Action,int,OPCode)
 GET_SET(engine::Action,int,CostAP)
 GET_SET(engine::Action,int,CostMP)
 GET_SET(engine::Action,engine::Pattern*,BasePattern)
+GET_SET(engine::Action,std::map<std::string COMMA std::string>,SelectionMask)
 
 
 engine::Action::Action(std::vector<std::string> args)

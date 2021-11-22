@@ -2,3 +2,5 @@
 #IS_BHV,src/client/scripts/InputSourceKeyboard.bhv
 STD_WORLD,src/client/scripts/STD_WORLD.bhv
 STD_SCENARIO,src/client/scripts/StandardScenario.bhv
+EMPTY,src/client/scripts/Empty.bhv
+ACTION_MASK,src/client/scripts/ActionMasks.bhv
