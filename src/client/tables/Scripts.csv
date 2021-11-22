@@ -4,3 +4,4 @@ STD_WORLD,src/client/scripts/STD_WORLD.bhv
 STD_SCENARIO,src/client/scripts/StandardScenario.bhv
 LAYER_ACTOR,src/client/scripts/Layer_Actor.bhv
 REGLE,src/client/scripts/Regle.bhv
+HOME,src/client/scripts/Home.bhv
