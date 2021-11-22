@@ -5,3 +5,4 @@ STD_SCENARIO,src/client/scripts/StandardScenario.bhv
 LAYER_ACTOR,src/client/scripts/Layer_Actor.bhv
 REGLE,src/client/scripts/Regle.bhv
 SCRIPT_ACTIONS,src/client/scripts/Script_Actions.bhv
+HOME,src/client/scripts/Home.bhv

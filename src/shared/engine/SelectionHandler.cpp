@@ -54,8 +54,9 @@ void engine::SelectionHandler::ProcessSelection(state::Manageable** m)
             if(items[1] == "PROCESS")
             {
                 std::cout << "ACTION" << std::endl;
+                //OnMouseRight(FilteredSelection[SelectionState]->Property("X"),FilteredSelection[SelectionState]->Property("Y"));
                 SelectionState = _default;
-                FilteredSelection[SelectionState]->OnSelectionRemove();
+                OnMouseRight(FilteredSelection[SelectionState]->Property("X"),FilteredSelection[SelectionState]->Property("Y"));
                 Trash();
                 //FilteredSelection.clear();
             } 
@@ -79,7 +80,6 @@ void engine::SelectionHandler::OnMouseLeft(int x,int y)
         {
             m->OnSelectionAdd();
             items[i] = m;
-            
         }
     }
     engine::SelectionHandler::Add(items); 
