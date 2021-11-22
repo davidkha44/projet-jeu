@@ -3,5 +3,5 @@ STD_WORLD,src/client/maps/DefaultWorld.csv,40,40,19,19,STD_WORLD
 O_WORLD,src/client/maps/OtherWorld.csv,40,40,19,19,0
 EVERGREEN,src/client/maps/Evergreen.csv,40,40,10,10,0
 POOL,src/client/maps/Pool.csv,40,40,11,10,0
-WORLD_TEST,src/client/maps/WorldTest.csv,40,40,30,19,0
-BEACH,src/client/maps/Beach.csv,40,40,26,12,0
+WORLD_TEST,src/client/maps/WorldTest.csv,40,40,30,19,LAYER_ACTOR
+BEACH,src/client/maps/Beach.csv,40,40,26,12,LAYER_ACTOR

@@ -1,0 +1,43 @@
+INT TURN = 0
+INT MAX_PLAYER = 2
+INT STATUS = 0
+STRING MSG_GAME_OVER = GAME OVER
+STRING MSG_TEST1 = Ceci est un test
+
+PLAYER PLAYER_1 10 MNK 
+PLAYER PLAYER_2 15 MNK 
+
+#Actor_Build
+ATTACH_PAWN build_mausoleum PLAYER_1
+ATTACH_PAWN build_mausoleum2 PLAYER_2
+ATTACH_PAWN build_red_keep PLAYER_1
+ATTACH_PAWN build_cyan_keep PLAYER_2
+ATTACH_PAWN build_red_ressource PLAYER_1
+ATTACH_PAWN build_cyan_ressource PLAYER_2
+
+#Actor_Person
+ATTACH_PAWN red_spearman PLAYER_1
+ATTACH_PAWN cyan_spearman PLAYER_2
+ATTACH_PAWN red_bowman PLAYER_1
+ATTACH_PAWN cyan_bowman PLAYER_2
+ATTACH_PAWN red_mage PLAYER_1
+ATTACH_PAWN cyan_mage PLAYER_2
+ATTACH_PAWN red_knight PLAYER_1
+ATTACH_PAWN cyan_knight PLAYER_2
+ATTACH_PAWN red_dragon PLAYER_1
+ATTACH_PAWN cyan_dragon PLAYER_2
+
+FUNCTION OnTurnBegin 
+INC TURN
+TURN MODULO MAX_PLAYER
+END FUNCTION
+
+#when build_keep is ruined, game over.
+FUNCTION OnTurnEnd
+EQUAL build_red_keep.HP 0 EndGame
+EQUAL build_cyan_keep.HP 0 EndGame
+END FUNCTION
+
+FUNCTION EndGame
+PRINT_STR MSG_GAME_OVER
+END FUNCTION
