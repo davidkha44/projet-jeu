@@ -50,6 +50,11 @@ int engine::Script::EvaluateINT(std::string str)
     {
         result = ((state::Actor*)(state::Manager::GetMgrByName("ACTOR_MGR")->GetByName(render::FileHandler::SplitString(str,".")[0]).front()))->Property(render::FileHandler::SplitString(str,".")[1]);
     }
+    else if(str.find("ARGS:") != std::string::npos)
+    {
+        if(std::stoi(render::FileHandler::SplitString(str,":")[1]) < _Stack.size())
+            result = _Stack[std::stoi(render::FileHandler::SplitString(str,":")[1])];
+    }
     else
     {
         char* p;
@@ -68,7 +73,16 @@ void engine::Script::RunFunction(std::string func)
     {
         std::vector<std::string> items = render::FileHandler::SplitString(line," ");
         if(items[0] == "END" && items[1] == "FUNCTION" && begin_execution) return;
-        if(begin_execution) Run(line);
+        if(begin_execution)
+        {
+            if(items[0] == "RETURN")
+            {
+                if(items[1] == "INT") _INTS["RET:"+func] = EvaluateINT(items[2]);
+                if(items[1] == "STRING") _STRINGS["RET:"+func] = items[2];
+                while(!_Stack.empty()) _Stack.clear();
+            }
+            else Run(line);
+        } 
         if(items[0] == "FUNCTION" && items[1] == func && !begin_execution) begin_execution = true;
     }
 }
@@ -126,15 +140,61 @@ void engine::Script::Run(std::string line)
     if(items[0] == "DEC") _INTS[items[1]]--;
     if(items[0] == "PRINT_INT") std::cout << EvaluateINT(items[1]) << std::endl;
     if(items[0] == "PRINT_STR") std::cout << _STRINGS[items[1]] << std::endl;
-    if(items[0] == "ADD") _INTS[items[1]] += EvaluateINT(items[2]);
-    if(items[0] == "SUB") _INTS[items[1]] -= EvaluateINT(items[2]);
-    if(items[0] == "MUL") _INTS[items[1]] *= EvaluateINT(items[2]);
-    if(items[0] == "DIV") _INTS[items[1]] /= EvaluateINT(items[2]);
-    if(items[0] == "XOR") _INTS[items[1]] ^= EvaluateINT(items[2]);
-    if(items[0] == "AND") _INTS[items[1]] &= EvaluateINT(items[2]);
-    if(items[0] == "OR") _INTS[items[1]] |= EvaluateINT(items[2]);
-    if(items[0] == "RBS") _INTS[items[1]] >>= EvaluateINT(items[2]);
-    if(items[0] == "LBS") _INTS[items[1]] <<= EvaluateINT(items[2]);
+    if(items[0] == "ADD")
+    {
+        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
+        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] += EvaluateINT(items[2]) :
+        _INTS[items[1]] += EvaluateINT(items[2]);
+    } 
+    if(items[0] == "SUB")
+    {
+        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
+        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] -= EvaluateINT(items[2]) :
+        _INTS[items[1]] -= EvaluateINT(items[2]);
+    } 
+    if(items[0] == "MUL")
+    {
+        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
+        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] *= EvaluateINT(items[2]) :
+        _INTS[items[1]] *= EvaluateINT(items[2]);
+    } 
+    if(items[0] == "DIV")
+    {
+        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
+        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] /= EvaluateINT(items[2]) :
+        _INTS[items[1]] /= EvaluateINT(items[2]);
+    } 
+    if(items[0] == "XOR")
+    {
+        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
+        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] ^= EvaluateINT(items[2]) :
+        _INTS[items[1]] ^= EvaluateINT(items[2]);
+    } 
+    if(items[0] == "AND")
+    {
+        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
+        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] &= EvaluateINT(items[2]) :
+        _INTS[items[1]] &= EvaluateINT(items[2]);
+    } 
+    if(items[0] == "OR")
+    {
+        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
+        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] |= EvaluateINT(items[2]) :
+        _INTS[items[1]] |= EvaluateINT(items[2]);
+    } 
+    if(items[0] == "RBS")
+    {
+        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
+        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] >>= EvaluateINT(items[2]) :
+        _INTS[items[1]] >>= EvaluateINT(items[2]);
+    }
+    if(items[0] == "LBS")
+    {
+        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
+        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] <<= EvaluateINT(items[2]) :
+        _INTS[items[1]] <<= EvaluateINT(items[2]);
+    } 
+
 
     if(items[0] == "EQUAL" && EvaluateINT(items[1]) == EvaluateINT(items[2])) RunFunction(items[3]);
     if(items[0] == "NEQUAL" && EvaluateINT(items[1]) != EvaluateINT(items[2])) RunFunction(items[3]);
@@ -206,5 +266,14 @@ void engine::Script::Run(std::string line)
                ((state::Actor*)state::Manager::GetMgrByName(_items[0])->GetByName(__items[0]).front())->Property(__items[1],EvaluateINT(items[2]));
             }
         }
+    }
+    if(items[0] == "CALL")
+    {
+        if(items.size() > 2)
+        {
+            for(int i = 2; i < items.size();i++)
+                _Stack.push_back(EvaluateINT(items[i]));
+        }
+        RunFunction(items[1]);
     }
 }

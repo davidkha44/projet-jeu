@@ -47,7 +47,7 @@ unsigned char* engine::InputHandler::CompareSnapshots()
 {
     unsigned char* output = (unsigned char*)malloc(SampleSize);
     for(int i = 0; i < SampleSize;i++)
-        output[i] = (~CurrentSnapshot[i] & 1) & (PreviousSnapshot[i] ^ CurrentSnapshot[i]);
+        output[i] = (~CurrentSnapshot[i] & 1) & (PreviousSnapshot[i] ^ CurrentSnapshot[i]); 
     return output;
 }
 

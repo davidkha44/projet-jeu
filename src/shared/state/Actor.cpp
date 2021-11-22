@@ -58,8 +58,7 @@ void state::Actor::OnSelectionAdd()
     bg->Sprite()->setTexture(*state::Manager::GetMgrByID(0)->GetByID(3)->Texture()); 
     bg->Selected(true);
     ChangeAction("STD_MOVE");
-    std::cout << Name() << "::"<< std::hex << ID() << "::OWNER : "<< Property("OWNER") << std::endl;
-    
+    std::cout << Name() << "::"<< std::hex << ID() << "::OWNER : "<< Property("OWNER") << std::endl;  
 }
 void state::Actor::OnSelectionRemove()
 {
@@ -92,13 +91,26 @@ void state::Actor::ChangeAction(std::string new_action)
 void state::Actor::OnKey(unsigned char* snapshot)
 {
     
-    if(snapshot[sf::Keyboard::Key::A])
+    if(snapshot[sf::Keyboard::Key::X])
     {
-        std::cout << "KEY A" << std::endl;
+        engine::SelectionHandler::PrintSelection();
     }
     if(snapshot[sf::Keyboard::Key::M])
     {
-        std::cout << "KEY M" << std::endl;
+        std::map<std::string,Actor*>::iterator it;
+        for(it = engine::SelectionHandler::FilteredSelection.begin(); it != engine::SelectionHandler::FilteredSelection.end();it++)
+        {
+            if(it->second && it->second->Selected()) it->second->ChangeAction("STD_MOVE");
+        }
+        
+    }
+    if(snapshot[sf::Keyboard::Key::A])
+    {
+        std::map<std::string,Actor*>::iterator it;
+        for(it = engine::SelectionHandler::FilteredSelection.begin(); it != engine::SelectionHandler::FilteredSelection.end();it++)
+        {
+            if(it->second && it->second->Selected()) it->second->ChangeAction("STD_ATTACK");
+        }
     }
         
 }

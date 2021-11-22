@@ -15,9 +15,9 @@ SUB posy 5
 PRINT_INT posy
 PRINT_INT red_dragon.HP
 PROPERTY ACTOR_MGR->red_dragon.HP zero
-EQUAL red_dragon.HP 1000 Test
-PRINT_INT red_dragon.DMG
-PRINT_INT red_dragon.DEF
+#EQUAL red_dragon.HP 1000 Test
+CALL Test red_dragon.DMG red_dragon.DEF
+PRINT_INT RET:Test
 ACTOR cyan_dragon HERO_CYANDRAGON ACTOR_MGR posx posy
 
 SELECTION_MASK SM_ACTION  
@@ -28,5 +28,9 @@ END SELECTION_MASK
 
 FUNCTION Test
 PRINT_STR str
-PRINT_INT red_dragon.HP
+PRINT_INT ARGS:0
+ADD ARGS:0 ARGS:1
+PRINT_INT ARGS:1
+RETURN INT ARGS:0
 END FUNCTION
+
