@@ -10,6 +10,7 @@
 #include "../shared/state/Actor.h"
 #include "../shared/engine/Action.h"
 #include "../shared/engine/Pattern.h"
+#include <iostream>
 
 
 GET_SET(render::MainFrame,std::string,Name)
@@ -17,6 +18,8 @@ GET_SET(render::MainFrame,int,Height)
 GET_SET(render::MainFrame,int,Width)
 GET_SET(render::MainFrame,int,Framerate)
 GET_SET(render::MainFrame,sf::RenderWindow*,Window)
+
+using namespace std;
 
 render::MainFrame::MainFrame(std::string name, int h, int w)
 {
@@ -52,6 +55,12 @@ void render::MainFrame::Tick()
         int x = MousePos.x / state::WorldHandler::CurrentWorld->CellSize().x;
         int y = MousePos.y / state::WorldHandler::CurrentWorld->CellSize().y;
         engine::InputHandler::RoutineMouseRight(x,y);
+        /*for(state::World* w : render::FileHandler::DeserializeTable<state::World>("src/client/tables/Worlds.csv","CSV"))
+        {
+            if(w->Name() == "WORLD_TEST")
+                state::WorldHandler::CurrentWorld = w;
+                ResizeWindow();
+        }*/
     )
     engine::InputHandler::RegisterInputs();
     unsigned char* kb_frame = engine::InputHandler::CompareSnapshots();
@@ -83,10 +92,25 @@ void render::MainFrame::Start()
             if (event.type == sf::Event::Closed)
                 Window()->close();
         }
-         Window()->display();
+        Window()->display();
     }
 }
 
+void render::MainFrame::Resize(int x,int y)
+{
+    Window()->setSize(sf::Vector2u(x, y));
+}
+
+void render::MainFrame::ResizeWindow()
+{
+    state::World* w = state::WorldHandler::CurrentWorld;
+    Window()->setSize(sf::Vector2u(w->CellN().x*w->CellSize().x, w->CellN().y*w->CellSize().y));
+}
+
+/*void render::MainFrame::ResizeTexture(std::string path)
+{
+
+}*/
 void render::MainFrame::InitActors()
 {
     //Initialise les acteurs sera rempli plus tard
