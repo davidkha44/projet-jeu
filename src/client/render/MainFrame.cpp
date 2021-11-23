@@ -23,6 +23,7 @@ render::MainFrame::MainFrame(std::string name, int h, int w)
     Name(name);
     Height(h);
     Width(w);
+    
 }
 
 void render::MainFrame::Draw()
@@ -68,6 +69,7 @@ void render::MainFrame::Start()
     InitActors();
     sf::VideoMode frame_vm(Height(),Width());
     Window(new sf::RenderWindow(frame_vm, Name(), sf::Style::Default));
+    Window()->setFramerateLimit(60);
     while (Window()->isOpen())
     {
         sf::Event event;

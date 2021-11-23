@@ -54,9 +54,12 @@ int engine::SelectionHandler::ProcessSelection(state::Manageable** m)
             {
                 std::cout << "ACTION" << std::endl;
                 //FilteredSelection[_default]->AssignPosition(FilteredSelection[SelectionState]->Position());
+                state::Manageable* bg = state::Manager::GetMgrByID(1)->GetByPos(FilteredSelection[_default]->Position());
+                bg->Sprite()->setTexture(*bg->Texture()); 
+                bg->Selected(false);
                 SelectionState = _default;
                 Trash();
-                //FilteredSelection.clear();
+                FilteredSelection.clear();
                 return 1;
             } 
             else SelectionState = items[1];

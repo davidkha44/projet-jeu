@@ -4,6 +4,7 @@
 #include "render.h"
 #include <state.h>
 #include <string.h>
+#include <unistd.h>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -50,15 +51,12 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"engine"))
     {
         MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
-        cout << "ENGINE" << endl;
+        cout << "ENGINE : "<< getpid() << endl;
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
         Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
         mf->Start();
-
-
-        
     }
 
     if(!strcmp(argv[1],"PROTOTYPE"))
