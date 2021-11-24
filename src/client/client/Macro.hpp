@@ -52,6 +52,7 @@
                                                 \
                                                      ins} }\
 
+#define KEY_SCRIPT(snapshot,k) if(snapshot[sf::Keyboard::Key::k]) {state::WorldHandler::GetMyPlayer()->Behaviour()->RunKey(#k);}
 
 
 

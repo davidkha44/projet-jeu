@@ -1,0 +1,4 @@
+#NET_MSG,FORMAT
+NET_CMD_MOVE,Move:$X;$X;$X,caster.ID;target.X;target.Y
+NET_CMD_ATTACK,Attack:$X;$X,caster.ID;caster.ID
+NET_CMD_INVOKE,Invoke:$X;$X;$X,caster.ID;target.X;target.Y

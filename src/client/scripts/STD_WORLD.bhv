@@ -9,9 +9,9 @@ STRING str = Fred
 
 
 ACTOR red_dragon HERO_REDDRAGON ACTOR_MGR posx posy
-ADD posx 5
+ADD posx 2
 PRINT_INT posx
-SUB posy 5
+SUB posy 2
 PRINT_INT posy
 PRINT_INT red_dragon.HP
 PROPERTY ACTOR_MGR->red_dragon.HP zero
@@ -25,6 +25,7 @@ DEFAULT caster
 caster target ACTOR_MGR
 target PROCESS ACTION_MGR
 END SELECTION_MASK
+
 
 FUNCTION Test
 PRINT_STR str

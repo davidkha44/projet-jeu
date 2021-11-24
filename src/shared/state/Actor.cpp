@@ -7,6 +7,7 @@
 #define COMMA ,
 
 GET_SET(state::Actor, std::map<std::string COMMA int>, Properties)
+GET_SET(state::Actor, std::string,CurrentAction)
 
 
 state::Actor::Actor() : state::Manageable()
@@ -26,7 +27,7 @@ state::Actor::Actor(std::vector<std::string> args) : state::Manageable(args[0], 
     _Properties["DEF"] = std::stoi(args[4]);
     _Properties["AP"] = std::stoi(args[5]);
     _Properties["MP"] = std::stoi(args[6]);
-    _CurrentAction = NULL;
+    _CurrentAction = "STD_MOVE";
     ID(0xAC000000 + state::Manager::GetMgrByName("ACTOR_MGR")->Elements().size());
     std::vector<std::string> _actions = render::FileHandler::SplitString(args[7],";");
     if(_actions.size())
@@ -42,6 +43,7 @@ state::Actor::~Actor()
 }
 int state::Actor::Property(std::string prop)
 {
+    if(prop == "ID") return ID();
     return _Properties[prop];
 }
 void state::Actor::Property(std::string prop,int value)
@@ -55,7 +57,7 @@ void state::Actor::OnSelectionAdd()
 {
     Selected(true);
     state::Manageable* bg = state::Manager::GetMgrByID(1)->GetByPos(Position());
-    bg->Sprite()->setTexture(*state::Manager::GetMgrByID(0)->GetByID(3)->Texture()); 
+    //bg->Sprite()->setTexture(*state::Manager::GetMgrByID(0)->GetByID(3)->Texture()); 
     bg->Selected(true);
     ChangeAction("STD_MOVE");
     std::cout << Name() << "::"<< std::hex << ID() << "::OWNER : "<< Property("OWNER") << std::endl;  
@@ -75,7 +77,8 @@ void state::Actor::ChangeAction(std::string new_action)
     for(state::Manageable* m : state::Manager::GetMgrByName("ACTION_MGR")->Elements())
         m->Render(false);
     std::vector<state::Manageable*> pieces = std::vector<state::Manageable*>();
-    for(state::Manageable* m : _Actions[new_action]->BasePattern()->Map())
+        std::cout << "ICI" << std::endl;
+    for(state::Manageable* m : engine::Action::Actions[new_action]->BasePattern()->Map())
     {
         
         state::Manageable* _m = new Manageable(m->Name(),"BG_TILE_SAND");
@@ -84,36 +87,13 @@ void state::Actor::ChangeAction(std::string new_action)
         pieces.push_back(_m);
         
     }
-    _CurrentAction = _Actions[new_action];
+            
+    _CurrentAction = new_action;
     state::Manager::GetMgrByName("ACTION_MGR")->Elements(pieces);
+    engine::SelectionHandler::ChangeAction(new_action);
 }
 
-void state::Actor::OnKey(unsigned char* snapshot)
-{
-    
-    if(snapshot[sf::Keyboard::Key::X])
-    {
-        engine::SelectionHandler::PrintSelection();
-    }
-    if(snapshot[sf::Keyboard::Key::M])
-    {
-        std::map<std::string,Actor*>::iterator it;
-        for(it = engine::SelectionHandler::FilteredSelection.begin(); it != engine::SelectionHandler::FilteredSelection.end();it++)
-        {
-            if(it->second && it->second->Selected()) it->second->ChangeAction("STD_MOVE");
-        }
-        
-    }
-    if(snapshot[sf::Keyboard::Key::A])
-    {
-        std::map<std::string,Actor*>::iterator it;
-        for(it = engine::SelectionHandler::FilteredSelection.begin(); it != engine::SelectionHandler::FilteredSelection.end();it++)
-        {
-            if(it->second && it->second->Selected()) it->second->ChangeAction("STD_ATTACK");
-        }
-    }
-        
-}
+
 void state::Actor::AssignPosition(int posx,int posy)
 {
     Position(sf::Vector2i(posx,posy));
@@ -121,8 +101,16 @@ void state::Actor::AssignPosition(int posx,int posy)
     Position(sf::Vector2i(posx,posy));
     _Properties["X"] = posx;
     _Properties["Y"] = posy;
+    _Properties["COORD"] = ((posx & 0xFFFF) << 16) + (posy & 0xFFFF);
 }
 void state::Actor::AssignPosition(sf::Vector2i v0)
 {
     AssignPosition(v0.x,v0.y);
+}
+int state::Actor::GetNetParam(std::string param)
+{
+    if(param == "ID") return ID();
+    if(param == "X") return Position().x;
+    if(param == "Y") return Position().y;
+    else return _Properties[param];
 }

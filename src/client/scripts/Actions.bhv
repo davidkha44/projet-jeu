@@ -1,0 +1,13 @@
+NET_FUNCTION Move
+ 
+END NET_FUNCTION
+
+NET_FUNCTION Attack
+INT atk_dmg = FILTERED_SELECTION->caster.DMG
+INT trgt_hp = FILTERED_SELECTION->target.HP
+SUB atk_dmg FILTERED_SELECTION->target.DEF
+FLOOR atk_dmg 0
+SUB trgt_hp atk_dmg
+FLOOR trgt_hp 0
+PROPERTY FILTERED_SELECTION->target.HP trgt_hp
+END NET_FUNCTION

@@ -1,8 +1,10 @@
 #include "SelectionHandler.h"
 #include "../shared/state.h"
+#include "NetMessageHandler.h"
 #include "../../client/render.h"
 #include "../shared/state/Manageable.h"
 #include <iostream>
+#include <sstream>
 
 void engine::SelectionHandler::Add(state::Manageable** m)
 {
@@ -17,6 +19,7 @@ void engine::SelectionHandler::Add(state::Manageable** m)
 void engine::SelectionHandler::Remove(state::Manageable** m)
 {
     int index = 0;
+    SelectionState = render::FileHandler::SplitString(SelectionMask[0]," ")[1];
     for(int i = 0; i < Selection.size();i++)
     {
         if(Selection.data()[i][0]->Position().x == m[0]->Position().x && Selection.data()[i][0]->Position().y == m[0]->Position().y )
@@ -46,20 +49,23 @@ int engine::SelectionHandler::ProcessSelection(state::Manageable** m)
     {
         std::vector<std::string> items = render::FileHandler::SplitString(s," ");
         if(items[0] == "DEFAULT") _default = items[1];
+
         if(items[0] == SelectionState && m[state::Manager::GetMgrByName(items[2])->ID()]) 
         {
             FilteredSelection[SelectionState] = (state::Actor*)m[state::Manager::GetMgrByName(items[2])->ID()];
+            if(SelectionState == _default)
+            {
+                Packet = engine::Action::Actions[FilteredSelection[_default]->CurrentAction()]->NetCmd()->Format();
+                std::cout << Packet.first << "::" << Packet.second << std::endl;
+            }
             std::cout <<"ADDED : ["<<SelectionState<<"] = " <<FilteredSelection[SelectionState]->Name() << std::endl;
             if(items[1] == "PROCESS")
             {
-                std::cout << "ACTION" << std::endl;
-                //FilteredSelection[_default]->AssignPosition(FilteredSelection[SelectionState]->Position());
-                state::Manageable* bg = state::Manager::GetMgrByID(1)->GetByPos(FilteredSelection[_default]->Position());
-                bg->Sprite()->setTexture(*bg->Texture()); 
-                bg->Selected(false);
+                std::cout << NetFormat() << std::endl;
+                state::WorldHandler::NetCommand(NetFormat());
                 SelectionState = _default;
                 Trash();
-                FilteredSelection.clear();
+                //FilteredSelection.clear();
                 return 1;
             } 
             else SelectionState = items[1];
@@ -79,7 +85,7 @@ void engine::SelectionHandler::OnMouseLeft(int x,int y)
         state::Manageable* m = state::Manager::GetMgrByID(i)->GetByPos(x,y);
         if(m && !m->Selected() && m->Render())
         {
-            m->OnSelectionAdd();
+            if(SelectionState == render::FileHandler::SplitString(SelectionMask[0]," ")[1]) m->OnSelectionAdd();
             items[i] = m;
         }
         else items[i] = NULL;
@@ -108,4 +114,19 @@ void engine::SelectionHandler::PrintSelection()
         }
         std::cout << " } " << std::endl;
     }
+}
+
+std::string engine::SelectionHandler::NetFormat()
+{
+    char str[64];
+    std::vector<std::string> items = render::FileHandler::SplitString(Packet.second,";");
+    int* args = (int*)malloc(items.size()*sizeof(int));
+    for(int i = 0; i < items.size();i++)
+        args[i] = FilteredSelection[render::FileHandler::SplitString(items[i],".")[0]]->GetNetParam(render::FileHandler::SplitString(items[i],".")[1]);
+    return std::string(engine::NetMessageHandler::Fill(Packet.first,args));
+}
+
+void engine::SelectionHandler::ChangeAction(std::string new_action)
+{
+    Packet = engine::Action::Actions[new_action]->NetCmd()->Format();
 }

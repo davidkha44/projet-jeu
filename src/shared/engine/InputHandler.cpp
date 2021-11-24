@@ -7,7 +7,7 @@
 
 EVENT(engine::InputHandler,MouseLeft,engine::SelectionHandler)
 EVENT(engine::InputHandler,MouseRight,engine::SelectionHandler)
-EVENT(engine::InputHandler,Keyboard,state::Actor)
+EVENT(engine::InputHandler,Keyboard,state::Player)
 
 
 template <class T>
@@ -71,6 +71,6 @@ void engine::InputHandler::Initialize()
     CurrentSnapshot = (unsigned char*)malloc(SampleSize);
     RegisterMouseLeftEvents<engine::SelectionHandler>();
     RegisterMouseRightEvents<engine::SelectionHandler>();
-    RegisterKeyboardEvents<state::Actor>();
+    RegisterKeyboardEvents<state::Player>();
 }
 

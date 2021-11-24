@@ -91,6 +91,7 @@ void render::MainFrame::InitActors()
 {
     //Initialise les acteurs sera rempli plus tard
     render::FileHandler::DeserializeTable<engine::Pattern>("src/client/tables/Patterns.csv","CSV");
+    render::FileHandler::DeserializeTable<engine::NetCommand>("src/client/tables/NetMessage.csv","CSV");
     render::FileHandler::DeserializeTable<engine::Action>("src/client/tables/Actions.csv","CSV");
     if(state::WorldHandler::CurrentWorld->Behaviour())
         state::WorldHandler::CurrentWorld->Behaviour()->Run();

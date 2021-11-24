@@ -33,7 +33,11 @@ void engine::Script::STRING(std::string key,std::string value)
 {
     _STRINGS[key] = value;
 }
-int engine::Script::EvaluateINT(std::string str)
+void engine::Script::RegisterNetVar(std::string key,state::Actor* actor)
+{
+    _NET_VARS[key] = actor;
+}
+int engine::Script::EvaluateINT(std::string str,int* args)
 {
     int result = 0;
     if(str.find("->") != std::string::npos)
@@ -44,7 +48,17 @@ int engine::Script::EvaluateINT(std::string str)
             std::vector<std::string> _items = render::FileHandler::SplitString(items[1],".");
             result = ((state::Actor*)engine::SelectionHandler::FilteredSelection[_items[0]])->Property(_items[1]);
         }
-
+        if(items[0] == "NET_VAR")
+        {
+            std::vector<std::string> _items = render::FileHandler::SplitString(items[1],".");
+            result = ((state::Actor*)_NET_VARS[_items[0]])->Property(_items[1]);
+        }
+    }
+    if(str.find("::") != std::string::npos)
+    {
+        std::vector<std::string> _items = render::FileHandler::SplitString(str,"::");
+        std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
+        result = ((state::Actor*)state::Manager::GetMgrByName(_items[0])->GetByID(EvaluateINT(__items[0],args)))->Property(__items[1]);
     }
     else if(str.find(".") != std::string::npos)
     {
@@ -52,8 +66,7 @@ int engine::Script::EvaluateINT(std::string str)
     }
     else if(str.find("ARGS:") != std::string::npos)
     {
-        if(std::stoi(render::FileHandler::SplitString(str,":")[1]) < _Stack.size())
-            result = _Stack[std::stoi(render::FileHandler::SplitString(str,":")[1])];
+        result = args[std::stoi(render::FileHandler::SplitString(str,":")[1])];
     }
     else
     {
@@ -65,7 +78,7 @@ int engine::Script::EvaluateINT(std::string str)
     return result;
 }
 
-void engine::Script::RunFunction(std::string func)
+void engine::Script::RunFunction(std::string func,int* args)
 {
     bool begin_execution = false;
     std::cout << "EXEC " << func << std::endl;
@@ -77,13 +90,35 @@ void engine::Script::RunFunction(std::string func)
         {
             if(items[0] == "RETURN")
             {
-                if(items[1] == "INT") _INTS["RET:"+func] = EvaluateINT(items[2]);
+                if(items[1] == "INT") _INTS["RET:"+func] = EvaluateINT(items[2],args);
                 if(items[1] == "STRING") _STRINGS["RET:"+func] = items[2];
-                while(!_Stack.empty()) _Stack.clear();
             }
-            else Run(line);
+            else Run(line,args);
         } 
         if(items[0] == "FUNCTION" && items[1] == func && !begin_execution) begin_execution = true;
+    }
+}
+void engine::Script::RunFunction(std::string func,int argcount)
+{
+    int* ARGS = (int*)calloc(argcount,sizeof(int));
+    while(--argcount >= 0)
+    {
+        ARGS[argcount] = _Stack.top();
+        _Stack.pop();
+    }
+    RunFunction(func,ARGS);
+    delete ARGS;
+}
+void engine::Script::RunKey(std::string key)
+{
+    bool begin_execution = false;
+    std::cout << "EXEC KEY " << key << std::endl;
+    for(std::string line : _Text)
+    {
+        std::vector<std::string> items = render::FileHandler::SplitString(line," ");
+        if(items[0] == "END" && items[1] == "KEY" && begin_execution) return;
+        if(begin_execution) Run(line,(int*)NULL);
+        if(items[0] == "KEY" && items[1] == key && !begin_execution) begin_execution = true;
     }
 }
 void engine::Script::RunSelectionMask(std::string sm)
@@ -124,98 +159,91 @@ void engine::Script::Run()
         else
         {
             if(items[0] == "FUNCTION") inside_func = true;
-            Run(line);
+            Run(line,(int*)NULL);
         }
     }
 }
 
 
-void engine::Script::Run(std::string line)
+void engine::Script::Run(std::string line,int* args)
 {
-    
+    //std::cout << _Name <<"::LINE : " << line << std::endl;
     std::vector<std::string> items = render::FileHandler::SplitString(line," ");
-    if(items[0] == "INT") _INTS[items[1]] = EvaluateINT(render::FileHandler::SplitString(line,"=")[1]);
+    if(items[0] == "INT") _INTS[items[1]] = EvaluateINT(render::FileHandler::SplitString(line,"=")[1],args);
     if(items[0] == "STRING") _STRINGS[items[1]] = render::FileHandler::SplitString(line,"=")[1];
     if(items[0] == "INC") _INTS[items[1]]++;
     if(items[0] == "DEC") _INTS[items[1]]--;
-    if(items[0] == "PRINT_INT") std::cout << EvaluateINT(items[1]) << std::endl;
+    if(items[0] == "PRINT_INT") std::cout << EvaluateINT(items[1],args) << std::endl;
     if(items[0] == "PRINT_STR") std::cout << _STRINGS[items[1]] << std::endl;
     if(items[0] == "ADD")
     {
-        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
-        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] += EvaluateINT(items[2]) :
-        _INTS[items[1]] += EvaluateINT(items[2]);
+        items[1].find("ARGS:") != std::string::npos ? 
+        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] += EvaluateINT(items[2],args) :
+        _INTS[items[1]] += EvaluateINT(items[2],args);
     } 
     if(items[0] == "SUB")
     {
-        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
-        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] -= EvaluateINT(items[2]) :
-        _INTS[items[1]] -= EvaluateINT(items[2]);
+        items[1].find("ARGS:") != std::string::npos ? 
+        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] -= EvaluateINT(items[2],args) :
+        _INTS[items[1]] -= EvaluateINT(items[2],args);
     } 
     if(items[0] == "MUL")
     {
-        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
-        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] *= EvaluateINT(items[2]) :
-        _INTS[items[1]] *= EvaluateINT(items[2]);
+        items[1].find("ARGS:") != std::string::npos ? 
+        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] *= EvaluateINT(items[2],args) :
+        _INTS[items[1]] *= EvaluateINT(items[2],args);
     } 
     if(items[0] == "DIV")
     {
-        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
-        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] /= EvaluateINT(items[2]) :
-        _INTS[items[1]] /= EvaluateINT(items[2]);
+        items[1].find("ARGS:") != std::string::npos ? 
+        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] /= EvaluateINT(items[2],args) :
+        _INTS[items[1]] /= EvaluateINT(items[2],args);
     } 
     if(items[0] == "XOR")
     {
-        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
-        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] ^= EvaluateINT(items[2]) :
-        _INTS[items[1]] ^= EvaluateINT(items[2]);
+        items[1].find("ARGS:") != std::string::npos ? 
+        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] ^= EvaluateINT(items[2],args) :
+        _INTS[items[1]] ^= EvaluateINT(items[2],args);
     } 
     if(items[0] == "AND")
     {
-        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
-        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] &= EvaluateINT(items[2]) :
-        _INTS[items[1]] &= EvaluateINT(items[2]);
+        items[1].find("ARGS:") != std::string::npos ? 
+        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] &= EvaluateINT(items[2],args) :
+        _INTS[items[1]] &= EvaluateINT(items[2],args);
     } 
     if(items[0] == "OR")
     {
-        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
-        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] |= EvaluateINT(items[2]) :
-        _INTS[items[1]] |= EvaluateINT(items[2]);
+        items[1].find("ARGS:") != std::string::npos ? 
+        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] |= EvaluateINT(items[2],args) :
+        _INTS[items[1]] |= EvaluateINT(items[2],args);
     } 
     if(items[0] == "RBS")
     {
-        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
-        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] >>= EvaluateINT(items[2]) :
-        _INTS[items[1]] >>= EvaluateINT(items[2]);
+        items[1].find("ARGS:") != std::string::npos ? 
+        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] >>= EvaluateINT(items[2],args) :
+        _INTS[items[1]] >>= EvaluateINT(items[2],args);
     }
     if(items[0] == "LBS")
     {
-        (items[1].find("ARGS:") != std::string::npos) && (std::stoi(render::FileHandler::SplitString(items[1],":")[1]) < _Stack.size()) ? 
-        _Stack[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] <<= EvaluateINT(items[2]) :
-        _INTS[items[1]] <<= EvaluateINT(items[2]);
+        items[1].find("ARGS:") != std::string::npos ? 
+        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] <<= EvaluateINT(items[2],args) :
+        _INTS[items[1]] <<= EvaluateINT(items[2],args);
     } 
 
 
-    if(items[0] == "EQUAL" && EvaluateINT(items[1]) == EvaluateINT(items[2])) RunFunction(items[3]);
-    if(items[0] == "NEQUAL" && EvaluateINT(items[1]) != EvaluateINT(items[2])) RunFunction(items[3]);
-    if(items[0] == "GT" && EvaluateINT(items[1]) > EvaluateINT(items[2])) RunFunction(items[3]);
-    if(items[0] == "GTE" && EvaluateINT(items[1]) >= EvaluateINT(items[2])) RunFunction(items[3]);
-    if(items[0] == "LT" && EvaluateINT(items[1]) < EvaluateINT(items[2])) RunFunction(items[3]);
-    if(items[0] == "LTE" && EvaluateINT(items[1]) <= EvaluateINT(items[2])) RunFunction(items[3]);
+    if(items[0] == "EQUAL" && EvaluateINT(items[1],args) == EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+    if(items[0] == "NEQUAL" && EvaluateINT(items[1],args) != EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+    if(items[0] == "GT" && EvaluateINT(items[1],args) > EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+    if(items[0] == "GTE" && EvaluateINT(items[1],args) >= EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+    if(items[0] == "LT" && EvaluateINT(items[1],args) < EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+    if(items[0] == "LTE" && EvaluateINT(items[1],args) <= EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
 
     if(items[0] == "ACTOR")
     {
-        char* p;
-        char*px;
-        char*py;
-        int converted = (int)strtol(items[3].c_str(), &p, 10);
-        int converted_px = (int)strtol(items[4].c_str(), &px, 10);
-        int converted_py = (int)strtol(items[5].c_str(), &py, 10);
+        int x = EvaluateINT(items[4],args);
+        int y = EvaluateINT(items[5],args);
+        
         std::vector<state::Actor*> _actors = render::FileHandler::DeserializeTable<state::Actor>("src/client/tables/Actors.csv","CSV");
-        int x = 0;
-        int y = 0;
-        (*px ? x = _INTS[items[4]] : x = converted_px); 
-        (*py ? y = _INTS[items[5]] : y = converted_py); 
         state::Actor* _actor = NULL;
         for(state::Actor* a : _actors)
         {
@@ -227,7 +255,7 @@ void engine::Script::Run(std::string line)
             _actor->Name(items[1]);
             _actor->AssignPosition(x,y);
         }
-        (*p ? state::Manager::GetMgrByName(items[3])->Add(_actor) : state::Manager::GetMgrByID(converted)->Add(_actor));
+        state::Manager::GetMgrByName(items[3])->Add(_actor);
     }
     if(items[0] == "ATTACH_PAWN")
     {
@@ -244,7 +272,7 @@ void engine::Script::Run(std::string line)
     }
     if(items[0] == "PLAYER")
     {
-        state::WorldHandler::Players.push_back(new state::Player(items[1],(char)(std::stoi(items[2]) & 0xFF)));
+        state::WorldHandler::Players.push_back(new state::Player(items[1],(char)(std::stoi(items[2]) & 0xFF),Scripts[items[3]]));
     }
     if(items[0] == "SELECTION_MASK")
     {
@@ -258,13 +286,25 @@ void engine::Script::Run(std::string line)
             if(_items[0] == "FILTERED_SELECTION")
             {
                 std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
-                ((state::Actor*)engine::SelectionHandler::FilteredSelection[__items[0]])->Property(__items[1],EvaluateINT(items[2]));
+                if(__items[1] == "ACTION") {((state::Actor*)engine::SelectionHandler::FilteredSelection[__items[0]])->ChangeAction(items[2]);return;}
+                else ((state::Actor*)engine::SelectionHandler::FilteredSelection[__items[0]])->Property(__items[1],EvaluateINT(items[2],args));
+            }
+            if(_items[0] == "NET_VAR")
+            {
+                std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
+                _NET_VARS[__items[0]]->Property(__items[1],EvaluateINT(items[2],args));
             }
             else
             {
                std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
-               ((state::Actor*)state::Manager::GetMgrByName(_items[0])->GetByName(__items[0]).front())->Property(__items[1],EvaluateINT(items[2]));
+               ((state::Actor*)state::Manager::GetMgrByName(_items[0])->GetByName(__items[0]).front())->Property(__items[1],EvaluateINT(items[2],args));
             }
+        }
+        if(items[1].find("::") != std::string::npos)
+        {
+            std::vector<std::string> _items = render::FileHandler::SplitString(items[1],"::");
+            std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
+            ((state::Actor*)state::Manager::GetMgrByName(_items[0])->GetByID(EvaluateINT(__items[0],args)))->Property(__items[1],EvaluateINT(items[2],args));
         }
     }
     if(items[0] == "CALL")
@@ -272,8 +312,9 @@ void engine::Script::Run(std::string line)
         if(items.size() > 2)
         {
             for(int i = 2; i < items.size();i++)
-                _Stack.push_back(EvaluateINT(items[i]));
+                _Stack.push(EvaluateINT(items[i],args));
+            RunFunction(items[1],items.size() - 2);
         }
-        RunFunction(items[1]);
+        else RunFunction(items[1],(int*)NULL);
     }
 }
