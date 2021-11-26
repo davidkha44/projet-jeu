@@ -10,7 +10,7 @@ engine::Script::Script(std::vector<std::string> args)
 {
     _Name = args[0];
     _ResPath = args[1];
-
+    _INTS["RESERVED:JMP"] = 0;
     PARSE_BHV_SCRIPT(_ResPath, '#',_Text.push_back(line);)
     Scripts[_Name] = this;
 }
@@ -58,7 +58,9 @@ int engine::Script::EvaluateINT(std::string str,int* args)
     {
         std::vector<std::string> _items = render::FileHandler::SplitString(str,"::");
         std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
-        result = ((state::Actor*)state::Manager::GetMgrByName(_items[0])->GetByID(EvaluateINT(__items[0],args)))->Property(__items[1]);
+        result = ((state::Actor*)state::Manager::GetMgrByName(_items[0])->GetByID(EvaluateINT(__items[0],args)))->GetNetParam(__items[1]);
+        std::cout << result << "//" << __items[0] << ":" <<args[0] <<"//" <<__items[1] << std::endl;
+
     }
     else if(str.find(".") != std::string::npos)
     {
@@ -80,6 +82,16 @@ int engine::Script::EvaluateINT(std::string str,int* args)
 
 void engine::Script::RunFunction(std::string func,int* args)
 {
+    if(func.find("::") != std::string::npos)
+    {
+       std::vector<std::string> items = render::FileHandler::SplitString(func,"::"); 
+       if(items[0] == "FUNC")
+       {
+           _INTS["RET:"+items[1]] = STATIC_FUNCTIONS[items[1]](args);
+           std::cout << "HEREeeeee" << std::endl;
+           return;
+       }
+    }
     bool begin_execution = false;
     std::cout << "EXEC " << func << std::endl;
     for(std::string line : _Text)
@@ -92,6 +104,11 @@ void engine::Script::RunFunction(std::string func,int* args)
             {
                 if(items[1] == "INT") _INTS["RET:"+func] = EvaluateINT(items[2],args);
                 if(items[1] == "STRING") _STRINGS["RET:"+func] = items[2];
+            }
+            else if(_INTS["RESERVED:JMP"])
+            {
+                _INTS["RESERVED:JMP"]--;
+                continue;
             }
             else Run(line,args);
         } 
@@ -159,6 +176,11 @@ void engine::Script::Run()
         else
         {
             if(items[0] == "FUNCTION") inside_func = true;
+            if(_INTS["RESERVED:JMP"])
+            {
+                _INTS["RESERVED:JMP"]--;
+                continue;
+            }
             Run(line,(int*)NULL);
         }
     }
@@ -231,12 +253,72 @@ void engine::Script::Run(std::string line,int* args)
     } 
 
 
-    if(items[0] == "EQUAL" && EvaluateINT(items[1],args) == EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
-    if(items[0] == "NEQUAL" && EvaluateINT(items[1],args) != EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
-    if(items[0] == "GT" && EvaluateINT(items[1],args) > EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
-    if(items[0] == "GTE" && EvaluateINT(items[1],args) >= EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
-    if(items[0] == "LT" && EvaluateINT(items[1],args) < EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
-    if(items[0] == "LTE" && EvaluateINT(items[1],args) <= EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+    //if(items[0] == "EQUAL" && EvaluateINT(items[1],args) == EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+    if(items[0] == "EQUAL" && EvaluateINT(items[1],args) == EvaluateINT(items[2],args))
+    {
+        if(items[3].find("JMP:") != std::string::npos)
+        {
+            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
+            return;
+        }
+        else RunFunction(items[3],(int*)NULL);
+    }
+    if(items[0] == "NEQUAL" && EvaluateINT(items[1],args) != EvaluateINT(items[2],args))
+    {
+        if(items[3].find("JMP:") != std::string::npos)
+        {
+            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
+            return;
+        }
+        else RunFunction(items[3],(int*)NULL);
+    }
+    if(items[0] == "GT" && EvaluateINT(items[1],args) > EvaluateINT(items[2],args))
+    {
+        if(items[3].find("JMP:") != std::string::npos)
+        {
+            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
+            return;
+        }
+        else RunFunction(items[3],(int*)NULL);
+    }
+    if(items[0] == "GTE" && EvaluateINT(items[1],args) >= EvaluateINT(items[2],args))
+    {
+        if(items[3].find("JMP:") != std::string::npos)
+        {
+            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
+            return;
+        }
+        else RunFunction(items[3],(int*)NULL);
+    } 
+    if(items[0] == "LT" && EvaluateINT(items[1],args) < EvaluateINT(items[2],args))
+    {
+        if(items[3].find("JMP:") != std::string::npos)
+        {
+            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
+            return;
+        }
+        else RunFunction(items[3],(int*)NULL);
+    }
+    if(items[0] == "LTE" && EvaluateINT(items[1],args) <= EvaluateINT(items[2],args))
+    {
+        if(items[3].find("JMP:") != std::string::npos)
+        {
+            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
+            return;
+        }
+        else RunFunction(items[3],(int*)NULL);
+    }
+    //if(items[0] == "NEQUAL" && EvaluateINT(items[1],args) != EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+    //if(items[0] == "GT" && EvaluateINT(items[1],args) > EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+    //if(items[0] == "GTE" && EvaluateINT(items[1],args) >= EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+    //if(items[0] == "LT" && EvaluateINT(items[1],args) < EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+    //if(items[0] == "LTE" && EvaluateINT(items[1],args) <= EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
 
     if(items[0] == "ACTOR")
     {

@@ -114,7 +114,7 @@ std::vector<state::Manageable*> state::Manager::GetByName(std::string name)
 state::Manageable* state::Manager::GetByID(int id)
 {
     for(state::Manageable* m : Elements())
-    {
+    {   if(m->ID() == 0xAC0F000C) printf("found\n");
         if(m->ID() == id)
             return m;
     }
@@ -134,4 +134,10 @@ state::Manageable* state::Manager::GetByPos(int x,int y)
 state::Manageable* state::Manager::GetByPos(sf::Vector2i v0)
 {
     return GetByPos(v0.x,v0.y);
+}
+
+int state::Manager::CheckPosition(int* params)
+{
+    if(Manager::GetMgrByID(params[0])->GetByPos(params[1],params[2])) return Manager::GetMgrByID(params[0])->GetByPos(params[1],params[2])->ID();
+    return 0;
 }
