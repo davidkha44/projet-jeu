@@ -16,6 +16,7 @@ void state::WorldHandler::OnTurnBeginAsync()
 void state::WorldHandler::OnTurnEnd()
 {
     Behaviour->RunFunction("OnTurnEnd",(int*)NULL);
+    if(Behaviour->INT("STATUS"));
     std::cout << "ON_TURN_END_WH" << std::endl;
 }
 void state::WorldHandler::OnTurnEndAsync()
@@ -50,7 +51,6 @@ char state::WorldHandler::WinnerID()
 
 void state::WorldHandler::Initialize()
 {
-    CurrentWorld = NULL;
     Turn = 0;
     Instance = 0;
     Status = 0;
@@ -96,12 +96,11 @@ void state::WorldHandler::NetCommand(std::string cmd)
     int* args = (int*)malloc(_s.size()*sizeof(int));
     std::cout << "size" << _s.size() << std::endl;
     for(int i = 0; i < _s.size();i++)
-    {
-        
+    { 
         args[i] = std::stol(_s[i],nullptr,16);
-        std::cout << "s = " << args[i] << std::endl;
     }
-    Behaviour->RunFunction(items[0],args);
+    if(Turn == ((args[0] >> 16) & 0xFF) && !Behaviour->INT("STATUS"))
+        Behaviour->RunFunction(items[0],args);
     delete args;
 }
 

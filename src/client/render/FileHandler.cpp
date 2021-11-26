@@ -33,6 +33,7 @@ render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
     //Charge et parcours le fichiers de configuration LaunchArgs.csv
     render::FileHandler::DeserializeTable<engine::Script>("src/client/tables/Scripts.csv","CSV");
     engine::Script::STATIC_FUNCTIONS["CheckPosition"] = state::Manager::CheckPosition;
+    state::WorldHandler::Initialize();
     PARSE_CSV_LINES(path,'#',
 
     if(items[0] == "SCENE")

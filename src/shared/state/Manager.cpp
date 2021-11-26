@@ -1,5 +1,6 @@
 #include "Manager.h"
 #include "Manageable.h"
+#include "Actor.h"
 #include "../../client/client/Macro.hpp"
 
 GET_SET(state::Manager,std::string,Name)
@@ -139,5 +140,10 @@ state::Manageable* state::Manager::GetByPos(sf::Vector2i v0)
 int state::Manager::CheckPosition(int* params)
 {
     if(Manager::GetMgrByID(params[0])->GetByPos(params[1],params[2])) return Manager::GetMgrByID(params[0])->GetByPos(params[1],params[2])->ID();
+    return 0;
+}
+int state::Manager::GetOwner(int* params)
+{
+    if((GetMgrByID(params[0])->GetByID(params[1]))) return ((state::Actor*)(GetMgrByID(params[0])->GetByID(params[1])))->GetNetParam("OWNER");
     return 0;
 }

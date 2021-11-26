@@ -59,7 +59,7 @@ int engine::Script::EvaluateINT(std::string str,int* args)
         std::vector<std::string> _items = render::FileHandler::SplitString(str,"::");
         std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
         result = ((state::Actor*)state::Manager::GetMgrByName(_items[0])->GetByID(EvaluateINT(__items[0],args)))->GetNetParam(__items[1]);
-        std::cout << result << "//" << __items[0] << ":" <<args[0] <<"//" <<__items[1] << std::endl;
+    
 
     }
     else if(str.find(".") != std::string::npos)
@@ -88,7 +88,6 @@ void engine::Script::RunFunction(std::string func,int* args)
        if(items[0] == "FUNC")
        {
            _INTS["RET:"+items[1]] = STATIC_FUNCTIONS[items[1]](args);
-           std::cout << "HEREeeeee" << std::endl;
            return;
        }
     }
@@ -208,6 +207,12 @@ void engine::Script::Run(std::string line,int* args)
         items[1].find("ARGS:") != std::string::npos ? 
         args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] -= EvaluateINT(items[2],args) :
         _INTS[items[1]] -= EvaluateINT(items[2],args);
+    } 
+    if(items[0] == "MODULO")
+    {
+        items[1].find("ARGS:") != std::string::npos ? 
+        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] %= EvaluateINT(items[2],args) :
+        _INTS[items[1]] %= EvaluateINT(items[2],args);
     } 
     if(items[0] == "MUL")
     {

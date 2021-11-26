@@ -39,6 +39,14 @@ void state::Player::OnKey(unsigned char* snapshot)
     KEY_SCRIPT(snapshot,M)
     KEY_SCRIPT(snapshot,I)
     KEY_SCRIPT(snapshot,R)
+
+    if(snapshot[sf::Keyboard::Key::T])
+    {
+        //Changement de tour manuel pour l'instant
+        state::WorldHandler::OnTurnEnd();
+        state::WorldHandler::OnTurnBegin();
+        std::cout << "Turn : " << state::WorldHandler::Turn <<"Max Player : " << state::WorldHandler::Behaviour->INT("MAX_PLAYER") << std::endl;
+    }
         
 }
 
