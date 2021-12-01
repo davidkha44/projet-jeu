@@ -1,12 +1,25 @@
-//#include "engine.h"
+#include "engine.h"
 #include "state.h"
+#include "ai.h"
 #include <iostream>
 #include <stdlib.h>
+#include "../../client/client/Macro.hpp"
 
 
 using namespace state;
 using namespace std;
 
+GET_SET(ai::RandomAI,int,Num_Player);
 
-//void RandomAI :: run(engine ::Engine &engine){}
-    
+engine::Action ai::RandomAI::SelectRandomAction(std::vector<engine::Action> Actions){
+    int n = Actions.size();
+    printf("n = %d",n);
+    srand(time(0));
+    int random = rand() % n;
+    printf("random = %d",random);
+    return Actions[random];
+} 
+
+ai::RandomAI::RandomAI(){
+    _Num_Player = 1;
+}
