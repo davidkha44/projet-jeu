@@ -5,20 +5,22 @@
 
 void state::WorldHandler::OnTurnBegin()
 {
-    Behaviour->RunFunction("OnTurnBegin",(int*)NULL);
+    //Behaviour->RunFunction("OnTurnBegin",(int*)NULL);
+    for(int i = 0; i < Players.size();i++)
+        Players[i]->Behaviour()->RunFunction("TurnBegin",(int*)NULL);
     Turn = Behaviour->INT("TURN");
     
     std::cout << "ON_TURN_BEGIN_WH" << std::endl;
 }
 void state::WorldHandler::OnTurnBeginAsync()
 {
-    GetActivePlayer()->Behaviour()->RunFunction("OnTurnBegin",(int*)NULL);
+    GetActivePlayer()->Behaviour()->RunFunction("TurnEnd",(int*)NULL);
     std::cout << "ON_TURN_BEGIN_ASYNC_WH" << std::endl;
 }
 void state::WorldHandler::OnTurnEnd()
 {
-    Behaviour->RunFunction("OnTurnEnd",(int*)NULL);
-    if(Behaviour->INT("STATUS"));
+    //Behaviour->RunFunction("OnTurnEnd",(int*)NULL);
+    //if(Behaviour->INT("STATUS"));
     std::cout << "ON_TURN_END_WH" << std::endl;
 }
 void state::WorldHandler::OnTurnEndAsync()
@@ -28,7 +30,7 @@ void state::WorldHandler::OnTurnEndAsync()
 
 state::Player* state::WorldHandler::GetActivePlayer()
 {
-    return Players[Turn % Players.size()];
+    return Players[Behaviour->INT("TURN") % Players.size()];
 }
 state::Player* state::WorldHandler::GetMyPlayer()
 {
@@ -56,6 +58,7 @@ void state::WorldHandler::Initialize()
     Turn = 0;
     Instance = 0;
     Status = 0;
+    Players = std::vector<state::Player*>();
 }
 void state::WorldHandler::Initialize(World* w)
 {
@@ -97,6 +100,7 @@ void state::WorldHandler::NetCommand(std::string cmd)
     int* args = (int*)malloc(_s.size()*sizeof(int));
     for(int i = 0; i < _s.size();i++)
         args[i] = std::stol(_s[i],nullptr,16);
+    std::cout << "arg0 :" << std::hex << args[0] << std::endl;
     if(Behaviour->INT("TURN") == ((args[0] >> 16) & 0xFF) && !Behaviour->INT("STATUS"))
         Behaviour->RunFunction(items[0],args);
     delete args;
