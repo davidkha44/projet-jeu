@@ -33,13 +33,14 @@ render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
     //Charge et parcours le fichiers de configuration LaunchArgs.csv
     render::FileHandler::DeserializeTable<engine::Script>("src/client/tables/Scripts.csv","CSV");
     engine::Script::STATIC_FUNCTIONS["CheckPosition"] = state::Manager::CheckPosition;
+    engine::Script::STATIC_FUNCTIONS["EndTurn"] = state::Player::EndTurn;
     state::WorldHandler::Initialize();
     PARSE_CSV_LINES(path,'#',
-
     if(items[0] == "SCENE")
     {
         for(state::World* w : DeserializeTable<state::World>("src/client/tables/Worlds.csv","CSV"))
         {
+            PRINTLN(w->Name());
             if(w->Name() == items[1])
                 state::WorldHandler::CurrentWorld = w;
         }

@@ -1,0 +1,4 @@
+FUNCTION OnTurnBegin 
+#Random
+
+END FUNCTION

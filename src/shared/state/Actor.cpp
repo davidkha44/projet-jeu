@@ -55,6 +55,8 @@ void state::Actor::Property(std::string prop,int value)
 
 void state::Actor::OnSelectionAdd()
 {
+    if(Property("OWNER") != state::WorldHandler::Behaviour->INT("TURN"))
+        return;
     Selected(true);
     state::Manageable* bg = state::Manager::GetMgrByID(1)->GetByPos(Position());
     //bg->Sprite()->setTexture(*state::Manager::GetMgrByID(0)->GetByID(3)->Texture()); 

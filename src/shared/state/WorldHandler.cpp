@@ -7,10 +7,12 @@ void state::WorldHandler::OnTurnBegin()
 {
     Behaviour->RunFunction("OnTurnBegin",(int*)NULL);
     Turn = Behaviour->INT("TURN");
+    
     std::cout << "ON_TURN_BEGIN_WH" << std::endl;
 }
 void state::WorldHandler::OnTurnBeginAsync()
 {
+    GetActivePlayer()->Behaviour()->RunFunction("OnTurnBegin",(int*)NULL);
     std::cout << "ON_TURN_BEGIN_ASYNC_WH" << std::endl;
 }
 void state::WorldHandler::OnTurnEnd()
@@ -92,14 +94,10 @@ void state::WorldHandler::NetCommand(std::string cmd)
 {
     std::vector<std::string> items = render::FileHandler::SplitString(cmd,":");
     std::vector<std::string> _s = render::FileHandler::SplitString(items[1],";");
-    std::cout << _s[0] << "::" <<_s[1] << "::" << _s[2]  <<std::endl;
     int* args = (int*)malloc(_s.size()*sizeof(int));
-    std::cout << "size" << _s.size() << std::endl;
     for(int i = 0; i < _s.size();i++)
-    { 
         args[i] = std::stol(_s[i],nullptr,16);
-    }
-    if(Turn == ((args[0] >> 16) & 0xFF) && !Behaviour->INT("STATUS"))
+    if(Behaviour->INT("TURN") == ((args[0] >> 16) & 0xFF) && !Behaviour->INT("STATUS"))
         Behaviour->RunFunction(items[0],args);
     delete args;
 }

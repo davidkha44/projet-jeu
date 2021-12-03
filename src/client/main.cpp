@@ -52,8 +52,8 @@ int main(int argc,char* argv[])
     }
     if(!strcmp(argv[1],"engine"))
     {
-        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
         cout << "ENGINE : "<< getpid() << endl;
+        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;

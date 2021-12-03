@@ -67,8 +67,8 @@ unsigned char* engine::InputHandler::RegisterInputs()
 void engine::InputHandler::Initialize()
 {
     SampleSize = 101;
-    PreviousSnapshot = (unsigned char*)malloc(SampleSize);
-    CurrentSnapshot = (unsigned char*)malloc(SampleSize);
+    PreviousSnapshot = (unsigned char*)calloc(SampleSize,sizeof(unsigned char));
+    CurrentSnapshot = (unsigned char*)calloc(SampleSize,sizeof(unsigned char));
     RegisterMouseLeftEvents<engine::SelectionHandler>();
     RegisterMouseRightEvents<engine::SelectionHandler>();
     RegisterKeyboardEvents<state::Player>();

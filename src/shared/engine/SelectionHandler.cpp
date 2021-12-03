@@ -53,12 +53,17 @@ int engine::SelectionHandler::ProcessSelection(state::Manageable** m)
         if(items[0] == SelectionState && m[state::Manager::GetMgrByName(items[2])->ID()]) 
         {
             FilteredSelection[SelectionState] = (state::Actor*)m[state::Manager::GetMgrByName(items[2])->ID()];
+            if(!FilteredSelection[_default]->Selected() || FilteredSelection[_default]->Property("OWNER") != state::WorldHandler::Behaviour->INT("TURN"))
+            {
+                FilteredSelection[_default] = NULL;
+                SelectionState = _default;
+                return 1;
+            }
             if(SelectionState == _default)
             {
                 Packet = engine::Action::Actions[FilteredSelection[_default]->CurrentAction()]->NetCmd()->Format();
                 std::cout << Packet.first << "::" << Packet.second << std::endl;
             }
-            std::cout <<"ADDED : ["<<SelectionState<<"] = " <<FilteredSelection[SelectionState]->Name() << std::endl;
             if(items[1] == "PROCESS")
             {
                 std::cout << NetFormat() << std::endl;
@@ -94,6 +99,7 @@ void engine::SelectionHandler::OnMouseLeft(int x,int y)
 }
 void engine::SelectionHandler::OnMouseRight(int x,int y)
 {
+    
     state::Manageable** items = (state::Manageable**)calloc(state::Manager::Managers.size(), sizeof(state::Manageable*));
     items[0] = new state::Manageable();
     items[0]->Position(sf::Vector2i(x,y));

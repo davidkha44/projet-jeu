@@ -36,6 +36,15 @@ state::World::World (std::vector<std::string> args)
     CellSize(sf::Vector2i(std::stoi(args[2]),std::stoi(args[3])));
     CellN(sf::Vector2i(std::stoi(args[4]),std::stoi(args[5])));
     (engine::Script::Scripts[args[6]] != NULL ? Behaviour(engine::Script::Scripts[args[6]]) : Behaviour(NULL));
+    if(Behaviour())
+    {
+        Behaviour()->INT("CellSizeX",CellSize().x);
+        Behaviour()->INT("CellSizeY",CellSize().y);
+        Behaviour()->INT("CellNX",CellN().x);
+        Behaviour()->INT("CellNY",CellN().y);
+        Behaviour()->STRING("WorldName",Name());
+    }
+
 }
 
 void state::World::ApplyGridThickness(int gt)

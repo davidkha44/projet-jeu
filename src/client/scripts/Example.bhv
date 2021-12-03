@@ -1,24 +1,2 @@
-#THIS IS AN EXAMPLE SCRIPT
 
-#Specify the class the script is for
-CLASS MY_CLASS
-
-#Add or update a variable
-#TYPE : INT,STRING ... MORE TO COME
-
-INT MyVariable = 10
-STRING MyName = FRED
-
-#Place ACTOR at a given position X Y can be variable
-#ACTOR NAME VISUAL MANAGER(ID or Name) X Y
-ACTOR MyActor HERO_REDDRAGON ACTOR_MGR 10 10
-ACTOR MyActor HERO_REDDRAGON 2 MyPosX MyPosY
-
-
-#Call function 
-#Function must be register in Script class as void* MyFunction(void* args) and must be static !
-CALL MyFunction 
-
-#Run function in separate thread
-CALL ASYNC MyFunction 
 

@@ -23,6 +23,8 @@ state::Player::Player(std::string name,char id,engine::Script* behaviour)
     Name(name);
     ID(id);
     _Behaviour = behaviour;
+    _Behaviour->INT("PlayerID",ID());
+    _Behaviour->STRING("PlayerName",Name());
 }
 
 void state::Player::AttachPawn(state::Actor* pawn)
@@ -39,14 +41,13 @@ void state::Player::OnKey(unsigned char* snapshot)
     KEY_SCRIPT(snapshot,M)
     KEY_SCRIPT(snapshot,I)
     KEY_SCRIPT(snapshot,R)
-
-    if(snapshot[sf::Keyboard::Key::T])
-    {
-        //Changement de tour manuel pour l'instant
-        state::WorldHandler::OnTurnEnd();
-        state::WorldHandler::OnTurnBegin();
-        std::cout << "Turn : " << state::WorldHandler::Turn <<"Max Player : " << state::WorldHandler::Behaviour->INT("MAX_PLAYER") << std::endl;
-    }
-        
+    KEY_SCRIPT(snapshot,T)     
 }
 
+int state::Player::EndTurn(int* params)
+{
+    char str[32];
+    sprintf(str,"EndTurn:%X",params[0] << 16);
+    state::WorldHandler::NetCommand(std::string(str));
+    return 0;
+}
