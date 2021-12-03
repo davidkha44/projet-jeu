@@ -63,17 +63,13 @@ int main(int argc,char* argv[])
 
     if(!strcmp(argv[1],"random_ai"))
     {
-        RandomAI AI = RandomAI();
-        vector <string> a1 = {"STD_ATTACK","0x1000","1","0","PATTERN_DIAMOND4","NET_CMD_ATTACK"};
-        vector <string> a2 = {"STD_MOVE","0x2000","0","1","PATTERN_DIAMOND2","NET_CMD_MOVE"};
-        vector <string> a3 = {"STD_INVOKE_CYAN","0x3000","1","0","PATTERN_CROSS","NET_CMD_INVOKE_CYAN"};
-        Action A1 = Action(a1);;
-        Action A2 = Action(a2);
-        Action A3 = Action(a3);
-        vector <engine::Action> a = {A1,A2,A3};
-        Action A4 = AI.SelectRandomAction(a);
-        cout << "Les actions sont : " << A1.Name() <<","<<A2.Name()<<","<<A3.Name() << endl;
-        cout << "L'action sélectionnée est : " << A4.Name() << endl;
+        cout << "RANDOM AI : "<< getpid() << endl;
+        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+        for(Manager* m : Manager::Managers)
+            cout << m->Name() << endl;
+        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+        mf->Start();
     }
 
     if(!strcmp(argv[1],"PROTOTYPE"))
