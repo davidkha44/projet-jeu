@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Actor.h"
 #include "WorldHandler.h"
+#include "../engine.h"
 #include "../../client/client/Macro.hpp"
 
 GET_SET(state::Player,std::string,Name)
@@ -36,7 +37,7 @@ void state::Player::AttachPawn(state::Actor* pawn)
 
 void state::Player::OnKey(unsigned char* snapshot)
 {
-    
+
     KEY_SCRIPT(snapshot,A)
     KEY_SCRIPT(snapshot,M)
     KEY_SCRIPT(snapshot,I)

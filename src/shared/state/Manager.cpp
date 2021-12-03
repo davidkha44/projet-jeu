@@ -140,6 +140,7 @@ state::Manageable* state::Manager::GetByPos(sf::Vector2i v0)
 int state::Manager::CheckPosition(int* params)
 {
     if(Manager::GetMgrByID(params[0])->GetByPos(params[1],params[2])) return Manager::GetMgrByID(params[0])->GetByPos(params[1],params[2])->ID();
+    if(params[1] < 0 || params[2] < 0 || params[1] > state::WorldHandler::CurrentWorld->CellN().x ||  params[2] > state::WorldHandler::CurrentWorld->CellN().y) return -1;
     return 0;
 }
 int state::Manager::GetOwner(int* params)

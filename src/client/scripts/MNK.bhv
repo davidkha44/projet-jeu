@@ -17,5 +17,8 @@ END KEY
 KEY T
 CALL FUNC::EndTurn PlayerID
 END KEY
+KEY Z
+CALL FUNC::EndTurn PlayerID
+END KEY
 
 

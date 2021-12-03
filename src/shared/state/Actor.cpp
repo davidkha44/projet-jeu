@@ -51,6 +51,7 @@ void state::Actor::Property(std::string prop,int value)
     _Properties[prop] = value;
     if(prop == "X") AssignPosition(value,_Properties["Y"]);
     if(prop == "Y") AssignPosition(_Properties["X"],value);
+    if(prop == "RENDER") value ? Render(true) : Render(false);
 }
 
 void state::Actor::OnSelectionAdd()
@@ -59,10 +60,8 @@ void state::Actor::OnSelectionAdd()
         return;
     Selected(true);
     state::Manageable* bg = state::Manager::GetMgrByID(1)->GetByPos(Position());
-    //bg->Sprite()->setTexture(*state::Manager::GetMgrByID(0)->GetByID(3)->Texture()); 
     bg->Selected(true);
     ChangeAction("STD_MOVE");
-    std::cout << Name() << "::"<< std::hex << ID() << "::OWNER : "<< Property("OWNER") << std::endl;  
 }
 void state::Actor::OnSelectionRemove()
 {
@@ -79,10 +78,8 @@ void state::Actor::ChangeAction(std::string new_action)
     for(state::Manageable* m : state::Manager::GetMgrByName("ACTION_MGR")->Elements())
         m->Render(false);
     std::vector<state::Manageable*> pieces = std::vector<state::Manageable*>();
-        std::cout << "ICI" << std::endl;
     for(state::Manageable* m : engine::Action::Actions[new_action]->BasePattern()->Map())
     {
-        
         state::Manageable* _m = new Manageable(m->Name(),"BG_TILE_SAND");
         _m->AssignPosition(Position().x + m->Position().x, Position().y + m->Position().y);
         _m->Render(true);

@@ -1,5 +1,6 @@
 #include "Script.h"
 #include "SelectionHandler.h"
+#include "NetMessageHandler.h"
 #include "../../client/client/Macro.hpp"
 #include "../../client/render.h"
 #include "../state.h"
@@ -92,7 +93,6 @@ void engine::Script::RunFunction(std::string func,int* args)
        }
     }
     bool begin_execution = false;
-    std::cout << "EXEC " << func << std::endl;
     
     for(std::string line : _Text)
     {
@@ -134,7 +134,6 @@ void engine::Script::RunFunction(std::string func,int argcount)
 void engine::Script::RunKey(std::string key)
 {
     bool begin_execution = false;
-    std::cout << "EXEC KEY " << key << std::endl;
     for(std::string line : _Text)
     {
         std::vector<std::string> items = render::FileHandler::SplitString(line," ");
@@ -148,7 +147,6 @@ void engine::Script::RunSelectionMask(std::string sm)
 
     engine::SelectionHandler::SelectionMask.clear();
     bool begin_execution = false;
-    std::cout << "EXEC SM " << sm << std::endl;
     for(std::string line : _Text)
     {
         std::vector<std::string> items = render::FileHandler::SplitString(line," ");
@@ -409,5 +407,14 @@ void engine::Script::Run(std::string line,int* args)
             RunFunction(items[1],items.size() - 2);
         }
         else RunFunction(items[1],(int*)NULL);
+    }
+    if(items[0] == "SEND" && items.size() > 2)
+    {
+        int* params = (int*)calloc(items.size() - 2,sizeof(int));
+        for(int i = 2; i < items.size();i++)
+            params[i-2] = EvaluateINT(items[i],args);
+        state::WorldHandler::NetCommand(engine::NetMessageHandler::Fill(engine::Action::Actions[items[1]]->NetCmd()->Format().first,params));
+        //delete params;
+
     }
 }

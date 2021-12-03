@@ -2,6 +2,7 @@
 #include "MainFrame.h"
 #include "../../shared/state.h"
 #include "../../shared/engine.h"
+#include "../../shared/ai.h"
 #include "../../client/client/Macro.hpp"
 
 
@@ -34,6 +35,7 @@ render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
     render::FileHandler::DeserializeTable<engine::Script>("src/client/tables/Scripts.csv","CSV");
     engine::Script::STATIC_FUNCTIONS["CheckPosition"] = state::Manager::CheckPosition;
     engine::Script::STATIC_FUNCTIONS["EndTurn"] = state::Player::EndTurn;
+    engine::Script::STATIC_FUNCTIONS["RandomInt"] = ai::RandomAI::RandomInt;
     state::WorldHandler::Initialize();
     PARSE_CSV_LINES(path,'#',
     if(items[0] == "SCENE")
