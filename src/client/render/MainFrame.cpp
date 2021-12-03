@@ -120,7 +120,11 @@ void render::MainFrame::InitActors()
     if(state::WorldHandler::CurrentWorld->Behaviour())
         state::WorldHandler::CurrentWorld->Behaviour()->Run();
     if(state::WorldHandler::Behaviour)
+    {
+        state::WorldHandler::Behaviour->EVENTS["OnTurnBegin"] = state::WorldHandler::OnTurnBegin;
+        state::WorldHandler::Behaviour->EVENTS["OnTurnEnd"] = state::WorldHandler::OnTurnEnd;
         state::WorldHandler::Behaviour->Run();
+    }
     //std::vector<state::Actor*> _actors = render::FileHandler::DeserializeTable<state::Actor>("src/client/tables/Actors.csv","CSV");
 }
 

@@ -24,11 +24,11 @@ ai::RandomAI::RandomAI(){
     _Num_Player = 1;
 }
 
-int ai::RandomAI::RandomInt(int* params)
-{
-    int min = params[0];
-    int max = params[1];
+// int ai::RandomAI::RandomInt(int* params)
+// {
+//     int min = params[0];
+//     int max = params[1];
 
-    //return int entre min et max
-    return 0;
-}
+//     //return int entre min et max
+//     return 0;
+// }

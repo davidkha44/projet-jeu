@@ -1,4 +1,7 @@
-FUNCTION OnTurnBegin 
-#Random
+FUNCTION TurnBegin 
+STRING t = Mazhou
+PRINT_STR t
+PRINT_INT PlayerID
 
+CALL FUNC::EndTurn PlayerID
 END FUNCTION

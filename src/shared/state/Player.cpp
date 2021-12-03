@@ -23,7 +23,7 @@ state::Player::Player(std::string name,char id,engine::Script* behaviour)
     Name(name);
     ID(id);
     _Behaviour = behaviour;
-    _Behaviour->INT("PlayerID",ID());
+    _Behaviour->INT("PlayerID",(int)ID());
     _Behaviour->STRING("PlayerName",Name());
 }
 
@@ -41,13 +41,18 @@ void state::Player::OnKey(unsigned char* snapshot)
     KEY_SCRIPT(snapshot,M)
     KEY_SCRIPT(snapshot,I)
     KEY_SCRIPT(snapshot,R)
-    KEY_SCRIPT(snapshot,T)     
+    KEY_SCRIPT(snapshot,T)    
+    if(snapshot[sf::Keyboard::Key::T])
+    {
+        std::cout << "P = " << state::WorldHandler::Players.size() << std::endl;
+    } 
 }
 
 int state::Player::EndTurn(int* params)
 {
     char str[32];
     sprintf(str,"EndTurn:%X",params[0] << 16);
+    std::cout << str << std::endl;
     state::WorldHandler::NetCommand(std::string(str));
     return 0;
 }

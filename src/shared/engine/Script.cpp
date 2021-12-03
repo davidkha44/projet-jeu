@@ -93,10 +93,15 @@ void engine::Script::RunFunction(std::string func,int* args)
     }
     bool begin_execution = false;
     std::cout << "EXEC " << func << std::endl;
+    
     for(std::string line : _Text)
     {
         std::vector<std::string> items = render::FileHandler::SplitString(line," ");
-        if(items[0] == "END" && items[1] == "FUNCTION" && begin_execution) return;
+        if(items[0] == "END" && items[1] == "FUNCTION" && begin_execution)
+        {
+            if(EVENTS[func]) EVENTS[func]();
+            return;
+        } 
         if(begin_execution)
         {
             if(items[0] == "RETURN")
@@ -111,7 +116,8 @@ void engine::Script::RunFunction(std::string func,int* args)
             }
             else Run(line,args);
         } 
-        if(items[0] == "FUNCTION" && items[1] == func && !begin_execution) begin_execution = true;
+        if(items[0] == "FUNCTION" && items[1] == func && !begin_execution)
+            begin_execution = true; 
     }
 }
 void engine::Script::RunFunction(std::string func,int argcount)
