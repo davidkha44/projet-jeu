@@ -32,3 +32,16 @@ ai::RandomAI::RandomAI(){
      //return int entre min et max
      return n;
  }
+
+int ai::RandomAI::IsInRange(engine::Action* action,sf::Vector2i origin,sf::Vector2i pos)
+{
+    int x = origin.x;
+    int y = origin.y;
+
+    for(state::Actor* a : action->BasePattern()->Map())
+    {
+        if(pos.x == a->Position().x + origin.x && pos.y == a->Position().y + origin.y)
+            return 1;
+    }
+    return 0;
+}
