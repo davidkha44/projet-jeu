@@ -1,5 +1,6 @@
 #include "WorldHandler.h"
 #include "Manager.h"
+#include "../engine.h"
 #include "../../client/render.h"
 #include <iostream>
 
@@ -100,7 +101,7 @@ void state::WorldHandler::NetCommand(std::string cmd)
     int* args = (int*)malloc(_s.size()*sizeof(int));
     for(int i = 0; i < _s.size();i++)
         args[i] = std::stol(_s[i],nullptr,16);
-    if(Behaviour->INT("TURN") == ((args[0] >> 16) & 0xFF) && !Behaviour->INT("STATUS"))
+    if(Behaviour->INT("TURN") == ((args[0] >> 16) & 0xFF) && !Behaviour->INT("STATUS") && engine::Action::CheckRange(cmd,args))
         Behaviour->RunFunction(items[0],args);
     delete args;
 }

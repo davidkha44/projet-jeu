@@ -53,6 +53,8 @@
                                                      ins} }\
 
 #define KEY_SCRIPT(snapshot,k) if(snapshot[sf::Keyboard::Key::k]) {state::WorldHandler::GetMyPlayer()->Behaviour()->RunKey(#k);}
+#define PARSE_MAP(map_,type_a,type_b,ins) {std::map<type_a, type_b>::iterator it;for (it = map_.begin(); it != map_.end(); it++) {ins}}
+
 
 
 
