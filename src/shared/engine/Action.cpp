@@ -24,24 +24,20 @@ engine::Action::Action(std::vector<std::string> args)
     _NetCmd = engine::NetCommand::NetCommands[args[5]];
 }
 
-engine::Action* engine::Action::CheckRange(std::string netcmd,int* args)
+engine::Action* engine::Action::GetByNetCmd(std::string netcmd)
 {
     std::vector<std::string> items = render::FileHandler::SplitString(netcmd,":");
     PARSE_MAP(Actions,std::string,engine::Action*,
 
     if(it->second && render::FileHandler::SplitString(it->second->NetCmd()->Format().first,":")[0] == items[0])
-    {
-        std::vector<sf::Vector2i> PossiblePos;
-        for(state::Actor* a : it->second->BasePattern()->Map())
-        {
-            int _x = 0;
-            int _y = 0;
-            _x += state::Manager::GetMgrByName("ACTOR_MGR")->GetByID(args[0])->Position().x + a->Position().x;
-            _y += state::Manager::GetMgrByName("ACTOR_MGR")->GetByID(args[0])->Position().y + a->Position().y;
-            if(_x == args[1] && _y == args[2])
-                return it->second;
-        }
-    } 
+        return it->second;
     )
     return NULL;
+}
+std::vector<sf::Vector2i> engine::Action::Reach(engine::Action* action,state::Actor* caster)
+{
+    std::vector<sf::Vector2i> output;
+    for(state::Actor* a : action->BasePattern()->Map())
+        output.push_back(sf::Vector2i(caster->Position().x + a->Position().x,caster->Position().y + a->Position().y));
+    return output;
 }
