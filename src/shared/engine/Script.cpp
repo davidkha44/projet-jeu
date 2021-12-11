@@ -114,6 +114,11 @@ void engine::Script::RunFunction(std::string func,int* args)
                 _INTS["RESERVED:JMP"]--;
                 continue;
             }
+            else if(_INTS["RESERVED:EXIT"])
+            {
+                _INTS["RESERVED:EXIT"] = 0;
+                return;
+            }
             else Run(line,args);
         } 
         if(items[0] == "FUNCTION" && items[1] == func && !begin_execution)
@@ -271,6 +276,11 @@ void engine::Script::Run(std::string line,int* args)
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
             return;
         }
+        if(items[3] == "EXIT")
+        {
+            _INTS["RESERVED:EXIT"] = 1;
+            return;
+        }
         else RunFunction(items[3],(int*)NULL);
     }
     if(items[0] == "NEQUAL" && EvaluateINT(items[1],args) != EvaluateINT(items[2],args))
@@ -279,6 +289,11 @@ void engine::Script::Run(std::string line,int* args)
         {
             std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
+            return;
+        }
+        if(items[3] == "EXIT")
+        {
+            _INTS["RESERVED:EXIT"] = 1;
             return;
         }
         else RunFunction(items[3],(int*)NULL);
@@ -291,6 +306,11 @@ void engine::Script::Run(std::string line,int* args)
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
             return;
         }
+        if(items[3] == "EXIT")
+        {
+            _INTS["RESERVED:EXIT"] = 1;
+            return;
+        }
         else RunFunction(items[3],(int*)NULL);
     }
     if(items[0] == "GTE" && EvaluateINT(items[1],args) >= EvaluateINT(items[2],args))
@@ -299,6 +319,11 @@ void engine::Script::Run(std::string line,int* args)
         {
             std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
+            return;
+        }
+        if(items[3] == "EXIT")
+        {
+            _INTS["RESERVED:EXIT"] = 1;
             return;
         }
         else RunFunction(items[3],(int*)NULL);
@@ -311,6 +336,11 @@ void engine::Script::Run(std::string line,int* args)
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
             return;
         }
+        if(items[3] == "EXIT")
+        {
+            _INTS["RESERVED:EXIT"] = 1;
+            return;
+        }
         else RunFunction(items[3],(int*)NULL);
     }
     if(items[0] == "LTE" && EvaluateINT(items[1],args) <= EvaluateINT(items[2],args))
@@ -319,6 +349,11 @@ void engine::Script::Run(std::string line,int* args)
         {
             std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
+            return;
+        }
+        if(items[3] == "EXIT")
+        {
+            _INTS["RESERVED:EXIT"] = 1;
             return;
         }
         else RunFunction(items[3],(int*)NULL);

@@ -38,6 +38,7 @@ render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
     engine::Script::STATIC_FUNCTIONS["RandomInt"] = ai::RandomAI::RandomInt;
     engine::Script::STATIC_FUNCTIONS["MoveToward"] = ai::Heuristics::MoveToward;
     engine::Script::STATIC_FUNCTIONS["IsInReach"] = engine::Action::IsInReach;
+    engine::Script::STATIC_FUNCTIONS["Exist"] = state::WorldHandler::Exist;
     state::WorldHandler::Initialize();
     PARSE_CSV_LINES(path,'#',
     if(items[0] == "SCENE")

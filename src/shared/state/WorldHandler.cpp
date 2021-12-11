@@ -99,12 +99,18 @@ void state::WorldHandler::NetCommand(std::string cmd)
     std::vector<std::string> items = render::FileHandler::SplitString(cmd,":");
     std::vector<std::string> _s = render::FileHandler::SplitString(items[1],";");
     int* args = (int*)malloc(_s.size()*sizeof(int));
-    int o = 0;
     for(int i = 0; i < _s.size();i++)
         args[i] = std::stol(_s[i],nullptr,16);
     if(Behaviour->INT("TURN") == ((args[0] >> 16) & 0xFF) && !Behaviour->INT("STATUS"))
         Behaviour->RunFunction(items[0],args);
     delete args;
+}
+
+int state::WorldHandler::Exist(int* args)
+{
+    if(state::Manager::GetMgrByID(args[0])->GetByID(args[1]))
+        return state::Manager::GetMgrByID(args[0])->GetByID(args[1])->ID();
+    return 0;
 }
 
 template <class T> 

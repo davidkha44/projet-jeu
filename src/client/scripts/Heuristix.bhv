@@ -1,17 +1,56 @@
-FUNCTION TurnBegin 
-CALL STD_AI_BHV red_spearman.ID cyan_spearman.X cyan_spearman.Y
-CALL STD_AI_BHV red_bowman.ID cyan_bowman.X cyan_bowman.Y
-CALL STD_AI_BHV red_mage.ID cyan_mage.X cyan_mage.Y
-CALL STD_AI_BHV red_knight.ID cyan_knight.X cyan_knight.Y
-CALL STD_AI_BHV red_dragon.ID cyan_dragon.X cyan_dragon.Y
+
+INT target_red_spearman = 0
+INT target_red_bowman = 0
+INT target_red_mage = 0
+INT target_red_knight = 0
+INT target_red_dragon = 0
+INT enemy_base = 0
+INT caster_red_spearman = 0
+INT caster_red_bowman = 0
+INT caster_red_mage = 0
+INT caster_red_knight = 0
+INT caster_red_dragon = 0
+INT init_done = 0
+
+FUNCTION INITIALIZE
+ADD target_red_bowman cyan_bowman.ID
+ADD target_red_spearman cyan_spearman.ID
+ADD target_red_mage cyan_mage.ID
+ADD target_red_dragon cyan_dragon.ID
+ADD target_red_knight cyan_knight.ID
+ADD caster_red_bowman red_bowman.ID
+ADD caster_red_spearman red_spearman.ID
+ADD caster_red_mage red_mage.ID
+ADD caster_red_dragon red_dragon.ID
+ADD caster_red_knight red_knight.ID
+ADD enemy_base build_cyan_keep.ID
+INT init_done = 1
+END FUNCTION
+
+FUNCTION TurnBegin
+EQUAL init_done 1 JMP:1
+CALL INITIALIZE  
+CALL STD_HEU_BHV caster_red_spearman target_red_spearman
+CALL STD_HEU_BHV caster_red_mage target_red_mage
+CALL STD_HEU_BHV caster_red_knight target_red_knight
+CALL STD_HEU_BHV caster_red_bowman target_red_bowman
+CALL STD_HEU_BHV caster_red_dragon target_red_dragon
 CALL FUNC::EndTurn PlayerID
 END FUNCTION
 
 FUNCTION STD_AI_BHV
 CALL FUNC::MoveToward 3 ARGS:0 ARGS:1 ARGS:2
-#CALL FUNC::CheckPosition 3 ARGS:1 ARGS:2
 CALL FUNC::IsInReach 3 ARGS:0 ARGS:1 ARGS:2 1000
-EQUAL RET:IsInReach 0 JMP:1
-#LT RET:CheckPosition 1 JMP:1
+EQUAL RET:IsInReach 0 EXIT
 SEND STD_ATTACK ARGS:0 ARGS:1 ARGS:2
+END FUNCTION
+
+FUNCTION STD_HEU_BHV
+CALL FUNC::Exist 3 ARGS:0
+EQUAL RET:Exist 0 EXIT
+CALL FUNC::Exist 3 ARGS:1
+EQUAL RET:Exist 0 JMP:1
+CALL STD_AI_BHV ARGS:0 ACTOR_MGR::ARGS:1.X ACTOR_MGR::ARGS:1.Y
+NEQUAL RET:Exist 0 EXIT
+CALL STD_AI_BHV ARGS:0 ACTOR_MGR::enemy_base.X ACTOR_MGR::enemy_base.Y
 END FUNCTION
