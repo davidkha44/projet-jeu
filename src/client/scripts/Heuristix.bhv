@@ -1,0 +1,17 @@
+FUNCTION TurnBegin 
+CALL STD_AI_BHV red_spearman.ID cyan_spearman.X cyan_spearman.Y
+CALL STD_AI_BHV red_bowman.ID cyan_bowman.X cyan_bowman.Y
+CALL STD_AI_BHV red_mage.ID cyan_mage.X cyan_mage.Y
+CALL STD_AI_BHV red_knight.ID cyan_knight.X cyan_knight.Y
+CALL STD_AI_BHV red_dragon.ID cyan_dragon.X cyan_dragon.Y
+CALL FUNC::EndTurn PlayerID
+END FUNCTION
+
+FUNCTION STD_AI_BHV
+CALL FUNC::MoveToward 3 ARGS:0 ARGS:1 ARGS:2
+#CALL FUNC::CheckPosition 3 ARGS:1 ARGS:2
+CALL FUNC::IsInReach 3 ARGS:0 ARGS:1 ARGS:2 1000
+EQUAL RET:IsInReach 0 JMP:1
+#LT RET:CheckPosition 1 JMP:1
+SEND STD_ATTACK ARGS:0 ARGS:1 ARGS:2
+END FUNCTION

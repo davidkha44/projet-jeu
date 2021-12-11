@@ -36,6 +36,8 @@ render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
     engine::Script::STATIC_FUNCTIONS["CheckPosition"] = state::Manager::CheckPosition;
     engine::Script::STATIC_FUNCTIONS["EndTurn"] = state::Player::EndTurn;
     engine::Script::STATIC_FUNCTIONS["RandomInt"] = ai::RandomAI::RandomInt;
+    engine::Script::STATIC_FUNCTIONS["MoveToward"] = ai::Heuristics::MoveToward;
+    engine::Script::STATIC_FUNCTIONS["IsInReach"] = engine::Action::IsInReach;
     state::WorldHandler::Initialize();
     PARSE_CSV_LINES(path,'#',
     if(items[0] == "SCENE")

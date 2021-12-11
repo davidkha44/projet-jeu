@@ -8,3 +8,4 @@ SCRIPT_ACTIONS,src/client/scripts/Script_Actions.bhv
 HOME,src/client/scripts/Home.bhv
 MNK,src/client/scripts/MNK.bhv
 RandomAI,src/client/scripts/RandomAI.bhv
+HEURISTIX,src/client/scripts/Heuristix.bhv
