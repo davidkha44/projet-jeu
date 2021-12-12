@@ -139,6 +139,20 @@ Render demo
 projet-jeu$ bin/client render
 ```
 
+Engine demo
+```sh
+projet-jeu$ bin/client engine
+```
+Radom AI demo
+```sh
+projet-jeu$ bin/client random_ai
+```
+
+Heuristic AI demo
+```sh
+projet-jeu$ bin/client heuristic_ai
+```
+
 <!-- RELEASE HISTORY-->
 ## Release History
 
