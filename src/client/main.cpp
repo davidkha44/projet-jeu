@@ -70,7 +70,7 @@ int main(int argc,char* argv[])
             cout << m->Name() << endl;
         Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
         mf->Start();
-    }
+    } 
 
     if(!strcmp(argv[1],"heuristic_ai"))
     {

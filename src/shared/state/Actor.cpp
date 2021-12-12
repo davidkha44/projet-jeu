@@ -27,9 +27,9 @@ state::Actor::Actor(std::vector<std::string> args) : state::Manageable(args[0], 
     _Properties["DEF"] = std::stoi(args[4]);
     _Properties["AP"] = std::stoi(args[5]);
     _Properties["MP"] = std::stoi(args[6]);
-    _CurrentAction = "STD_MOVE";
     ID(0xAC000000 + state::Manager::GetMgrByName("ACTOR_MGR")->Elements().size());
     std::vector<std::string> _actions = render::FileHandler::SplitString(args[7],";");
+    _CurrentAction = _actions[0];
     if(_actions.size())
     {
         for(std::string s : _actions)
@@ -61,7 +61,7 @@ void state::Actor::OnSelectionAdd()
     Selected(true);
     state::Manageable* bg = state::Manager::GetMgrByID(1)->GetByPos(Position());
     bg->Selected(true);
-    ChangeAction("STD_MOVE");
+    ChangeAction(_CurrentAction);
 }
 void state::Actor::OnSelectionRemove()
 {
@@ -75,6 +75,7 @@ void state::Actor::OnSelectionRemove()
 
 void state::Actor::ChangeAction(std::string new_action)
 {
+    if(!_Actions[new_action]) return;
     for(state::Manageable* m : state::Manager::GetMgrByName("ACTION_MGR")->Elements())
         m->Render(false);
     std::vector<state::Manageable*> pieces = std::vector<state::Manageable*>();
