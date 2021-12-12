@@ -72,6 +72,17 @@ int main(int argc,char* argv[])
         mf->Start();
     }
 
+    if(!strcmp(argv[1],"heuristic_ai"))
+    {
+        cout << "RANDOM AI : "<< getpid() << endl;
+        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+        for(Manager* m : Manager::Managers)
+            cout << m->Name() << endl;
+        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+        mf->Start();
+    }
+
     if(!strcmp(argv[1],"PROTOTYPE"))
     {
         cout << "INDISPONIBLE" << endl;

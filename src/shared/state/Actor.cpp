@@ -80,7 +80,7 @@ void state::Actor::ChangeAction(std::string new_action)
     std::vector<state::Manageable*> pieces = std::vector<state::Manageable*>();
     for(state::Manageable* m : engine::Action::Actions[new_action]->BasePattern()->Map())
     {
-        state::Manageable* _m = new Manageable(m->Name(),"BG_TILE_SAND");
+        state::Manageable* _m = new Manageable(m->Name(),"BG_TILE_SELECT");
         _m->AssignPosition(Position().x + m->Position().x, Position().y + m->Position().y);
         _m->Render(true);
         pieces.push_back(_m);

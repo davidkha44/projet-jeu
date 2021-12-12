@@ -58,3 +58,4 @@ BG_TILE_COCOTREE,ASSET_MGR,46,res/texture/cocoTree.png,2.5,2.5
 BG_TILE_PLAY_BUTTON,ASSET_MGR,503,res/texture/play.png,2,2
 BG_TILE_HOME_BG,ASSET_MGR,502,res/texture/home_bg_title.png,0.99,0.96
 BG_TILE_EMPTY,ASSET_MGR,501,res/texture/empty.png,1,1
+BG_TILE_SELECT,ASSET_MGR,78,res/texture/selectable.png,1,1
