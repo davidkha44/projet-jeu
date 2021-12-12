@@ -146,7 +146,7 @@ void render::MainFrame::InitWorld()
             {
                 state::Manageable* ref = mgr->GetByID(std::stoi(strs[i]));
                 state::Manageable* item = new state::Manageable("TILE_"+std::to_string(col)+"_"+std::to_string(lines),ref->Name());
-                item->ID(0xFF000000 + ((col & 0xFF) << 8) + (lines & 0xFF));
+                item->ID(0xFF000000 + ((std::stoi(strs[i]) & 0xFF) << 16) +((col & 0xFF) << 8) + (lines & 0xFF));
                 item->AssignPosition(col,lines);
                 state::Manager::GetMgrByID(1)->Add(item);
                 col++;

@@ -46,8 +46,9 @@ std::vector<sf::Vector2i> engine::Action::Reach(engine::Action* action,state::Ac
 std::vector<sf::Vector2i> engine::Action::Reach(engine::Action* action,int id)
 {
     std::vector<sf::Vector2i> output;
+    sf::Vector2i actor_pos = sf::Vector2i(state::Manager::GetMgrByName("ACTOR_MGR")->GetByID(id)->Position().x,state::Manager::GetMgrByName("ACTOR_MGR")->GetByID(id)->Position().y);
     for(state::Actor* a : action->BasePattern()->Map())
-        output.push_back(sf::Vector2i(state::Manager::GetMgrByName("ACTOR_MGR")->GetByID(id)->Position().x + a->Position().x,state::Manager::GetMgrByName("ACTOR_MGR")->GetByID(id)->Position().y + a->Position().y));
+        output.push_back(sf::Vector2i(actor_pos.x + a->Position().x,actor_pos.y + a->Position().y));
     return output;
 }
 
