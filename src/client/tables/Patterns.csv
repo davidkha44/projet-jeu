@@ -2,3 +2,7 @@
 PATTERN_CROSS,src/client/actions_patterns/PatternCrossSimple.csv,3,3
 PATTERN_DIAMOND4,src/client/actions_patterns/PatternDiamond4.csv,9,9
 PATTERN_DIAMOND2,src/client/actions_patterns/PatternDiamond2.csv,5,5
+PATTERN_CONE,src/client/actions_patterns/PatternCone.csv,9,9
+PATTERN_CROSS3,src/client/actions_patterns/PatternCross3.csv,7,7
+PATTERN_SQUARE1,src/client/actions_patterns/PatternSquare1.csv,3,3
+PATTERN_SQUARE3,src/client/actions_patterns/PatternSquare3.csv,7,7

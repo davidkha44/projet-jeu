@@ -72,7 +72,6 @@ state::Manageable::Manageable(std::vector<std::string> args)
     Sprite()->setTexture(*Texture());
     Scale(sf::Vector2f(std::stof(args[4]),std::stof(args[5])));
     Sprite()->setScale(Scale().x,Scale().y);
-    //state::Manager::GetMgrByName(args[1])->Add(this);
 }
 state::Manageable::Manageable(std::string name,int id,std::string path)
 { 

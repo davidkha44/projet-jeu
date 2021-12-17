@@ -358,11 +358,7 @@ void engine::Script::Run(std::string line,int* args)
         }
         else RunFunction(items[3],(int*)NULL);
     }
-    //if(items[0] == "NEQUAL" && EvaluateINT(items[1],args) != EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
-    //if(items[0] == "GT" && EvaluateINT(items[1],args) > EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
-    //if(items[0] == "GTE" && EvaluateINT(items[1],args) >= EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
-    //if(items[0] == "LT" && EvaluateINT(items[1],args) < EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
-    //if(items[0] == "LTE" && EvaluateINT(items[1],args) <= EvaluateINT(items[2],args)) RunFunction(items[3],(int*)NULL);
+
 
     if(items[0] == "ACTOR")
     {

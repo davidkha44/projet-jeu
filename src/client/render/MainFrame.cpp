@@ -43,24 +43,14 @@ void render::MainFrame::Tick()
 {
     //Appelée à chaque frame
     ON_MOUSE_LEFT(
-       // std::cout << "MOUSE_LEFT" << std::endl;
-        //sf::Vector2i MousePos = sf::Mouse::getPosition(*Window());
         int x = MousePos.x / state::WorldHandler::CurrentWorld->CellSize().x;
         int y = MousePos.y / state::WorldHandler::CurrentWorld->CellSize().y;
         engine::InputHandler::RoutineMouseLeft(x,y);
     )
     ON_MOUSE_RIGHT(
-        //std::cout << "MOUSE_RIGHT" << std::endl;
-        //sf::Vector2i MousePos = sf::Mouse::getPosition(*Window());
         int x = MousePos.x / state::WorldHandler::CurrentWorld->CellSize().x;
         int y = MousePos.y / state::WorldHandler::CurrentWorld->CellSize().y;
         engine::InputHandler::RoutineMouseRight(x,y);
-        /*for(state::World* w : render::FileHandler::DeserializeTable<state::World>("src/client/tables/Worlds.csv","CSV"))
-        {
-            if(w->Name() == "WORLD_TEST")
-                state::WorldHandler::CurrentWorld = w;
-                ResizeWindow();
-        }*/
     )
     engine::InputHandler::RegisterInputs();
     unsigned char* kb_frame = engine::InputHandler::CompareSnapshots();
@@ -127,7 +117,6 @@ void render::MainFrame::InitActors()
         for(state::Player* p : state::WorldHandler::Players)
             p->Behaviour()->RunFunction("InitializePlayer",(int*)NULL);
     }
-    //std::vector<state::Actor*> _actors = render::FileHandler::DeserializeTable<state::Actor>("src/client/tables/Actors.csv","CSV");
 }
 
 void render::MainFrame::InitWorld()
