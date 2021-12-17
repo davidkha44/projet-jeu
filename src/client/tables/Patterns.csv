@@ -2,11 +2,7 @@
 PATTERN_CROSS,src/client/actions_patterns/PatternCrossSimple.csv,3,3
 PATTERN_DIAMOND4,src/client/actions_patterns/PatternDiamond4.csv,9,9
 PATTERN_DIAMOND2,src/client/actions_patterns/PatternDiamond2.csv,5,5
-PATTERN_ATK_RIGHT1,src/client/actions_patterns/PatternAtkRight1.csv,2,1
-PATTERN_ATK_RIGHT3,src/client/actions_patterns/PatternAtkRight3.csv,4,1
-PATTERN_ATK_LEFT1,src/client/actions_patterns/PatternAtkLeft1.csv,2,1
-PATTERN_ATK_LEFT3,src/client/actions_patterns/PatternAtkLeft3.csv,4,1
-PATTERN_ATK_DOWN1,src/client/actions_patterns/PatternAtkDown1.csv,1,2
-PATTERN_ATK_DOWN3,src/client/actions_patterns/PatternAtkDown3.csv,1,4
-PATTERN_ATK_UP1,src/client/actions_patterns/PatternAtkUp1.csv,1,2
-PATTERN_ATK_UP3,src/client/actions_patterns/PatternAtkUp3.csv,1,4
+PATTERN_CONE,src/client/actions_patterns/PatternCone.csv,9,9
+PATTERN_CROSS3,src/client/actions_patterns/PatternCross3.csv,7,7
+PATTERN_SQUARE1,src/client/actions_patterns/PatternSquare1.csv,3,3
+PATTERN_SQUARE3,src/client/actions_patterns/PatternSquare3.csv,7,7

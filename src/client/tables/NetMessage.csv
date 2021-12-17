@@ -3,14 +3,6 @@ NET_CMD_MOVE,Move:$X;$X;$X,caster.ID;target.X;target.Y
 NET_CMD_MOVE_TOWARD_POS,MoveTowardPos:$X;$X;$X,caster.ID;target.X;target.Y
 NET_CMD_MOVE_RELATIVE,MoveRelative:$X;$X;$X,caster.ID;target.X;target.Y
 NET_CMD_ATTACK,Attack:$X;$X;$X,caster.ID;target.X;target.Y
-NET_CMD_ATTACK_RIGHT1,Attack:$X;$X;$X,caster.ID;target.X;target.Y
-NET_CMD_ATTACK_RIGHT3,Attack:$X;$X;$X,caster.ID;target.X;target.Y
-NET_CMD_ATTACK_LEFT1,Attack:$X;$X;$X,caster.ID;target.X;target.Y
-NET_CMD_ATTACK_LEFT3,Attack:$X;$X;$X,caster.ID;target.X;target.Y
-NET_CMD_ATTACK_DOWN1,Attack:$X;$X;$X,caster.ID;target.X;target.Y
-NET_CMD_ATTACK_DOWN3,Attack:$X;$X;$X,caster.ID;target.X;target.Y
-NET_CMD_ATTACK_UP1,Attack:$X;$X;$X,caster.ID;target.X;target.Y
-NET_CMD_ATTACK_UP3,Attack:$X;$X;$X,caster.ID;target.X;target.Y
 NET_CMD_INVOKE_CYAN,Invoke_cyan:$X;$X;$X,caster.ID;target.X;target.Y
 NET_CMD_INVOKE_RED,Invoke_red:$X;$X;$X,caster.ID;target.X;target.Y
 NET_CMD_TURN_FINISHED,OnTurnEnd,NONE
