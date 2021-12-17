@@ -54,6 +54,8 @@ void render::MainFrame::Tick()
     )
     engine::InputHandler::RegisterInputs();
     unsigned char* kb_frame = engine::InputHandler::CompareSnapshots();
+    if(kb_frame[sf::Keyboard::G])
+        state::WorldHandler::OnTurnBegin();
     engine::InputHandler::RoutineKey(kb_frame);
     delete kb_frame;
 

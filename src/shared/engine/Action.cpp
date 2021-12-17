@@ -5,14 +5,13 @@
 #include "../../client/client/Macro.hpp"
 #define COMMA ,
 
-GET_SET(engine::Action,std::string,Name)
-GET_SET(engine::Action,int,OPCode)
-GET_SET(engine::Action,int,CostAP)
-GET_SET(engine::Action,int,CostMP)
-GET_SET(engine::Action,engine::Pattern*,BasePattern)
-GET_SET(engine::Action,engine::NetCommand*,NetCmd)
-GET_SET(engine::Action,bool,RequireRangeCheck)
-
+GET_SET(engine::Action, std::string, Name)
+GET_SET(engine::Action, int, OPCode)
+GET_SET(engine::Action, int, CostAP)
+GET_SET(engine::Action, int, CostMP)
+GET_SET(engine::Action, engine::Pattern *, BasePattern)
+GET_SET(engine::Action, engine::NetCommand *, NetCmd)
+GET_SET(engine::Action, bool, RequireRangeCheck)
 
 engine::Action::Action(std::vector<std::string> args)
 {
@@ -26,46 +25,41 @@ engine::Action::Action(std::vector<std::string> args)
     std::stoi(args[6]) ? _RequireRangeCheck = true : _RequireRangeCheck = false;
 }
 
-engine::Action* engine::Action::GetByNetCmd(std::string netcmd)
+engine::Action *engine::Action::GetByNetCmd(std::string netcmd)
 {
-    std::vector<std::string> items = render::FileHandler::SplitString(netcmd,":");
-    PARSE_MAP(Actions,std::string,engine::Action*,
+    std::vector<std::string> items = render::FileHandler::SplitString(netcmd, ":");
+    PARSE_MAP(Actions, std::string, engine::Action *,
 
-    if(it->second && render::FileHandler::SplitString(it->second->NetCmd()->Format().first,":")[0] == items[0])
-        return it->second;
-    )
+              if (it->second && render::FileHandler::SplitString(it->second->NetCmd()->Format().first, ":")[0] == items[0]) return it->second;)
     return NULL;
 }
-std::vector<sf::Vector2i> engine::Action::Reach(engine::Action* action,state::Actor* caster)
+std::vector<sf::Vector2i> engine::Action::Reach(engine::Action *action, state::Actor *caster)
 {
     std::vector<sf::Vector2i> output;
-    for(state::Actor* a : action->BasePattern()->Map())
-        output.push_back(sf::Vector2i(caster->Position().x + a->Position().x,caster->Position().y + a->Position().y));
+    for (state::Actor *a : action->BasePattern()->Map())
+        output.push_back(VECTOR_ADD(caster->Position(),a->Position()));
     return output;
 }
-std::vector<sf::Vector2i> engine::Action::Reach(engine::Action* action,int id)
+std::vector<sf::Vector2i> engine::Action::Reach(engine::Action *action, int id)
 {
     std::vector<sf::Vector2i> output;
-    sf::Vector2i actor_pos = sf::Vector2i(state::Manager::GetMgrByName("ACTOR_MGR")->GetByID(id)->Position().x,state::Manager::GetMgrByName("ACTOR_MGR")->GetByID(id)->Position().y);
-    for(state::Actor* a : action->BasePattern()->Map())
-        output.push_back(sf::Vector2i(actor_pos.x + a->Position().x,actor_pos.y + a->Position().y));
-    return output;
-}
-
-int engine::Action::IsInReach(int* args)
-{
-    state::Manager* mgr = state::Manager::GetMgrByID(args[0]);
-    state::Actor* caster = (state::Actor*)mgr->GetByID(args[1]);
-    state::Actor* target = (state::Actor*)mgr->GetByPos(args[2],args[3]);
-
-    Action* action;
-    PARSE_MAP(Actions,std::string,Action*,
+    state::Actor* actor = (state::Actor*)state::Manager::GetMgrByName("ACTOR_MGR")->GetByID(id);
+    return Reach(action,actor);
     
-    if( it->second && it->second->OPCode() == args[4])
-        action = it->second;
-    )
-    for(sf::Vector2i v : Reach(action,caster))
-        if( target && target->Position().x == v.x && target->Position().y == v.y)
+}
+
+int engine::Action::IsInReach(int *args)
+{
+    state::Manager *mgr = state::Manager::GetMgrByID(args[0]);
+    state::Actor *caster = (state::Actor *)mgr->GetByID(args[1]);
+    state::Actor *target = (state::Actor *)mgr->GetByPos(args[2], args[3]);
+
+    Action *action;
+    PARSE_MAP(Actions, std::string, Action *,
+    if (it->second && it->second->OPCode() == args[4])
+        action = it->second;)
+    for (sf::Vector2i v : Reach(action, caster))
+        if (target && target->Position().x == v.x && target->Position().y == v.y)
             return 1;
     return 0;
 }
