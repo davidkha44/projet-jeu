@@ -153,6 +153,11 @@ Heuristic AI demo
 projet-jeu$ bin/client heuristic_ai
 ```
 
+## Commands
+* Key ``M`` : mode move for the selected character
+* Key ``A`` : attack move for the selected character
+* Key ``T`` : next turn and allow the AI to play
+
 <!-- RELEASE HISTORY-->
 ## Release History
 
