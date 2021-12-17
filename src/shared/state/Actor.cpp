@@ -97,11 +97,11 @@ void state::Actor::ChangeAction(std::string new_action)
 void state::Actor::AssignPosition(int posx,int posy)
 {
     Position(sf::Vector2i(posx,posy));
-    Sprite()->setPosition(posx*WorldHandler::CurrentWorld->CellSize().x,posy*WorldHandler::CurrentWorld->CellSize().y);
+    if(Sprite())
+        Sprite()->setPosition(posx*WorldHandler::CurrentWorld->CellSize().x,posy*WorldHandler::CurrentWorld->CellSize().y);
     Position(sf::Vector2i(posx,posy));
     _Properties["X"] = posx;
     _Properties["Y"] = posy;
-    _Properties["COORD"] = ((posx & 0xFFFF) << 16) + (posy & 0xFFFF);
 }
 void state::Actor::AssignPosition(sf::Vector2i v0)
 {

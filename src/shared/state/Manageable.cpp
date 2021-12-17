@@ -100,7 +100,9 @@ void state::Manageable::OnSelectionRemove()
 void state::Manageable::AssignPosition(int posx,int posy)
 {
     Position(sf::Vector2i(posx,posy));
+    if(Sprite()){
     Sprite()->setPosition(posx*WorldHandler::CurrentWorld->CellSize().x,posy*WorldHandler::CurrentWorld->CellSize().y);
+    }
     Position(sf::Vector2i(posx,posy));
 }
 void state::Manageable::AssignPosition(sf::Vector2i v0)
