@@ -42,11 +42,9 @@ void state::Player::OnKey(unsigned char* snapshot)
     KEY_SCRIPT(snapshot,M)
     KEY_SCRIPT(snapshot,I)
     KEY_SCRIPT(snapshot,R)
-    KEY_SCRIPT(snapshot,T)    
-    if(snapshot[sf::Keyboard::Key::T])
-    {
-        std::cout << "P = " << state::WorldHandler::Players.size() << std::endl;
-    } 
+    KEY_SCRIPT(snapshot,T)
+    KEY_SCRIPT(snapshot,B)
+
 }
 
 int state::Player::EndTurn(int* params)
