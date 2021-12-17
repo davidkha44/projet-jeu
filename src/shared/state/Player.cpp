@@ -43,7 +43,6 @@ void state::Player::OnKey(unsigned char* snapshot)
     KEY_SCRIPT(snapshot,I)
     KEY_SCRIPT(snapshot,R)
     KEY_SCRIPT(snapshot,T)
-    KEY_SCRIPT(snapshot,B)
 
 }
 
