@@ -1,4 +1,4 @@
-
+cmake_minimum_required(VERSION 3.16)
 set(lib_server_target server_static)
 
 # Generate header files from dia UML files
