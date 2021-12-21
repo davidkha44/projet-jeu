@@ -248,7 +248,7 @@ Distributed under the *license* License. See [LICENSE](license-url) for more inf
 [issues-url]: https://github.com/davidkha44/projet-jeu/issues
 
 [license-shield]: https://img.shields.io/github/license/davidkha44/projet-jeu.svg?style=flat-square
-[license-url]: https://github.com/davidkha44/projet-jeu/blob/[branch]/LICENSE
+[license-url]: https://github.com/davidkha44/projet-jeu/blob/server/LICENSE
 
 [cpp-ver-shield]: https://img.shields.io/badge/C%2B%2B-11-blue.svg
 [cpp-ver]: https://en.wikipedia.org/wiki/C%2B%2B11
