@@ -18,7 +18,7 @@
 
   [![c++ version][cpp-ver-shield]][cpp-ver]
   [![software version][version-shield]][cpp-ver]
-  [![build status][build-status-shield]][build-status]
+  <!-- [![build status][build-status-shield]][build-status] -->
 
   </div>
 </p>
@@ -231,7 +231,7 @@ inspire, and create. Any contributions you make are **greatly appreciated**.
 <!-- LICENSE -->
 ## License
 
-Distributed under the *license* License. See [LICENSE](license-url) for more information.
+Distributed under the MIT License. See [LICENSE](license-url) for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
@@ -248,7 +248,7 @@ Distributed under the *license* License. See [LICENSE](license-url) for more inf
 [issues-url]: https://github.com/davidkha44/projet-jeu/issues
 
 [license-shield]: https://img.shields.io/github/license/davidkha44/projet-jeu.svg?style=flat-square
-[license-url]: https://github.com/davidkha44/projet-jeu/blob/server/LICENSE
+[license-url]: https://github.com/davidkha44/projet-jeu/server/LICENSE
 
 [cpp-ver-shield]: https://img.shields.io/badge/C%2B%2B-11-blue.svg
 [cpp-ver]: https://en.wikipedia.org/wiki/C%2B%2B11
