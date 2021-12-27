@@ -1,0 +1,96 @@
+
+INT target_cyan_spearman = 0
+INT target_cyan_bowman = 0
+INT target_cyan_mage = 0
+INT target_cyan_knight = 0
+INT target_cyan_dragon = 0
+INT enemy_base = 0
+INT caster_cyan_spearman = 0
+INT caster_cyan_bowman = 0
+INT caster_cyan_mage = 0
+INT caster_cyan_knight = 0
+INT caster_cyan_dragon = 0
+INT init_done = 0
+
+
+FUNCTION InitializePlayer
+CALL FUNC::Exist 3 red_bowman.ID
+EQUAL RET:Exist 0 JMP:1
+ADD target_cyan_bowman red_bowman.ID
+
+CALL FUNC::Exist 3 red_spearman.ID
+EQUAL RET:Exist 0 JMP:1
+ADD target_cyan_spearman red_spearman.ID
+
+CALL FUNC::Exist 3 red_mage.ID
+EQUAL RET:Exist 0 JMP:1
+ADD target_cyan_mage red_mage.ID
+
+CALL FUNC::Exist 3 red_dragon.ID
+EQUAL RET:Exist 0 JMP:1
+ADD target_cyan_dragon red_dragon.ID
+
+CALL FUNC::Exist 3 red_knight.ID
+EQUAL RET:Exist 0 JMP:1
+ADD target_cyan_knight red_knight.ID
+
+CALL FUNC::Exist 3 cyan_bowman.ID
+EQUAL RET:Exist 0 JMP:1
+ADD caster_cyan_bowman cyan_bowman.ID
+
+CALL FUNC::Exist 3 cyan_spearman.ID
+EQUAL RET:Exist 0 JMP:1
+ADD caster_cyan_spearman cyan_spearman.ID
+
+CALL FUNC::Exist 3 cyan_mage.ID
+EQUAL RET:Exist 0 JMP:1
+ADD caster_cyan_mage cyan_mage.ID
+
+CALL FUNC::Exist 3 cyan_dragon.ID
+EQUAL RET:Exist 0 JMP:1
+ADD caster_cyan_dragon cyan_dragon.ID
+
+CALL FUNC::Exist 3 cyan_knight.ID
+EQUAL RET:Exist 0 JMP:1
+ADD caster_cyan_knight cyan_knight.ID
+
+CALL FUNC::Exist 3 build_red_keep.ID
+EQUAL RET:Exist 0 JMP:1
+ADD enemy_base build_red_keep.ID
+
+INT init_done = 1
+END FUNCTION
+
+FUNCTION TurnBegin
+EQUAL init_done 1 JMP:1
+CALL InitializePlayer  
+CALL STD_HEU_BHV caster_cyan_spearman target_cyan_spearman
+CALL STD_HEU_BHV caster_cyan_mage target_cyan_mage
+CALL STD_HEU_BHV caster_cyan_knight target_cyan_knight
+CALL STD_HEU_BHV caster_cyan_bowman target_cyan_bowman
+CALL STD_HEU_BHV caster_cyan_dragon target_cyan_dragon
+CALL FUNC::EndTurn PlayerID
+END FUNCTION
+
+FUNCTION STD_AI_BHV
+CALL FUNC::MoveToward 3 ARGS:0 ARGS:1 ARGS:2
+CALL FUNC::IsInReach 3 ARGS:0 ARGS:1 ARGS:2 1000
+EQUAL RET:IsInReach 0 EXIT
+SEND STD_ATTACK ARGS:0 ARGS:1 ARGS:2
+END FUNCTION
+
+FUNCTION STD_HEU_BHV
+CALL FUNC::Exist 3 ARGS:0
+EQUAL RET:Exist 0 EXIT
+CALL FUNC::Exist 3 ARGS:1
+EQUAL RET:Exist 0 JMP:1
+CALL STD_AI_BHV ARGS:0 ACTOR_MGR::ARGS:1.X ACTOR_MGR::ARGS:1.Y
+NEQUAL RET:Exist 0 EXIT
+CALL STD_AI_BHV ARGS:0 ACTOR_MGR::enemy_base.X ACTOR_MGR::enemy_base.Y
+END FUNCTION
+
+FUNCTION ADD_IF_EXIST
+CALL FUNC::Exist 3 ARGS:1
+EQUAL RET:Exist 0 EXIT
+ADD target_cyan_bowman red_bowman.ID
+END FUNCTION

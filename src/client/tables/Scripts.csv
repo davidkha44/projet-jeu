@@ -9,3 +9,5 @@ HOME,src/client/scripts/Home.bhv
 MNK,src/client/scripts/MNK.bhv
 RandomAI,src/client/scripts/RandomAI.bhv
 HEURISTIX,src/client/scripts/Heuristix.bhv
+HEURISTIXRED,src/client/scripts/HeuristixRed.bhv
+HEURISTIXCYAN,src/client/scripts/HeuristixCyan.bhv
