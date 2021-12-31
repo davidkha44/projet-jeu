@@ -63,3 +63,8 @@ int engine::Action::IsInReach(int *args)
             return 1;
     return 0;
 }
+
+engine::Action::Action(std::string args) 
+{
+
+}

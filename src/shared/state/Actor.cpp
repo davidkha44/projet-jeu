@@ -27,7 +27,7 @@ state::Actor::Actor(std::vector<std::string> args) : state::Manageable(args[0], 
     _Properties["DEF"] = std::stoi(args[4]);
     _Properties["AP"] = std::stoi(args[5]);
     _Properties["MP"] = std::stoi(args[6]);
-    ID(0xAC000000 + state::Manager::GetMgrByName("ACTOR_MGR")->Elements().size());
+    ID(ID()+ state::Manager::GetMgrByName("ACTOR_MGR")->Elements().size());
     std::vector<std::string> _actions = render::FileHandler::SplitString(args[7],";");
     _CurrentAction = _actions[0];
     if(_actions.size())
@@ -36,6 +36,24 @@ state::Actor::Actor(std::vector<std::string> args) : state::Manageable(args[0], 
             _Actions[s] = engine::Action::Actions[s];
     }
 
+}
+state::Actor::Actor(std::string args) : state::Manageable(args)
+{
+    /*
+        Example : 
+        Name=build_mausoleum2,ID=03E90000,ACTION=STD_INVOKE,AP=100,DEF=60,DMG=30,HP=100,MP=0,OWNER=0,X=5,Y=8
+    */
+    for(std::string str : render::FileHandler::SplitString(args,","))
+    {
+        std::vector<std::string> prop = render::FileHandler::SplitString(str,"=");
+        if(prop[0] == "ACTION")
+            for(std::string s : render::FileHandler::SplitString(prop[1],";"))
+                _Actions[s] = engine::Action::Actions[s];
+        else if(prop[0] != "Name" && prop[0] != "ID" && prop[0] != "ACTION")
+            _Properties[prop[0]] = std::stoi(prop[1]);
+    }
+    AssignPosition(_Properties["X"],_Properties["Y"]);
+    Render(true);
 }
 
 state::Actor::~Actor()
@@ -113,4 +131,25 @@ int state::Actor::GetNetParam(std::string param)
     if(param == "X") return Position().x;
     if(param == "Y") return Position().y;
     else return _Properties[param];
+}
+
+std::string state::Actor::Save()
+{
+    char id_str[16];
+    sprintf(id_str,"%08X",ID());
+    std::string output = "Name="+Name() +",ID="+std::string(id_str)+",ACTION=";
+
+    PARSE_MAP(_Actions,std::string,engine::Action*,
+
+    output += it->first +";";
+
+    )
+    output[output.length() - 1] = ',';
+    PARSE_MAP(_Properties,std::string,int,
+    
+    output += it->first +"="+std::to_string(it->second)+",";
+
+    )
+    output[output.length() - 1] = '\n';
+    return output;
 }

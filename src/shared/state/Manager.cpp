@@ -2,6 +2,7 @@
 #include "Manageable.h"
 #include "Actor.h"
 #include "../../client/client/Macro.hpp"
+#include "../../client/render.h"
 
 GET_SET(state::Manager,std::string,Name)
 GET_SET(state::Manager,char,ID)
@@ -17,6 +18,11 @@ state::Manager::Manager()
 }
 
 state::Manager::~Manager()
+{
+
+}
+
+state::Manager::Manager(std::string args)
 {
 
 }
@@ -61,7 +67,7 @@ void state::Manager::Draw(sf::RenderWindow* rw)
             rw->draw(*(m->Sprite()));
         else
         {
-            switch(Flush())
+            switch(Flush()%0x10)
             {
                 case 1 :
                 {
@@ -147,4 +153,45 @@ int state::Manager::GetOwner(int* params)
 {
     if((GetMgrByID(params[0])->GetByID(params[1]))) return ((state::Actor*)(GetMgrByID(params[0])->GetByID(params[1])))->GetNetParam("OWNER");
     return 0;
+}
+
+void state::Manager::Save()
+{
+    std::ofstream outfile (state::WorldHandler::BSPath+"/" +Name()+"::"+std::to_string(state::WorldHandler::Turn)+".csv");
+    switch(_Flush/0x10)
+    {
+        case 1 : 
+        for(Manageable* m : _Elements)
+            outfile << m->Save();
+        break;
+    }
+    outfile.close();
+}
+
+void state::Manager::Save(std::string filepath)
+{
+    std::ofstream outfile (filepath);
+    for(Manageable* m : _Elements)
+        outfile << m->Save();
+    outfile.close();
+}
+
+void state::Manager::Load(std::string filepath)
+{
+    for(state::Manageable* m : _Elements)
+        m->Render(false);
+    for(state::Actor* a :  render::FileHandler::DeserializeTable<state::Actor>(filepath,"CSV_FLUSH"))
+        Add(a);
+}
+
+void state::Manager::OnTurnBegin()
+{
+    // for(Manager* m : Managers)
+    //     if(m->_Flush/0x10)
+    //         m->Save();
+
+}
+void state::Manager::OnTurnEnd()
+{
+    
 }

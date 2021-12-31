@@ -14,3 +14,8 @@ engine::NetCommand::NetCommand(std::vector<std::string> args)
     _Format.second = args[2];
     NetCommands[args[0]] = this;
 }
+
+engine::NetCommand::NetCommand(std::string args) 
+{
+
+}

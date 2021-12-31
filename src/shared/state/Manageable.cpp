@@ -1,6 +1,8 @@
 #include "Manager.h"
 #include "../../client/client/Macro.hpp"
 #include "engine/SelectionHandler.h"
+#include "../../client/render.h"
+
 
 GET_SET(state::Manageable,std::string,Name)
 GET_SET(state::Manageable,std::string,ResPath)
@@ -34,7 +36,7 @@ state::Manageable::~Manageable()
 state::Manageable::Manageable(std::string name,std::string visual)
 {
     Name(name);
-    ID(0xDEAD0000);
+    ID(state::Manager::GetMgrByID(0)->GetByName(visual).front()->ID() << 16);
     ResPath(state::Manager::GetMgrByID(0)->GetByName(visual).front()->ResPath());
     Render(true);
     Scale(state::Manager::GetMgrByID(0)->GetByName(visual).front()->Scale());
@@ -73,6 +75,28 @@ state::Manageable::Manageable(std::vector<std::string> args)
     Scale(sf::Vector2f(std::stof(args[4]),std::stof(args[5])));
     Sprite()->setScale(Scale().x,Scale().y);
 }
+state::Manageable::Manageable(std::string args)
+{
+    /*
+        Example : 
+        Name=build_mausoleum2,ID=03E90000,ACTION=STD_INVOKE,AP=100,DEF=60,DMG=30,HP=100,MP=0,OWNER=0,X=5,Y=8
+    */
+    for(std::string str : render::FileHandler::SplitString(args,","))
+    {
+        std::vector<std::string> prop = render::FileHandler::SplitString(str,"=");
+        if(prop[0] == "Name")
+            Name(prop[1]);
+        if(prop[0] == "ID")
+        {
+            ID(std::stol(prop[1],nullptr,16));
+            Manageable* ref = state::Manager::GetMgrByID(0)->GetByID(ID() >> 16);
+            ResPath(ref->ResPath());
+            Texture(ref->Texture());
+            Sprite(ref->Sprite());
+        }
+    }
+
+}
 state::Manageable::Manageable(std::string name,int id,std::string path)
 { 
     Name(name);
@@ -109,5 +133,8 @@ void state::Manageable::AssignPosition(sf::Vector2i v0)
     AssignPosition(v0.x,v0.y);
 }
 
+std::string state::Manageable::Save()
+{
 
+}
 

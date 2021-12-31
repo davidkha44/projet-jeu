@@ -65,6 +65,7 @@ void render::MainFrame::Start()
 {
     //Lancement de la fenetre + Remplissage des Managers 
     engine::InputHandler::Initialize();
+    state::WorldHandler::Initialize();
     engine::SelectionHandler::Selection = std::vector<state::Manageable**>();
     InitWorld();
     InitActors();
@@ -74,7 +75,7 @@ void render::MainFrame::Start()
     while (Window()->isOpen())
     {
         sf::Event event;
-         Window()->clear(sf::Color::Black);
+        Window()->clear(sf::Color::Black);
         Draw();
         if ( Window()->hasFocus())
             Tick();

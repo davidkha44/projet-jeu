@@ -45,3 +45,8 @@ engine::Pattern::Pattern(std::vector<std::string> args)
         m->AssignPosition(m->Position().x - _Origin.x,m->Position().y - _Origin.y);
 
 }
+
+engine::Pattern::Pattern(std::string args) 
+{
+
+}

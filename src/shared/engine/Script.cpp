@@ -15,7 +15,10 @@ engine::Script::Script(std::vector<std::string> args)
     PARSE_BHV_SCRIPT(_ResPath, '#',_Text.push_back(line);)
     Scripts[_Name] = this;
 }
+engine::Script::Script(std::string args) 
+{
 
+}
 int engine::Script::INT(std::string key)
 {
     return _INTS[key];
@@ -445,7 +448,19 @@ void engine::Script::Run(std::string line,int* args)
         for(int i = 2; i < items.size();i++)
             params[i-2] = EvaluateINT(items[i],args);
         state::WorldHandler::NetCommand(engine::NetMessageHandler::Fill(engine::Action::Actions[items[1]]->NetCmd()->Format().first,params));
-        //delete params;
-
     }
+    if(items[0] == "SAVE_MGR")
+    {
+        if(items[1] == "CSV")
+            state::Manager::GetMgrByID(EvaluateINT(items[2],args))->Save(state::WorldHandler::BSPath+"/"+_STRINGS[items[3]]+".csv");
+    }
+    if(items[0] == "LOAD_MGR")
+    {
+        if(items[1] == "CSV")
+            state::Manager::GetMgrByID(EvaluateINT(items[2],args))->Load(state::WorldHandler::BSPath+"/"+_STRINGS[items[3]]+".csv");
+    }
+    if(items[0] == "CONCAT")
+        _STRINGS[items[1]] += _STRINGS[items[2]];
+    if(items[0] == "CONCAT_INT")
+        _STRINGS[items[1]] += std::to_string(EvaluateINT(items[2],args));
 }

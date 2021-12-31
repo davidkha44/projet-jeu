@@ -3,14 +3,18 @@
 #include "../engine.h"
 #include "../../client/render.h"
 #include <iostream>
+//#include <ifstream>
+#include "../../client/client/Macro.hpp"
+
 
 void state::WorldHandler::OnTurnBegin()
 {
     //Behaviour->RunFunction("OnTurnBegin",(int*)NULL);
+    for(std::function<void()> f : TurnBeginEvents)
+        f();
     for(int i = 0; i < Players.size();i++)
         Players[i]->Behaviour()->RunFunction("TurnBegin",(int*)NULL);
-    Turn = Behaviour->INT("TURN");
-    
+    Turn = Behaviour->INT("TURN");    
     std::cout << "ON_TURN_BEGIN_WH" << std::endl;
 }
 void state::WorldHandler::OnTurnBeginAsync()
@@ -60,6 +64,7 @@ void state::WorldHandler::Initialize()
     Instance = 0;
     Status = 0;
     Players = std::vector<state::Player*>();
+    Subscribe2TurnBegin<state::Manager>();
 }
 void state::WorldHandler::Initialize(World* w)
 {
@@ -101,7 +106,7 @@ void state::WorldHandler::NetCommand(std::string cmd)
     int* args = (int*)malloc(_s.size()*sizeof(int));
     for(int i = 0; i < _s.size();i++)
         args[i] = std::stol(_s[i],nullptr,16);
-    if(Behaviour->INT("TURN") == ((args[0] >> 16) & 0xFF) && !Behaviour->INT("STATUS"))
+    if(Behaviour->INT("TURN") == ((args[0] >> 8) & 0xFF) && !Behaviour->INT("STATUS"))
         Behaviour->RunFunction(items[0],args);
     delete args;
 }
@@ -113,6 +118,18 @@ int state::WorldHandler::Exist(int* args)
     return 0;
 }
 
+void state::WorldHandler::LoadTurn(int turn)
+{
+    for(state::Manager* mgr : state::Manager::Managers)
+        if(mgr->Flush()/16)
+        {
+            for (auto ptr : mgr->Elements())
+                delete ptr;
+            mgr->Elements().clear();
+            for(state::Actor* a : render::FileHandler::DeserializeTable<state::Actor>(state::WorldHandler::BSPath+"/" +mgr->Name()+"::"+std::to_string(turn)+".csv","CSV_FLUSH"))
+                mgr->Add(a);
+        }
+}
 template <class T> 
 void state::WorldHandler::Subscribe2TurnBegin()
 {

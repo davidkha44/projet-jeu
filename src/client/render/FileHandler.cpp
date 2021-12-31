@@ -54,6 +54,8 @@ render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
         state::WorldHandler::CurrentWorld->ApplyGridThickness(std::stoi(items[1]));
     if(items[0] == "RULES")
         state::WorldHandler::Behaviour = engine::Script::Scripts[items[1]];
+    if(items[0] == "FLUSH_PATH")
+        state::WorldHandler::BSPath = items[1];
 
     )
     return new render::MainFrame("PLT",state::WorldHandler::CurrentWorld->CellN().x*state::WorldHandler::CurrentWorld->CellSize().x,
@@ -72,6 +74,12 @@ std::vector<T*> render::FileHandler::DeserializeTable(std::string path, std::str
     {
         PARSE_CSV_LINES(path,'#',
             Output.push_back(new T(SplitString(line,",")));
+        )
+    }
+    if(format == "CSV_FLUSH")
+    {
+        PARSE_CSV_LINES(path,'#',
+            Output.push_back(new T(line));
         )
     }
     return Output;

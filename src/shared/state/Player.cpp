@@ -30,7 +30,7 @@ state::Player::Player(std::string name,char id,engine::Script* behaviour)
 
 void state::Player::AttachPawn(state::Actor* pawn)
 {
-    pawn->ID(pawn->ID() + (ID() << 16));
+    pawn->ID(pawn->ID() + (ID() << 8));
     pawn->Property("OWNER",ID());
     _Pawns.push_back(pawn);
 }
@@ -49,7 +49,7 @@ void state::Player::OnKey(unsigned char* snapshot)
 int state::Player::EndTurn(int* params)
 {
     char str[32];
-    sprintf(str,"EndTurn:%X",params[0] << 16);
+    sprintf(str,"EndTurn:%X",params[0] << 8);
     std::cout << str << std::endl;
     state::WorldHandler::NetCommand(std::string(str));
     return 0;

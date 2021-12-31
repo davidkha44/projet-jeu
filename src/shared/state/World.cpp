@@ -21,6 +21,11 @@ state::World::~World()
 
 }
 
+state::World::World(std::string args)
+{
+    
+}
+
 state::World::World (std::string name, std::string respath, int csx, int csy, int ncx, int ncy)
 {
     Name(name);
