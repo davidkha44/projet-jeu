@@ -47,7 +47,7 @@ STRING actor_mgr_save_path =ACTOR_MGR::
 CONCAT_INT actor_mgr_save_path TURN_TRACKER
 SAVE_MGR CSV 3 actor_mgr_save_path
 INC TURN_TRACKER
-LTE TURN_TRACKER 5 EXIT
+LTE TURN_TRACKER 3 EXIT
 STRING actor_mgr_save_path =ACTOR_MGR::
 CONCAT_INT actor_mgr_save_path 0
 LOAD_MGR CSV 3 actor_mgr_save_path
