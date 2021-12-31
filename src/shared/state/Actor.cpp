@@ -47,11 +47,18 @@ state::Actor::Actor(std::string args) : state::Manageable(args)
     {
         std::vector<std::string> prop = render::FileHandler::SplitString(str,"=");
         if(prop[0] == "ACTION")
-            for(std::string s : render::FileHandler::SplitString(prop[1],";"))
-                _Actions[s] = engine::Action::Actions[s];
+        {
+            std::vector<std::string> _actions = render::FileHandler::SplitString(prop[1],";");
+            _CurrentAction = _actions[0];
+            if(_actions.size())
+                for(std::string s : _actions)
+                    _Actions[s] = engine::Action::Actions[s];
+        }
+
         else if(prop[0] != "Name" && prop[0] != "ID" && prop[0] != "ACTION")
             _Properties[prop[0]] = std::stoi(prop[1]);
     }
+    
     AssignPosition(_Properties["X"],_Properties["Y"]);
     Render(true);
 }

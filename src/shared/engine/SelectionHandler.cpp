@@ -88,6 +88,7 @@ void engine::SelectionHandler::OnMouseLeft(int x,int y)
     for(int i = 1; i < state::Manager::Managers.size(); i++)
     {
         state::Manageable* m = state::Manager::GetMgrByID(i)->GetByPos(x,y);
+
         if(m && !m->Selected() && m->Render())
         {
             if(SelectionState == render::FileHandler::SplitString(SelectionMask[0]," ")[1]) m->OnSelectionAdd();

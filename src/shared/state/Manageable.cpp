@@ -95,6 +95,7 @@ state::Manageable::Manageable(std::string args)
             Sprite(ref->Sprite());
         }
     }
+    Selected(false);
 
 }
 state::Manageable::Manageable(std::string name,int id,std::string path)

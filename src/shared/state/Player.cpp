@@ -44,6 +44,10 @@ void state::Player::OnKey(unsigned char* snapshot)
     KEY_SCRIPT(snapshot,R)
     KEY_SCRIPT(snapshot,T)
 
+    if(snapshot[sf::Keyboard::O])
+        for(state::Manageable* m : state::Manager::GetMgrByName("ACTOR_MGR")->Elements())
+            PRINTLN(m->Name() << "::" << std::hex << m->ID());
+
 }
 
 int state::Player::EndTurn(int* params)
