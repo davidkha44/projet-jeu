@@ -41,8 +41,24 @@ FUNCTION NEXT
 
 END FUNCTION
 
+FUNCTION CalculMenace
+INT menace = 0
+ADD menace ACTOR_MGR::ARGS:0.HP
+ADD menace ACTOR_MGR::ARGS:0.DMG
+PROPERTY ACTOR_MGR::ARGS:0.MENACE menace
+END FUNCTION
+
+FUNCTION GetTargets
+INT id_atker = 0
+ADD id_atker ACTOR_MGR::ARGS:0.OWNER
+SUB id_atker ACTOR_MGR::RET:CheckPosition.OWNER
+EQUAL id_atker 0 EXIT
+
+END FUNCTION
+
 #when build_keep is ruined, game over.
 FUNCTION OnTurnEnd
+MGR_EACH 3 CalculMenace
 STRING actor_mgr_save_path =ACTOR_MGR::
 CONCAT_INT actor_mgr_save_path TURN_TRACKER
 SAVE_MGR CSV 3 actor_mgr_save_path

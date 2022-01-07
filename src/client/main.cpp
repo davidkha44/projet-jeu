@@ -1,9 +1,10 @@
 #include <iostream>
 #include <client.h>
-#include <engine.h>
+#include "engine.h"
+#include "client/Macro.hpp"
 #include "render.h"
 #include "ai.h"
-#include <state.h>
+#include "state.h"
 #include <string.h>
 #include <unistd.h>
 
@@ -86,6 +87,51 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"PROTOTYPE"))
     {
         cout << "INDISPONIBLE" << endl;
+    }  
+    if(!strcmp(argv[1],"TREE"))
+    {
+        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+        for(Manager* m : Manager::Managers)
+            cout << m->Name() << endl;
+        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+        InputHandler::Initialize();
+        WorldHandler::Initialize();
+        SelectionHandler::Selection = std::vector<state::Manageable**>();
+        mf->InitWorld();
+        mf->InitActors();
+
+        Actor* actor = (Actor*)Manager::GetMgrByID(3)->GetByName("cyan_bowman").front();
+        std::vector<Actor*> enemies;
+        enemies.push_back((Actor*)Manager::GetMgrByID(3)->GetByName("red_knight").front());
+        enemies.push_back((Actor*)Manager::GetMgrByID(3)->GetByName("red_mage").front());
+        enemies.push_back((Actor*)Manager::GetMgrByID(3)->GetByName("red_dragon").front());
+        enemies[0]->AssignPosition(actor->Position().x,actor->Position().y + 2);    
+        std::vector<Node*> aleaf;
+        std::vector<Node*> enemy_aleaf;
+        std::vector<std::vector<Node*>> aleaves;
+
+        int i = 0;
+        for(Action* action : actor->ActionList())
+            aleaf.push_back(new Node(new ActionLeaf(action->Name(),actor,action,aleaf.size())));
+    
+
+        for(Actor* a : enemies)
+            for(Action* action : a->ActionList())
+                enemy_aleaf.push_back(new Node(new ActionLeaf(action->Name(),a,action,enemy_aleaf.size())));
+
+        aleaves.push_back(aleaf);
+        aleaves.push_back(enemy_aleaf);
+        
+        Tree* tree = new Tree();
+        Node* root = new Node(new ActionLeaf("ROOT",actor,actor->ActionList()[0],0));
+        
+        i = 0;
+        Node* currentNode = root;
+        //root->RecursiveInsert(aleaves,0);
+        root->RecursiveInsertWithCallback<Action>(aleaves,0);
+        
+        root->Print(0);
     }
 
     

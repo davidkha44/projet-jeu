@@ -463,4 +463,17 @@ void engine::Script::Run(std::string line,int* args)
         _STRINGS[items[1]] += _STRINGS[items[2]];
     if(items[0] == "CONCAT_INT")
         _STRINGS[items[1]] += std::to_string(EvaluateINT(items[2],args));
+    if(items[0] == "MGR_EACH")
+    {
+        for(state::Manageable* m : state::Manager::GetMgrByID(EvaluateINT(items[1],args))->Elements())
+        {
+            state::Actor* actor = (state::Actor*)m;
+            _Stack.push(actor->ID());
+            RunFunction(items[2],1);
+        }
+    }
+    if(items[0] == "PUSH")
+        LISTS[items[1]].push_back(EvaluateINT(items[2],args));
+    if(items[0] == "LIST")
+        LISTS[items[1]] = std::vector<int>();
 }
