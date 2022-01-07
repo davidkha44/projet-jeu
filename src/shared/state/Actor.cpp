@@ -160,3 +160,23 @@ std::string state::Actor::Save()
     output[output.length() - 1] = '\n';
     return output;
 }
+
+std::vector<engine::Action*> state::Actor::ActionList()
+{
+    std::vector<engine::Action*> output;
+    PARSE_MAP(_Actions,std::string,engine::Action*,
+    output.push_back(it->second);
+    )
+    return output;
+}
+std::vector<engine::Action*> state::Actor::PossibleActions()
+{
+    std::vector<engine::Action*> output;
+    for(engine::Action* action : ActionList())
+    {
+        if(!action->HostileVicinity(this).size() && ((action->OPCode() /1000) == 1))    continue;
+        output.push_back(action);
+    }
+    return output;
+    
+}

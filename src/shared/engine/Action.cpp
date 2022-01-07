@@ -40,6 +40,23 @@ std::vector<sf::Vector2i> engine::Action::Reach(engine::Action *action, state::A
         output.push_back(VECTOR_ADD(caster->Position(),a->Position()));
     return output;
 }
+std::vector<state::Actor*> engine::Action::Vicinity(state::Actor *caster)
+{
+    std::vector<state::Actor*> output;
+    for (state::Actor *a : BasePattern()->Map())
+        if(state::Actor* a = (state::Actor*)state::Manager::GetMgrByName("ACTOR_MGR")->GetByPos(VECTOR_ADD(caster->Position(),a->Position())))
+            output.push_back(a);        
+    return output;
+}
+std::vector<state::Actor*> engine::Action::HostileVicinity(state::Actor *caster)
+{
+    std::vector<state::Actor*> output;
+    for (state::Actor *a : BasePattern()->Map())
+        if(state::Actor* a = (state::Actor*)state::Manager::GetMgrByName("ACTOR_MGR")->GetByPos(VECTOR_ADD(caster->Position(),a->Position())))
+            if(a->Property("OWNER") != caster->Property("OWNER"))
+                output.push_back(a);      
+    return output;
+}
 std::vector<sf::Vector2i> engine::Action::Reach(engine::Action *action, int id)
 {
     std::vector<sf::Vector2i> output;
