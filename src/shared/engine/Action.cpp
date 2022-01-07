@@ -30,7 +30,7 @@ engine::Action *engine::Action::GetByNetCmd(std::string netcmd)
     std::vector<std::string> items = render::FileHandler::SplitString(netcmd, ":");
     PARSE_MAP(Actions, std::string, engine::Action *,
 
-              if (it->second && render::FileHandler::SplitString(it->second->NetCmd()->Format().first, ":")[0] == items[0]) return it->second;)
+        if (it->second && render::FileHandler::SplitString(it->second->NetCmd()->Format().first, ":")[0] == items[0]) return it->second;)
     return NULL;
 }
 std::vector<sf::Vector2i> engine::Action::Reach(engine::Action *action, state::Actor *caster)
@@ -52,11 +52,13 @@ std::vector<state::Actor*> engine::Action::HostileVicinity(state::Actor *caster)
 {
     std::vector<state::Actor*> output;
     for (state::Actor *a : BasePattern()->Map())
-        if(state::Actor* a = (state::Actor*)state::Manager::GetMgrByName("ACTOR_MGR")->GetByPos(VECTOR_ADD(caster->Position(),a->Position())))
-            if(a->Property("OWNER") != caster->Property("OWNER"))
-                output.push_back(a);      
+        if(state::Actor* actor = (state::Actor*)state::Manager::GetMgrByName("ACTOR_MGR")->GetByPos(VECTOR_ADD(caster->Position(),a->Position())))
+            if(actor && actor->Property("OWNER") != caster->Property("OWNER"))
+                output.push_back(actor);      
     return output;
 }
+
+
 std::vector<sf::Vector2i> engine::Action::Reach(engine::Action *action, int id)
 {
     std::vector<sf::Vector2i> output;
@@ -80,7 +82,21 @@ int engine::Action::IsInReach(int *args)
             return 1;
     return 0;
 }
-
+ai::Node* engine::Action::RecursiveInsertCallback (void* args)
+{
+    ai::ActionLeaf* al = (ai::ActionLeaf*)args;
+    al->Weight += 0;
+    PRINTLN(al->Name);
+    if(al->ActionPerformed->Name().find("ATTACK") != std::string::npos)
+    {
+        if(al->ActionPerformed->HostileVicinity(al->Caster).size())
+            return new ai::Node(args);
+        return NULL;
+    }
+    else
+        return new ai::Node(args);
+    
+}
 engine::Action::Action(std::string args) 
 {
 

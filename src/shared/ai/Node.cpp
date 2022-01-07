@@ -1,4 +1,5 @@
 #include "Node.h"
+#include "../engine.h"
 #include "../../client/client/Macro.hpp"
 
 
@@ -22,7 +23,7 @@ void ai::Node::Print(int indent)
 {
     for(int i = 0; i < indent;i++)
         i != indent - 1 ? std::cout << "  " : std::cout << indent <<"|--";
-    std::cout << std::string((char*)Object) << std::endl;
+    std::cout << ((ai::ActionLeaf*)Object)->ToString() << std::endl;
     for(int i = 0; i < Children.size();i++)
         Children[i]->Print(indent+1);
 }
@@ -61,17 +62,17 @@ void ai::Node::RecursiveInsert(std::vector<std::vector<ai::Node*>> lnodes,int de
 template <class T>
 void ai::Node::RecursiveInsertWithCallback(std::vector<std::vector<ai::Node*>> lnodes,int depth)
 {
-    // if(depth > 3)
-    //     return;
-    // int _depth = depth + 1;
-    // for(ai::Node* n : lnodes[depth%2])
-    // {
-    //     Node* n = T::RecursiveInsertCallback();
-    //     if(!n) continue;
-    //     Children.push_back(n);
-    // }
+    if(depth > 3)
+        return;
+    int _depth = depth + 1;
+    for(ai::Node* n : lnodes[depth%2])
+    {
+        if(Node* node = T::RecursiveInsertCallback(n->Object))
+            Children.push_back(node);
+    }
      
-    // for(ai::Node* c : Children)
-    //     c->RecursiveInsert(lnodes,_depth);
+    for(ai::Node* c : Children)
+        c->RecursiveInsertWithCallback<T>(lnodes,_depth);
 }
 
+template void ai::Node::RecursiveInsertWithCallback<engine::Action>(std::vector<std::vector<ai::Node*>> lnodes,int depth);

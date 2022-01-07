@@ -17,7 +17,7 @@ void ai::DeepAI::Process(state::Manager* mgr)
 
 void ai::DeepAI::ProcessActors(std::vector<state::Actor*> actors)
 {
-
+    
 }
 void ai::DeepAI::ProcessActor(state::Actor* actor)
 {
@@ -25,3 +25,4 @@ void ai::DeepAI::ProcessActor(state::Actor* actor)
     
     
 }
+

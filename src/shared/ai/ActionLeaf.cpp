@@ -20,7 +20,7 @@ ai::ActionLeaf::ActionLeaf(std::string name,state::Actor* caster,engine::Action*
     Weight = weight;
 }
 
-std::string* ai::ActionLeaf::ToString()
+std::string ai::ActionLeaf::ToString()
 {
-    return new std::string(Caster->Name() + "::"+Name);
+    return std::string(Caster->Name() + "::"+Name+"::"+std::to_string(Weight));
 }

@@ -106,38 +106,30 @@ int main(int argc,char* argv[])
         enemies.push_back((Actor*)Manager::GetMgrByID(3)->GetByName("red_knight").front());
         enemies.push_back((Actor*)Manager::GetMgrByID(3)->GetByName("red_mage").front());
         enemies.push_back((Actor*)Manager::GetMgrByID(3)->GetByName("red_dragon").front());
-            
+        enemies[0]->AssignPosition(actor->Position().x,actor->Position().y + 2);    
         std::vector<Node*> aleaf;
         std::vector<Node*> enemy_aleaf;
         std::vector<std::vector<Node*>> aleaves;
 
         int i = 0;
         for(Action* action : actor->ActionList())
-        {
-            i++;
-            std::string* obj = (new ActionLeaf(action->Name(),actor,action,i + aleaf.size()))->ToString();
-            PRINTLN("AL = " << obj->c_str() );
-            aleaf.push_back(new Node((void*)obj->c_str()));
-        }
+            aleaf.push_back(new Node(new ActionLeaf(action->Name(),actor,action,aleaf.size())));
+    
+
         for(Actor* a : enemies)
-        {
             for(Action* action : a->ActionList())
-            {
-                i++;
-                std::string* obj = (new ActionLeaf(action->Name(),a,action,i + enemy_aleaf.size()))->ToString();
-                PRINTLN("AL = " << obj->c_str() );
-                enemy_aleaf.push_back(new Node((void*)obj->c_str()));
-            }
-        }
+                enemy_aleaf.push_back(new Node(new ActionLeaf(action->Name(),a,action,enemy_aleaf.size())));
+
         aleaves.push_back(aleaf);
         aleaves.push_back(enemy_aleaf);
         
         Tree* tree = new Tree();
-        Node* root = new Node((void*)"PERSO");
+        Node* root = new Node(new ActionLeaf("ROOT",actor,actor->ActionList()[0],0));
         
         i = 0;
         Node* currentNode = root;
-        root->RecursiveInsert(aleaves,0);
+        //root->RecursiveInsert(aleaves,0);
+        root->RecursiveInsertWithCallback<Action>(aleaves,0);
         
         root->Print(0);
     }

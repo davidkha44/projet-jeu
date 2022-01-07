@@ -177,6 +177,6 @@ std::vector<engine::Action*> state::Actor::PossibleActions()
         if(!action->HostileVicinity(this).size() && ((action->OPCode() /1000) == 1))    continue;
         output.push_back(action);
     }
-    return output;
-    
+    return output; 
 }
+
