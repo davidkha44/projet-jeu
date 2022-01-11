@@ -1,6 +1,6 @@
 #define BOOST_TEST_MODULE Test
 #include <boost/test/unit_test.hpp>
-
+#include<vector>
 
 #include "../../src/shared/state.h"
 #include "../../src/client/render.h"
@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE(TestState)
   BOOST_CHECK(!(WorldHandler::IsOver()));
   BOOST_CHECK_EQUAL(WorldHandler::WinnerID(),-1);
   WorldHandler::Status+=100;
-  //BOOST_CHECK(!(WorldHandler::IsOver()));
+  WorldHandler::LoadTurn(10);
   
 
   /*Test Player*/
@@ -32,6 +32,8 @@ BOOST_AUTO_TEST_CASE(TestState)
   BOOST_CHECK_EQUAL(a->Name(), "Jean");
   BOOST_CHECK_EQUAL(a->ID(), 35);
   Player *b=new Player();
+  
+  /*Tester les fonctions de WorldHandler liées aux Player*/
   WorldHandler::Players.push_back(a);
   WorldHandler::Players.push_back(b);
   WorldHandler::MyID=35;
@@ -57,8 +59,9 @@ BOOST_AUTO_TEST_CASE(TestState)
   World w3=World({"WORLD_TEST","src/client/maps/WorldTest.csv","40","40","30","19","LAYER_ACTOR"});
   w3.ApplyGridThickness(3);
 
+  World w4=World("WORLD_RIVER,src/client/maps/WorldWithRiver.csv,40,40,30,19,LAYER_ACTO");
   
-  //WorldHandler::Initialize(w3);
+  WorldHandler::Initialize(&w3);
   
 
   /*Test Actor*/
@@ -78,12 +81,23 @@ BOOST_AUTO_TEST_CASE(TestState)
   BOOST_CHECK_EQUAL(actor->GetNetParam("X"),5);
   BOOST_CHECK_EQUAL(actor->GetNetParam("Y"),6);
   BOOST_CHECK(!(actor->Property("render")));
-
+  actor->AssignPosition({8,9});
+  BOOST_CHECK_EQUAL(actor->GetNetParam("X"),8);
+  BOOST_CHECK_EQUAL(actor->GetNetParam("Y"),9);
+  actor->Property("render",true);
+  BOOST_CHECK((actor->Property("render")));
+  actor->Property("X",10);
+  actor->Property("Y",15);
   
+  actor->ChangeAction("STD_ATTACK");
+  actor->Save();
+  actor->ActionList();
+  
+  
+  /*Test des fonctions de Player qui ont des relation avec des Actors*/ 
+  a->AttachPawn(actor);
   //actor->OnSelectionAdd();
-  //Player::AttachPawn(actor);
     
-
   /*Test Manager*/
   Manager *manager = new Manager("Bob", 1);
   BOOST_CHECK_EQUAL(manager->Name(), "Bob");
@@ -91,6 +105,10 @@ BOOST_AUTO_TEST_CASE(TestState)
   BOOST_CHECK_EQUAL(Manager::GetMgrByName("Bob")->Name(),"Bob");
   BOOST_CHECK_EQUAL(Manager::GetMgrByName("Bob")->ID(),1);
   BOOST_CHECK_EQUAL(Manager::GetMgrByID(1)->ID(),1);
+
+  Manager mg({"ACTOR_MGR","3","18"});
+  Manager mg1("Mg");
+
 
 
   /*Test Manageablea*/
@@ -106,16 +124,36 @@ BOOST_AUTO_TEST_CASE(TestState)
   BOOST_CHECK_EQUAL(m.Scale().x,0);
   BOOST_CHECK_EQUAL(m.Scale().x,0);
   BOOST_CHECK_EQUAL(m.ResPath(),"TEST_RESPATH");
-  Manageable m1("Mana", "Bob","res/texture/");
+  Manageable *m1=new Manageable("Mana", "Bob","res/texture/");
   Manageable m2("Mana2", 2,"TEST_RESPATH");
   m.AssignPosition(4,9);
   BOOST_CHECK_EQUAL(m.Position().x,4);
   BOOST_CHECK_EQUAL(m.Position().y,9);
 
-  Manageable m4({"ACTOR_REDMAGE","ASSET_MGR","1105","res/texture/Characters/Prototypes/MageRed.png","2","2"});
-  //Actor* actor2=new Actor("HERO_CYANBOWMAN,ACTOR_CYANBOWMAN,100,55,25,3,3,STD_ATTACK");
-  
+  Manageable *m4=new Manageable({"ACTOR_REDMAGE","ASSET_MGR","1105","res/texture/Characters/Prototypes/MageRed.png","2","2"});
+  Manageable *m5=new Manageable("ACTOR_CYANMAGE,ASSET_MGR,1106,res/texture/Characters/Prototypes/MageCyan.png,2,2");
+  m4->OnSelectionAdd();
+  m4->OnSelectionRemove();
+  m.AssignPosition({5,10});
 
+  //Actor act2({"HERO_REDMAGE","ACTOR_REDMAGE","100","70","35","5","3","STD_ATTACK;STD_MOVE"});
+
+
+  /*vérification des fonctions de manager qui ont relation avec Manageable*/
+  manager->Add(m5);
+  manager->Remove(m5);
+  manager->Add(m4);
+  manager->Add(m1);
+  manager->GetByName("ACTOR_REDMAGE");
+  manager->GetByID(1105);
+  manager->GetByPos(4,5);
+  manager->GetByPos({4,5});
+  manager->Save();
+  manager->Save("res/texture");
+  manager->Load("res/texture");
+  manager->OnTurnBegin();
+  manager->OnTurnEnd();
+  
 
   //WorldHandler::OnTurnBegin();
   //WorldHandler::OnTurnBeginAsync();
@@ -134,8 +172,8 @@ BOOST_AUTO_TEST_CASE(TestEngine){
   BOOST_CHECK_EQUAL(ark.CostMP(),0);
   BOOST_CHECK(ark.RequireRangeCheck());
   engine::Action ivk({"STD_INVOKE","3000","1","0","PATTERN_CROSS","NET_CMD_INVOKE_RED","1"});
-  //Actor* act2=new Actor({"BUILDING_REDKEEP","ACTOR_REDKEEP","100","20","70","100","0","STD_INVOKE"});
   //BOOST_CHECK_EQUAL(engine::Action::GetByNetCmd("NET_CMD_ATTACK")->Name(),"STD_ATTACK");
+ 
   
 }
 
