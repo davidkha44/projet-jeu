@@ -4,6 +4,7 @@
 
 #include "../../src/shared/state.h"
 #include "../../src/client/render.h"
+#include "../../src/shared/engine.h"
 
 
 using namespace ::state;
@@ -106,13 +107,10 @@ BOOST_AUTO_TEST_CASE(TestState)
   BOOST_CHECK_EQUAL(m.Scale().x,0);
   BOOST_CHECK_EQUAL(m.Scale().x,0);
   BOOST_CHECK_EQUAL(m.ResPath(),"TEST_RESPATH");
-  Manageable m1("Mana", "Bob","res/texture/");
-  Manageable m2("Mana2", 2,"TEST_RESPATH");
   m.AssignPosition(4,9);
   BOOST_CHECK_EQUAL(m.Position().x,4);
   BOOST_CHECK_EQUAL(m.Position().y,9);
 
-  Manageable m4({"ACTOR_REDMAGE","ASSET_MGR","1105","res/texture/Characters/Prototypes/MageRed.png","2","2"});
   //Actor* actor2=new Actor("HERO_CYANBOWMAN,ACTOR_CYANBOWMAN,100,55,25,3,3,STD_ATTACK");
   
 
@@ -131,11 +129,34 @@ BOOST_AUTO_TEST_CASE(TestEngine){
   BOOST_CHECK_EQUAL(ark.OPCode(),1000);
   BOOST_CHECK_EQUAL(ark.CostAP(),1);
   BOOST_CHECK_EQUAL(ark.CostMP(),0);
-  BOOST_CHECK_EQUAL(ark.CostMP(),0);
   BOOST_CHECK(ark.RequireRangeCheck());
-  engine::Action ivk({"STD_INVOKE","3000","1","0","PATTERN_CROSS","NET_CMD_INVOKE_RED","1"});
+  ark.Name("STD_MOVE_TOWARD_POS");
+  ark.OPCode(2020);
+  ark.CostAP(0);
+  ark.CostMP(1);
+  engine::Pattern p1({"PATTERN_SQUARE1","src/client/actions_patterns/PatternSquare1.csv","3","3"});
+  ark.BasePattern(&p1);
+  engine::NetCommand cmd({"NET_CMD_MOVE_TOWARD_POS","MoveTowardPos:$X;$X;$X","caster.ID;target.X;target.Y"});
+  ark.NetCmd(&cmd);
+  BOOST_CHECK_NE(ark.Name(),"STD_ATTACK");
+  BOOST_CHECK_EQUAL(ark.OPCode(),2020);
+  BOOST_CHECK_EQUAL(ark.CostAP(),0);
+  BOOST_CHECK_EQUAL(ark.CostMP(),1);
+  
+  engine::NetCommand ncmd({"NET_CMD_MOVE","Move:$X;$X;$X","caster.ID;target.X;target.Y"});
+  BOOST_CHECK_EQUAL(ncmd.Name(),"NET_CMD_MOVE");
+  BOOST_CHECK_EQUAL(ncmd.Format().first,"Move:$X;$X;$X");
+  BOOST_CHECK_EQUAL(ncmd.Format().second,"caster.ID;target.X;target.Y");
+
+  engine::Pattern p({"PATTERN_SQUARE1","src/client/actions_patterns/PatternSquare1.csv","3","3"});
+  
+  //BOOST_CHECK_EQUAL(ark.BasePattern(),p);
+  //BOOST_CHECK_EQUAL(ark.NetCmd()->Name(),"NET_CMD_ATTACK");
+  //BOOST_CHECK_EQUAL(ark.RequireRangeCheck(),false);
+  //engine::Action ivk({"STD_INVOKE","3000","1","0","PATTERN_CROSS","NET_CMD_INVOKE_RED","1"});
   //Actor* act2=new Actor({"BUILDING_REDKEEP","ACTOR_REDKEEP","100","20","70","100","0","STD_INVOKE"});
-  //BOOST_CHECK_EQUAL(engine::Action::GetByNetCmd("NET_CMD_ATTACK")->Name(),"STD_ATTACK");
+  //engine::Action* a1 = engine::Action::GetByNetCmd("NET_CMD_MOVE");
+  //BOOST_CHECK_EQUAL(a1->Name(),"STD_MOVE");
   
 }
 
