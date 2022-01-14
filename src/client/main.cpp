@@ -161,6 +161,12 @@ int main(int argc,char* argv[])
         root->Print(0);
         cout << "ACTION CHOISIE : \n" << endl;
         choice->Print(0);
+        /*root->BottomLevel(bhv_tree);
+
+        root->Print(0);
+        cout << "BOTTOM LEVEL" << endl;*/
+
+            
     }
 
     
