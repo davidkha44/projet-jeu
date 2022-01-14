@@ -154,8 +154,12 @@ int main(int argc,char* argv[])
         
         //root->RecursiveInsert(aleaves,0);
         root->RecursiveInsertWithCallback<BehaviourTree>(leaves,0);
-        
+        root->BottomLevel(bhv_tree);
+
         root->Print(0);
+        cout << "BOTTOM LEVEL" << endl;
+
+            
     }
 
     

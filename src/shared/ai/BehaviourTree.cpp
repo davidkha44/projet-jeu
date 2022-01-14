@@ -23,3 +23,12 @@ ai::Node* ai::BehaviourTree::RecursiveInsertCallback(void* args)
     new_bl->Outcome = ai::DeepAI::RateOutcome(params);
     return new ai::Node(new_bl);
 }
+
+ai::Node* ai::BehaviourTree::AlphaBetaParsing()
+{
+    ai::Node* currentNode = Root;
+
+}
+
+
+

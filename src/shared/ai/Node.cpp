@@ -28,6 +28,13 @@ void ai::Node::Print(int indent)
     for(int i = 0; i < Children.size();i++)
         Children[i]->Print(indent+1);
 }
+int ai::Node::BottomLevel(ai::Tree* tree)
+{
+    if(!Children.size()) tree->BottomLevel.push_back(this);
+    else
+        for(int i = 0; i < Children.size();i++)
+            Children[i]->BottomLevel(tree);
+}
 
 void ai::Node::BigBang(std::vector<ai::Node*> nodes)
 {
@@ -41,7 +48,7 @@ void ai::Node::BigBang(std::vector<ai::Node*> nodes)
 }
 void ai::Node::RecursiveInsert(std::vector<ai::Node*> nodes,int depth)
 {
-    if(depth > 3)
+    if(depth > 1)
         return;
     int _depth = depth + 1;
     for(ai::Node* n : nodes)
@@ -52,7 +59,7 @@ void ai::Node::RecursiveInsert(std::vector<ai::Node*> nodes,int depth)
 }
 void ai::Node::RecursiveInsert(std::vector<std::vector<ai::Node*>> lnodes,int depth)
 {
-    if(depth > 3)
+    if(depth > 1)
         return;
     int _depth = depth + 1;
     for(ai::Node* n : lnodes[depth%2])
@@ -63,7 +70,7 @@ void ai::Node::RecursiveInsert(std::vector<std::vector<ai::Node*>> lnodes,int de
 template <class T>
 void ai::Node::RecursiveInsertWithCallback(std::vector<std::vector<ai::Node*>> lnodes,int depth)
 {
-    if(depth > 3)
+    if(depth > 1)
         return;
     int _depth = depth + 1;
     for(ai::Node* n : lnodes[depth%2])
@@ -75,13 +82,12 @@ void ai::Node::RecursiveInsertWithCallback(std::vector<std::vector<ai::Node*>> l
         if(depth) ((ai::BehaviourLeaf*)c->Object)->Target = ((ai::BehaviourLeaf*)Object)->Caster;
         c->Parent = this;
         c->RecursiveInsertWithCallback<T>(lnodes,_depth);
-
     }
 }
 template <class T>
 void ai::Node::RecursiveInsertWithCallback(std::vector<ai::Node*> nodes,int depth)
 {
-    if(depth > 3)
+    if(depth > 1)
         return;
     int _depth = depth + 1;
     for(ai::Node* n : nodes)

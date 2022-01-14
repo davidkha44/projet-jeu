@@ -15,6 +15,13 @@ ai::Tree::Tree(ai::Node* root)
     Root = root;  
 }
 
+std::vector<ai::Node*> ai::Tree::Children(int depth)
+{
+    ai::Node* currentNode = Root;
+
+
+}
+
 
 
 
