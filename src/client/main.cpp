@@ -154,8 +154,13 @@ int main(int argc,char* argv[])
         
         //root->RecursiveInsert(aleaves,0);
         root->RecursiveInsertWithCallback<BehaviourTree>(leaves,0);
-        
         root->Print(0);
+
+        Node* choice = Node::chooseAction(root);
+        cout << "APRES ALPHA-BETA : \n" << endl;
+        root->Print(0);
+        cout << "ACTION CHOISIE : \n" << endl;
+        choice->Print(0);
     }
 
     

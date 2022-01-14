@@ -60,7 +60,8 @@
         "typeinfo": "cpp",
         "any": "cpp",
         "future": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "valarray": "cpp"
     },
     "C_Cpp.errorSquiggles": "Enabled"
 }
