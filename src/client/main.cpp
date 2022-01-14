@@ -75,7 +75,7 @@ int main(int argc,char* argv[])
 
     if(!strcmp(argv[1],"heuristic_ai"))
     {
-        cout << "RANDOM AI : "<< getpid() << endl;
+        cout << "HEURISTIC AI : "<< getpid() << endl;
         MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)

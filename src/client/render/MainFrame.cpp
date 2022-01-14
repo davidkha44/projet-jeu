@@ -28,6 +28,9 @@ render::MainFrame::MainFrame(std::string name, int h, int w)
     Width(w);
     
 }
+render::MainFrame::~MainFrame(){
+    
+}
 
 void render::MainFrame::Draw()
 {
