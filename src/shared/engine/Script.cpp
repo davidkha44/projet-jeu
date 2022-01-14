@@ -4,6 +4,7 @@
 #include "../../client/client/Macro.hpp"
 #include "../../client/render.h"
 #include "../state.h"
+#include "../ai.h"
 
 
 
@@ -476,4 +477,9 @@ void engine::Script::Run(std::string line,int* args)
         LISTS[items[1]].push_back(EvaluateINT(items[2],args));
     if(items[0] == "LIST")
         LISTS[items[1]] = std::vector<int>();
+    if(items[0] == "BHV_TREE")
+        BHV_TREES[items[1]] = new ai::BehaviourTree(NULL,state::Manager::GetMgrByID(3),this);
+    if(items[0] == "BHV_TREE_INPUT")
+        BHV_TREES[items[1]]->Inputs[items[2]] = items[3];
+
 }

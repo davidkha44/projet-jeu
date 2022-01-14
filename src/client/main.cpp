@@ -108,28 +108,52 @@ int main(int argc,char* argv[])
         enemies.push_back((Actor*)Manager::GetMgrByID(3)->GetByName("red_dragon").front());
         enemies[0]->AssignPosition(actor->Position().x,actor->Position().y + 2);    
         std::vector<Node*> aleaf;
+        std::vector<Node*> bhvleaves;
+        std::vector<Node*> en_bhvleaves;
         std::vector<Node*> enemy_aleaf;
         std::vector<std::vector<Node*>> aleaves;
+        std::vector<std::vector<Node*>> leaves;
+        BehaviourTree* bhv_tree = WorldHandler::Behaviour->BHV_TREES["actor_bhv"];
+        bhv_tree->Caster = actor;
+        bhv_tree->Root = new Node(new BehaviourLeaf(actor,NULL,"ROOT"));
+        PRINTLN(bhv_tree->Caster->Name());
 
-        int i = 0;
-        for(Action* action : actor->ActionList())
-            aleaf.push_back(new Node(new ActionLeaf(action->Name(),actor,action,aleaf.size())));
+        PARSE_MAP(bhv_tree->Inputs,std::string,std::string,
+        
+            bhvleaves.push_back(new Node(new BehaviourLeaf(actor,NULL,it->first)));
+
+        )
+
+        for(Actor* en : enemies)
+        {
+            PARSE_MAP(bhv_tree->Inputs,std::string,std::string,
+        
+            en_bhvleaves.push_back(new Node(new BehaviourLeaf(en,NULL,it->first)));
+        
+        )
+        }
+        PRINTLN("MILESTONE");
+
+        // int i = 0;
+        // for(Action* action : actor->ActionList())
+        //     aleaf.push_back(new Node(new ActionLeaf(action->Name(),actor,action,aleaf.size())));
     
 
-        for(Actor* a : enemies)
-            for(Action* action : a->ActionList())
-                enemy_aleaf.push_back(new Node(new ActionLeaf(action->Name(),a,action,enemy_aleaf.size())));
+        // for(Actor* a : enemies)
+        //     for(Action* action : a->ActionList())
+        //         enemy_aleaf.push_back(new Node(new ActionLeaf(action->Name(),a,action,enemy_aleaf.size())));
 
-        aleaves.push_back(aleaf);
-        aleaves.push_back(enemy_aleaf);
+        // aleaves.push_back(aleaf);
+        // aleaves.push_back(enemy_aleaf); 
+        leaves.push_back(bhvleaves);
+        leaves.push_back(en_bhvleaves);
         
-        Tree* tree = new Tree();
-        Node* root = new Node(new ActionLeaf("ROOT",actor,actor->ActionList()[0],0));
+        PRINTLN(((BehaviourLeaf*)bhv_tree->Root->Object)->ToString());
+        Node* root = bhv_tree->Root;
+        //Node* root = new Node(new ActionLeaf("ROOT",actor,actor->ActionList()[0],0));
         
-        i = 0;
-        Node* currentNode = root;
         //root->RecursiveInsert(aleaves,0);
-        root->RecursiveInsertWithCallback<Action>(aleaves,0);
+        root->RecursiveInsertWithCallback<BehaviourTree>(leaves,0);
         
         root->Print(0);
     }

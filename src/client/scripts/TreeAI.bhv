@@ -1,0 +1,5 @@
+BHV_TREE actor_bhv
+
+BHV_TREE_INPUT actor_bhv Offense FUNC::DeepAI_Offense
+BHV_TREE_INPUT actor_bhv Defense FUNC::DeepAI_Defense
+

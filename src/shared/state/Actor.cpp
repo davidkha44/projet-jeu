@@ -180,3 +180,9 @@ std::vector<engine::Action*> state::Actor::PossibleActions()
     return output; 
 }
 
+engine::Action* state::Actor::ActionOfType(int action_type)
+{
+    for(engine::Action* a : ActionList())
+        if(a->OPCode()/action_type == 1) return a;
+    return NULL;
+}

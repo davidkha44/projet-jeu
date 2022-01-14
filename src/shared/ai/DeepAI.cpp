@@ -26,3 +26,26 @@ void ai::DeepAI::ProcessActor(state::Actor* actor)
     
 }
 
+int ai::DeepAI::RateOutcome(void** args)
+{
+    state::Actor* caster = (state::Actor*)args[0];
+    state::Actor* target = (state::Actor*)args[1];
+    std::string input = std::string((char*)args[2]);
+
+    if(input == "Offense")
+    {
+        if(!caster->ActionOfType(1000))
+            return 0;
+        std::vector<state::Actor*> vicinity =  caster->ActionOfType(1000)->HostileVicinity(caster);
+        if(!vicinity.size()) return 3;
+        int max = caster->Property("DMG") - vicinity[0]->Property("DEF");
+        for(state::Actor* actor : vicinity)
+            if((caster->Property("DMG") - actor->Property("DEF")) > max)
+                max = caster->Property("DMG") - actor->Property("DEF");
+        return max;
+    }
+    if(input == "Defense")
+        return 5;
+
+
+}
