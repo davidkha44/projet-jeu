@@ -32,14 +32,14 @@ void ai::Node::Print(int indent)
     for(int i = 0; i < Children.size();i++)
         Children[i]->Print(indent+1);
 }
-int ai::Node::BottomLevel(ai::Tree* tree)
+/*int ai::Node::BottomLevel(ai::Tree* tree)
 {
     if(!Children.size()) tree->BottomLevel.push_back(this);
     else
         for(int i = 0; i < Children.size();i++)
             Children[i]->BottomLevel(tree);
 }
-
+*/
 void ai::Node::BigBang(std::vector<ai::Node*> nodes)
 {
     ai::Node* currentNode = this;
