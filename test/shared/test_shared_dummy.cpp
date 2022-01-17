@@ -9,6 +9,10 @@
 
 using namespace ::state;
 
+void foo(void* param){
+  printf("ici\n");
+}
+
 BOOST_AUTO_TEST_CASE(TestState)
 {
   /* Test class WorldHandler */
@@ -155,6 +159,10 @@ BOOST_AUTO_TEST_CASE(TestState)
   manager->OnTurnBegin();
   manager->OnTurnEnd();
   
+  /*TEST WorldHandler*/
+ WorldHandler::RunFunctionInNewThread(foo);
+
+
 
   //WorldHandler::OnTurnBegin();
   //WorldHandler::OnTurnBeginAsync();

@@ -5,6 +5,7 @@
 #include <iostream>
 //#include <ifstream>
 #include "../../client/client/Macro.hpp"
+#include <thread> 
 
 
 void state::WorldHandler::OnTurnBegin()
@@ -130,6 +131,23 @@ void state::WorldHandler::LoadTurn(int turn)
                 mgr->Add(a);
         }
 }
+
+void state::WorldHandler::RunFunctionInNewThread(std::function<void(void*)> func){
+
+    std::thread first(func,(void*)NULL);
+    std::thread second(func,(void*)NULL);
+    std::cout <<"func excute en parallèle\n";
+
+    //synchronize threads
+    first.join();
+    second.join();
+
+    std::cout <<"func and func completed.\n";
+
+}
+
+
+
 template <class T> 
 void state::WorldHandler::Subscribe2TurnBegin()
 {

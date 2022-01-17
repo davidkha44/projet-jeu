@@ -26,6 +26,11 @@ using namespace render;
 using namespace engine;
 using namespace ai;
 
+void foo(void* param){
+  printf("ici\n");
+  printf("%p\n",param);
+}
+
 int main(int argc,char* argv[])
 {
 
@@ -174,6 +179,14 @@ int main(int argc,char* argv[])
             
     }
 
+    if(!strcmp(argv[1],"Thread"))
+    {
+        cout << "Test Thread" << endl;
+        void *param=NULL;
+        
+        WorldHandler::RunFunctionInNewThread(foo);
+        
+    } 
     
     return 0;
 }
