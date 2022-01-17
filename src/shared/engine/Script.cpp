@@ -480,6 +480,6 @@ void engine::Script::Run(std::string line,int* args)
     if(items[0] == "BHV_TREE")
         BHV_TREES[items[1]] = new ai::BehaviourTree(NULL,state::Manager::GetMgrByID(3),this);
     if(items[0] == "BHV_TREE_INPUT")
-        BHV_TREES[items[1]]->Inputs[items[2]] = items[3];
+        BHV_TREES[items[1]]->Inputs[items[2]] = items[3]; 
 
 }

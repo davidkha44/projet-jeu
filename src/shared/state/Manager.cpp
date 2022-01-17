@@ -186,12 +186,23 @@ void state::Manager::Load(std::string filepath)
 
 void state::Manager::OnTurnBegin()
 {
-    // for(Manager* m : Managers)
-    //     if(m->_Flush/0x10)
-    //         m->Save();
-
+    
+    
 }
 void state::Manager::OnTurnEnd()
 {
     
+}
+
+int state::Manager::Destroy(int* args)
+{
+    state::Manager* mgr = GetMgrByID(args[0]);
+    if(!mgr) return 0;
+    state::Actor* actor = (state::Actor*)mgr->GetByID(args[1]);
+    if(!actor) return 0;
+    else
+    {
+        mgr->Remove(actor);
+        delete actor;
+    }
 }

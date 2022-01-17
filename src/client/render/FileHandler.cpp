@@ -34,6 +34,7 @@ render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
     //Charge et parcours le fichiers de configuration LaunchArgs.csv
     render::FileHandler::DeserializeTable<engine::Script>("src/client/tables/Scripts.csv","CSV");
     engine::Script::STATIC_FUNCTIONS["CheckPosition"] = state::Manager::CheckPosition;
+    engine::Script::STATIC_FUNCTIONS["Destroy"] = state::Manager::Destroy;
     engine::Script::STATIC_FUNCTIONS["EndTurn"] = state::Player::EndTurn;
     engine::Script::STATIC_FUNCTIONS["RandomInt"] = ai::RandomAI::RandomInt;
     engine::Script::STATIC_FUNCTIONS["MoveToward"] = ai::Heuristics::MoveToward;

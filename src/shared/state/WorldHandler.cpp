@@ -35,11 +35,11 @@ void state::WorldHandler::OnTurnEndAsync()
 
 state::Player* state::WorldHandler::GetActivePlayer()
 {
-    return Players[Behaviour->INT("TURN") % Players.size()];
+    return GetPlayerByID(Behaviour->INT("TURN") % Players.size());
 }
 state::Player* state::WorldHandler::GetMyPlayer()
 {
-    return Players[MyID];
+    return GetPlayerByID(MyID);
 }
 
 bool state::WorldHandler::IsOver()

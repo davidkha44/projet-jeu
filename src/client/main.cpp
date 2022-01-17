@@ -82,6 +82,7 @@ int main(int argc,char* argv[])
             cout << m->Name() << endl;
         Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
         mf->Start();
+        WorldHandler::OnTurnBegin();
     }
 
     if(!strcmp(argv[1],"PROTOTYPE"))
@@ -155,7 +156,11 @@ int main(int argc,char* argv[])
         //root->RecursiveInsert(aleaves,0);
         root->RecursiveInsertWithCallback<BehaviourTree>(leaves,0);
         root->Print(0);
-
+        cout << "LEVEL I : " << endl;
+        for(Node* n : bhv_tree->Level(2))
+            cout << ((BehaviourLeaf*)n->Object)->ToString() << endl;
+        cout << "END LEVEL II : " << endl;
+        
         Node* choice = Node::chooseAction(root);
         cout << "APRES ALPHA-BETA : \n" << endl;
         root->Print(0);

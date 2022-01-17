@@ -10,7 +10,7 @@ BHV_TREE actor_bhv
 BHV_TREE_INPUT actor_bhv Offense FUNC::DeepAI_Offense
 BHV_TREE_INPUT actor_bhv Defense FUNC::DeepAI_Defense
 
-PLAYER PLAYER_2 0 MNK
+PLAYER PLAYER_2 0 HEURISTIXCYAN
 PLAYER PLAYER_1 1 HEURISTIXRED
 
 
@@ -65,9 +65,9 @@ FUNCTION OnTurnEnd
 MGR_EACH 3 CalculMenace
 STRING actor_mgr_save_path =ACTOR_MGR::
 CONCAT_INT actor_mgr_save_path TURN_TRACKER
-SAVE_MGR CSV 3 actor_mgr_save_path
+#SAVE_MGR CSV 3 actor_mgr_save_path
 INC TURN_TRACKER
-LTE TURN_TRACKER 3 EXIT
+LTE TURN_TRACKER 9999 EXIT
 STRING actor_mgr_save_path =ACTOR_MGR::
 CONCAT_INT actor_mgr_save_path 0
 LOAD_MGR CSV 3 actor_mgr_save_path
@@ -141,8 +141,9 @@ PRINT_INT hp
 PROPERTY ACTOR_MGR::RET:CheckPosition.HP hp
 LTE build_red_keep.HP 0 EndGame
 LTE build_cyan_keep.HP 0 EndGame
-GTE ACTOR_MGR::RET:CheckPosition.HP 0 EXIT
-PROPERTY ACTOR_MGR::RET:CheckPosition.RENDER 0
+GT ACTOR_MGR::RET:CheckPosition.HP 0 EXIT
+#PROPERTY ACTOR_MGR::RET:CheckPosition.RENDER 0
+CALL FUNC::Destroy 3 RET:CheckPosition
 END FUNCTION
 
 FUNCTION Invoke_cyan
