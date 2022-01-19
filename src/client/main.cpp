@@ -7,13 +7,25 @@
 #include "state.h"
 #include <string.h>
 #include <unistd.h>
+<<<<<<< HEAD
+#include "../../extern/jsoncpp-1.8.0/json/json.h"
+#include "../../extern/jsoncpp-1.8.0/json/json-forwards.h"
+#include "../../extern/jsoncpp-1.8.0/jsoncpp.cpp"
+#include <fstream>
+=======
 #include <sio_client.h>
 #include <thread>
+>>>>>>> 465279770d29957a8e64fe784f647208f71d9b21
 
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 
+void foo(void* param){
+  printf("Test function foo\n");
+  printf("l'adresse est:%p\n",param);
+  printf("la valeur est:%d\n",&param);
+}
 
 void testSFML() {
     sf::Texture texture;
@@ -213,7 +225,25 @@ int main(int argc,char* argv[])
 
             
     }
+    if(!strcmp(argv[1],"Thread"))
+    {
+        cout << "Test Thread\n" << endl;
+        cout<<"-------------------------------------------\n";
+        cout<<"Test param Null\n";
+        WorldHandler::RunFunctionInNewThread(foo,NULL);
 
+        cout<<"-------------------------------------------\n";
+        cout<<"Test les pointeurs entier\n";
+        int* p=(int*)malloc(sizeof(int));
+        *p=60;
+        WorldHandler::RunFunctionInNewThread(foo,p);
+
+    }  
+    
+    if(!strcmp(argv[1],"Json"))
+    {
+
+    }
     
     return 0;
 }
