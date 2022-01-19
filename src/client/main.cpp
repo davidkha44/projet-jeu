@@ -7,6 +7,8 @@
 #include "state.h"
 #include <string.h>
 #include <unistd.h>
+#include <sio_client.h>
+
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -21,6 +23,7 @@ void testSFML() {
 //#include <state.h>
 
 using namespace std;
+using namespace sio;
 using namespace state;
 using namespace render;
 using namespace engine;
@@ -87,7 +90,17 @@ int main(int argc,char* argv[])
 
     if(!strcmp(argv[1],"PROTOTYPE"))
     {
-        cout << "INDISPONIBLE" << endl;
+        sio::client io;
+        io.set_open_listener([&]() {
+            cout << "CONNECTED" << endl;
+            io.socket()->emit("req_join_room", string("BackRoom;Fred"));
+            io.socket()->on("ack_join_room", [&](sio::event& ev)
+            {
+                cout << "RESPONSE IS : " << ev.get_message()->get_string() << endl;
+            });
+            });
+            io.connect("https://plastic-cat-14.loca.lt:3000");
+            while(1) usleep(500000);
     }  
     if(!strcmp(argv[1],"TREE"))
     {
@@ -159,13 +172,13 @@ int main(int argc,char* argv[])
         cout << "LEVEL I : " << endl;
         for(Node* n : bhv_tree->Level(2))
             cout << ((BehaviourLeaf*)n->Object)->ToString() << endl;
-        cout << "END LEVEL II : " << endl;
+        cout << "END LEVEL  : " << bhv_tree->Level() << endl;
         
         Node* choice = Node::chooseAction(root);
-        cout << "APRES ALPHA-BETA : \n" << endl;
-        root->Print(0);
-        cout << "ACTION CHOISIE : \n" << endl;
-        choice->Print(0);
+        //cout << "APRES ALPHA-BETA : \n" << endl;
+        //root->Print(0);
+        //cout << "ACTION CHOISIE : \n" << endl;
+        //choice->Print(0);
         /*root->BottomLevel(bhv_tree);
 
         root->Print(0);

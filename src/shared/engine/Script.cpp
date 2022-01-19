@@ -5,6 +5,7 @@
 #include "../../client/render.h"
 #include "../state.h"
 #include "../ai.h"
+#include <unistd.h>
 
 
 
@@ -481,5 +482,8 @@ void engine::Script::Run(std::string line,int* args)
         BHV_TREES[items[1]] = new ai::BehaviourTree(NULL,state::Manager::GetMgrByID(3),this);
     if(items[0] == "BHV_TREE_INPUT")
         BHV_TREES[items[1]]->Inputs[items[2]] = items[3]; 
+    if(items[0] == "SLEEP")
+        usleep(EvaluateINT(items[1],args));
+
 
 }
