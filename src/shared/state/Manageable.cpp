@@ -2,6 +2,7 @@
 #include "../../client/client/Macro.hpp"
 #include "engine/SelectionHandler.h"
 #include "../../client/render.h"
+#include "../engine.h"
 
 
 GET_SET(state::Manageable,std::string,Name)
@@ -81,9 +82,9 @@ state::Manageable::Manageable(std::string args)
         Example : 
         Name=build_mausoleum2,ID=03E90000,ACTION=STD_INVOKE,AP=100,DEF=60,DMG=30,HP=100,MP=0,OWNER=0,X=5,Y=8
     */
-    for(std::string str : render::FileHandler::SplitString(args,","))
+    for(std::string str : engine::FileHandler::SplitString(args,","))
     {
-        std::vector<std::string> prop = render::FileHandler::SplitString(str,"=");
+        std::vector<std::string> prop = engine::FileHandler::SplitString(str,"=");
         if(prop[0] == "Name")
             Name(prop[1]);
         if(prop[0] == "ID")

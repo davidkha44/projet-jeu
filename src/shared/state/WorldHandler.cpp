@@ -102,8 +102,8 @@ state::Player* state::WorldHandler::GetPlayerByID(int id)
 
 void state::WorldHandler::NetCommand(std::string cmd)
 {
-    std::vector<std::string> items = render::FileHandler::SplitString(cmd,":");
-    std::vector<std::string> _s = render::FileHandler::SplitString(items[1],";");
+    std::vector<std::string> items = engine::FileHandler::SplitString(cmd,":");
+    std::vector<std::string> _s = engine::FileHandler::SplitString(items[1],";");
     int* args = (int*)malloc(_s.size()*sizeof(int));
     for(int i = 0; i < _s.size();i++)
         args[i] = std::stol(_s[i],nullptr,16);
@@ -127,7 +127,7 @@ void state::WorldHandler::LoadTurn(int turn)
             for (auto ptr : mgr->Elements())
                 delete ptr;
             mgr->Elements().clear();
-            for(state::Actor* a : render::FileHandler::DeserializeTable<state::Actor>(state::WorldHandler::BSPath+"/" +mgr->Name()+"::"+std::to_string(turn)+".csv","CSV_FLUSH"))
+            for(state::Actor* a : engine::FileHandler::DeserializeTable<state::Actor>(state::WorldHandler::BSPath+"/" +mgr->Name()+"::"+std::to_string(turn)+".csv","CSV_FLUSH"))
                 mgr->Add(a);
         }
 }

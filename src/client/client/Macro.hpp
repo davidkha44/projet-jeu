@@ -40,7 +40,7 @@
 #define CASE(S) } else if (strcmp(_S, S) == 0) {switch(1) { case 1
 #define BREAK }
 #define DEFAULT } else {switch(1) { case 1
-#define DESERIALIZE(x) template std::vector<x*> render::FileHandler::DeserializeTable<x>(std::string path, std::string format);
+#define DESERIALIZE(x) template std::vector<x*> engine::FileHandler::DeserializeTable<x>(std::string path, std::string format);
 #define EVENT(cp,evt_name,cc) template void cp::Register##evt_name##Events<cc>(); 
 #define PARSE_BHV_SCRIPT(path,comment,ins)       std::ifstream file(path); \
                                                 for( std::string line; getline( file, line ); ) {if(line.find(comment) == std::string::npos && line.find_first_not_of(' ') != std::string::npos) { \

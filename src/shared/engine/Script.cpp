@@ -4,6 +4,7 @@
 #include "../../client/client/Macro.hpp"
 #include "../../client/render.h"
 #include "../state.h"
+#include "../engine.h"
 #include "../ai.h"
 #include <unistd.h>
 
@@ -48,33 +49,33 @@ int engine::Script::EvaluateINT(std::string str,int* args)
     int result = 0;
     if(str.find("->") != std::string::npos)
     {
-        std::vector<std::string> items = render::FileHandler::SplitString(str,"->");
+        std::vector<std::string> items = engine::FileHandler::SplitString(str,"->");
         if(items[0] == "FILTERED_SELECTION")
         {
-            std::vector<std::string> _items = render::FileHandler::SplitString(items[1],".");
+            std::vector<std::string> _items = engine::FileHandler::SplitString(items[1],".");
             result = ((state::Actor*)engine::SelectionHandler::FilteredSelection[_items[0]])->Property(_items[1]);
         }
         if(items[0] == "NET_VAR")
         {
-            std::vector<std::string> _items = render::FileHandler::SplitString(items[1],".");
+            std::vector<std::string> _items = engine::FileHandler::SplitString(items[1],".");
             result = ((state::Actor*)_NET_VARS[_items[0]])->Property(_items[1]);
         }
     }
     if(str.find("::") != std::string::npos)
     {
-        std::vector<std::string> _items = render::FileHandler::SplitString(str,"::");
-        std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
+        std::vector<std::string> _items = engine::FileHandler::SplitString(str,"::");
+        std::vector<std::string> __items = engine::FileHandler::SplitString(_items[1],".");
         result = ((state::Actor*)state::Manager::GetMgrByName(_items[0])->GetByID(EvaluateINT(__items[0],args)))->GetNetParam(__items[1]);
     
 
     }
     else if(str.find(".") != std::string::npos)
     {
-        result = ((state::Actor*)(state::Manager::GetMgrByName("ACTOR_MGR")->GetByName(render::FileHandler::SplitString(str,".")[0]).front()))->Property(render::FileHandler::SplitString(str,".")[1]);
+        result = ((state::Actor*)(state::Manager::GetMgrByName("ACTOR_MGR")->GetByName(engine::FileHandler::SplitString(str,".")[0]).front()))->Property(engine::FileHandler::SplitString(str,".")[1]);
     }
     else if(str.find("ARGS:") != std::string::npos)
     {
-        result = args[std::stoi(render::FileHandler::SplitString(str,":")[1])];
+        result = args[std::stoi(engine::FileHandler::SplitString(str,":")[1])];
     }
     else
     {
@@ -90,7 +91,7 @@ void engine::Script::RunFunction(std::string func,int* args)
 {
     if(func.find("::") != std::string::npos)
     {
-       std::vector<std::string> items = render::FileHandler::SplitString(func,"::"); 
+       std::vector<std::string> items = engine::FileHandler::SplitString(func,"::"); 
        if(items[0] == "FUNC")
        {
            _INTS["RET:"+items[1]] = STATIC_FUNCTIONS[items[1]](args);
@@ -101,7 +102,7 @@ void engine::Script::RunFunction(std::string func,int* args)
     
     for(std::string line : _Text)
     {
-        std::vector<std::string> items = render::FileHandler::SplitString(line," ");
+        std::vector<std::string> items = engine::FileHandler::SplitString(line," ");
         if(items[0] == "END" && items[1] == "FUNCTION" && begin_execution)
         {
             if(EVENTS[func]) EVENTS[func]();
@@ -146,7 +147,7 @@ void engine::Script::RunKey(std::string key)
     bool begin_execution = false;
     for(std::string line : _Text)
     {
-        std::vector<std::string> items = render::FileHandler::SplitString(line," ");
+        std::vector<std::string> items = engine::FileHandler::SplitString(line," ");
         if(items[0] == "END" && items[1] == "KEY" && begin_execution) return;
         if(begin_execution) Run(line,(int*)NULL);
         if(items[0] == "KEY" && items[1] == key && !begin_execution) begin_execution = true;
@@ -159,7 +160,7 @@ void engine::Script::RunSelectionMask(std::string sm)
     bool begin_execution = false;
     for(std::string line : _Text)
     {
-        std::vector<std::string> items = render::FileHandler::SplitString(line," ");
+        std::vector<std::string> items = engine::FileHandler::SplitString(line," ");
         if(items[0] == "END" && items[1] == "SELECTION_MASK" && begin_execution) return;
         if(begin_execution)
         {
@@ -181,7 +182,7 @@ void engine::Script::Run()
     bool inside_func = false;
     for(std::string line : _Text)
     {
-        std::vector<std::string> items = render::FileHandler::SplitString(line," ");
+        std::vector<std::string> items = engine::FileHandler::SplitString(line," ");
         if(inside_func)
         {
             if(items[0] == "END" && items[1] == "FUNCTION") inside_func = false;
@@ -203,9 +204,9 @@ void engine::Script::Run()
 void engine::Script::Run(std::string line,int* args)
 {
     //std::cout << _Name <<"::LINE : " << line << std::endl;
-    std::vector<std::string> items = render::FileHandler::SplitString(line," ");
-    if(items[0] == "INT") _INTS[items[1]] = EvaluateINT(render::FileHandler::SplitString(line,"=")[1],args);
-    if(items[0] == "STRING") _STRINGS[items[1]] = render::FileHandler::SplitString(line,"=")[1];
+    std::vector<std::string> items = engine::FileHandler::SplitString(line," ");
+    if(items[0] == "INT") _INTS[items[1]] = EvaluateINT(engine::FileHandler::SplitString(line,"=")[1],args);
+    if(items[0] == "STRING") _STRINGS[items[1]] = engine::FileHandler::SplitString(line,"=")[1];
     if(items[0] == "INC") _INTS[items[1]]++;
     if(items[0] == "DEC") _INTS[items[1]]--;
     if(items[0] == "PRINT_INT") std::cout << EvaluateINT(items[1],args) << std::endl;
@@ -213,61 +214,61 @@ void engine::Script::Run(std::string line,int* args)
     if(items[0] == "ADD")
     {
         items[1].find("ARGS:") != std::string::npos ? 
-        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] += EvaluateINT(items[2],args) :
+        args[std::stoi(engine::FileHandler::SplitString(items[1],":")[1])] += EvaluateINT(items[2],args) :
         _INTS[items[1]] += EvaluateINT(items[2],args);
     } 
     if(items[0] == "SUB")
     {
         items[1].find("ARGS:") != std::string::npos ? 
-        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] -= EvaluateINT(items[2],args) :
+        args[std::stoi(engine::FileHandler::SplitString(items[1],":")[1])] -= EvaluateINT(items[2],args) :
         _INTS[items[1]] -= EvaluateINT(items[2],args);
     } 
     if(items[0] == "MODULO")
     {
         items[1].find("ARGS:") != std::string::npos ? 
-        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] %= EvaluateINT(items[2],args) :
+        args[std::stoi(engine::FileHandler::SplitString(items[1],":")[1])] %= EvaluateINT(items[2],args) :
         _INTS[items[1]] %= EvaluateINT(items[2],args);
     } 
     if(items[0] == "MUL")
     {
         items[1].find("ARGS:") != std::string::npos ? 
-        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] *= EvaluateINT(items[2],args) :
+        args[std::stoi(engine::FileHandler::SplitString(items[1],":")[1])] *= EvaluateINT(items[2],args) :
         _INTS[items[1]] *= EvaluateINT(items[2],args);
     } 
     if(items[0] == "DIV")
     {
         items[1].find("ARGS:") != std::string::npos ? 
-        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] /= EvaluateINT(items[2],args) :
+        args[std::stoi(engine::FileHandler::SplitString(items[1],":")[1])] /= EvaluateINT(items[2],args) :
         _INTS[items[1]] /= EvaluateINT(items[2],args);
     } 
     if(items[0] == "XOR")
     {
         items[1].find("ARGS:") != std::string::npos ? 
-        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] ^= EvaluateINT(items[2],args) :
+        args[std::stoi(engine::FileHandler::SplitString(items[1],":")[1])] ^= EvaluateINT(items[2],args) :
         _INTS[items[1]] ^= EvaluateINT(items[2],args);
     } 
     if(items[0] == "AND")
     {
         items[1].find("ARGS:") != std::string::npos ? 
-        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] &= EvaluateINT(items[2],args) :
+        args[std::stoi(engine::FileHandler::SplitString(items[1],":")[1])] &= EvaluateINT(items[2],args) :
         _INTS[items[1]] &= EvaluateINT(items[2],args);
     } 
     if(items[0] == "OR")
     {
         items[1].find("ARGS:") != std::string::npos ? 
-        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] |= EvaluateINT(items[2],args) :
+        args[std::stoi(engine::FileHandler::SplitString(items[1],":")[1])] |= EvaluateINT(items[2],args) :
         _INTS[items[1]] |= EvaluateINT(items[2],args);
     } 
     if(items[0] == "RBS")
     {
         items[1].find("ARGS:") != std::string::npos ? 
-        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] >>= EvaluateINT(items[2],args) :
+        args[std::stoi(engine::FileHandler::SplitString(items[1],":")[1])] >>= EvaluateINT(items[2],args) :
         _INTS[items[1]] >>= EvaluateINT(items[2],args);
     }
     if(items[0] == "LBS")
     {
         items[1].find("ARGS:") != std::string::npos ? 
-        args[std::stoi(render::FileHandler::SplitString(items[1],":")[1])] <<= EvaluateINT(items[2],args) :
+        args[std::stoi(engine::FileHandler::SplitString(items[1],":")[1])] <<= EvaluateINT(items[2],args) :
         _INTS[items[1]] <<= EvaluateINT(items[2],args);
     } 
 
@@ -277,7 +278,7 @@ void engine::Script::Run(std::string line,int* args)
     {
         if(items[3].find("JMP:") != std::string::npos)
         {
-            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            std::vector<std::string> _items = engine::FileHandler::SplitString(items[3],":");
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
             return;
         }
@@ -292,7 +293,7 @@ void engine::Script::Run(std::string line,int* args)
     {
         if(items[3].find("JMP:") != std::string::npos)
         {
-            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            std::vector<std::string> _items = engine::FileHandler::SplitString(items[3],":");
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
             return;
         }
@@ -307,7 +308,7 @@ void engine::Script::Run(std::string line,int* args)
     {
         if(items[3].find("JMP:") != std::string::npos)
         {
-            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            std::vector<std::string> _items = engine::FileHandler::SplitString(items[3],":");
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
             return;
         }
@@ -322,7 +323,7 @@ void engine::Script::Run(std::string line,int* args)
     {
         if(items[3].find("JMP:") != std::string::npos)
         {
-            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            std::vector<std::string> _items = engine::FileHandler::SplitString(items[3],":");
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
             return;
         }
@@ -337,7 +338,7 @@ void engine::Script::Run(std::string line,int* args)
     {
         if(items[3].find("JMP:") != std::string::npos)
         {
-            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            std::vector<std::string> _items = engine::FileHandler::SplitString(items[3],":");
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
             return;
         }
@@ -352,7 +353,7 @@ void engine::Script::Run(std::string line,int* args)
     {
         if(items[3].find("JMP:") != std::string::npos)
         {
-            std::vector<std::string> _items = render::FileHandler::SplitString(items[3],":");
+            std::vector<std::string> _items = engine::FileHandler::SplitString(items[3],":");
             _INTS["RESERVED:JMP"] = std::stoi(_items[1]);
             return;
         }
@@ -370,7 +371,7 @@ void engine::Script::Run(std::string line,int* args)
         int x = EvaluateINT(items[4],args);
         int y = EvaluateINT(items[5],args);
         
-        std::vector<state::Actor*> _actors = render::FileHandler::DeserializeTable<state::Actor>("src/client/tables/Actors.csv","CSV");
+        std::vector<state::Actor*> _actors = engine::FileHandler::DeserializeTable<state::Actor>("src/client/tables/Actors.csv","CSV");
         state::Actor* _actor = NULL;
         for(state::Actor* a : _actors)
         {
@@ -409,28 +410,28 @@ void engine::Script::Run(std::string line,int* args)
     {
         if(items[1].find("->") != std::string::npos)
         {
-            std::vector<std::string> _items = render::FileHandler::SplitString(items[1],"->");
+            std::vector<std::string> _items = engine::FileHandler::SplitString(items[1],"->");
             if(_items[0] == "FILTERED_SELECTION")
             {
-                std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
+                std::vector<std::string> __items = engine::FileHandler::SplitString(_items[1],".");
                 if(__items[1] == "ACTION") {((state::Actor*)engine::SelectionHandler::FilteredSelection[__items[0]])->ChangeAction(items[2]);return;}
                 else ((state::Actor*)engine::SelectionHandler::FilteredSelection[__items[0]])->Property(__items[1],EvaluateINT(items[2],args));
             }
             if(_items[0] == "NET_VAR")
             {
-                std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
+                std::vector<std::string> __items = engine::FileHandler::SplitString(_items[1],".");
                 _NET_VARS[__items[0]]->Property(__items[1],EvaluateINT(items[2],args));
             }
             else
             {
-               std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
+               std::vector<std::string> __items = engine::FileHandler::SplitString(_items[1],".");
                ((state::Actor*)state::Manager::GetMgrByName(_items[0])->GetByName(__items[0]).front())->Property(__items[1],EvaluateINT(items[2],args));
             }
         }
         if(items[1].find("::") != std::string::npos)
         {
-            std::vector<std::string> _items = render::FileHandler::SplitString(items[1],"::");
-            std::vector<std::string> __items = render::FileHandler::SplitString(_items[1],".");
+            std::vector<std::string> _items = engine::FileHandler::SplitString(items[1],"::");
+            std::vector<std::string> __items = engine::FileHandler::SplitString(_items[1],".");
             ((state::Actor*)state::Manager::GetMgrByName(_items[0])->GetByID(EvaluateINT(__items[0],args)))->Property(__items[1],EvaluateINT(items[2],args));
         }
     }

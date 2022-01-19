@@ -3,6 +3,7 @@
 #include "Actor.h"
 #include "../../client/client/Macro.hpp"
 #include "../../client/render.h"
+#include "../engine.h"
 
 GET_SET(state::Manager,std::string,Name)
 GET_SET(state::Manager,char,ID)
@@ -180,7 +181,7 @@ void state::Manager::Load(std::string filepath)
 {
     for(state::Manageable* m : _Elements)
         m->Render(false);
-    for(state::Actor* a :  render::FileHandler::DeserializeTable<state::Actor>(filepath,"CSV_FLUSH"))
+    for(state::Actor* a :  engine::FileHandler::DeserializeTable<state::Actor>(filepath,"CSV_FLUSH"))
         Add(a);
 }
 

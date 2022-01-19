@@ -7,15 +7,12 @@
 #include "state.h"
 #include <string.h>
 #include <unistd.h>
-<<<<<<< HEAD
 #include "../../extern/jsoncpp-1.8.0/json/json.h"
 #include "../../extern/jsoncpp-1.8.0/json/json-forwards.h"
 #include "../../extern/jsoncpp-1.8.0/jsoncpp.cpp"
 #include <fstream>
-=======
-#include <sio_client.h>
 #include <thread>
->>>>>>> 465279770d29957a8e64fe784f647208f71d9b21
+#include <sio_client.h>
 
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
@@ -59,7 +56,7 @@ int main(int argc,char* argv[])
     }
     if(!strcmp(argv[1],"render"))
     {
-        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
         cout << "RENDER" << endl;
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
@@ -73,7 +70,7 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"engine"))
     {
         cout << "ENGINE : "<< getpid() << endl;
-        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
@@ -84,7 +81,7 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"random_ai"))
     {
         cout << "RANDOM AI : "<< getpid() << endl;
-        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
@@ -95,7 +92,7 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"heuristic_ai"))
     {
         cout << "HEURISTIC AI : "<< getpid() << endl;
-        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
@@ -120,7 +117,7 @@ int main(int argc,char* argv[])
             io.socket()->on("ack_start_game",[&] (sio::event& ev)
             {
                 cout << "I AM " << ev.get_message()->get_string() << endl;
-                MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+                MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
                 FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
                 for(Manager* m : Manager::Managers)
                 cout << m->Name() << endl;
@@ -143,7 +140,7 @@ int main(int argc,char* argv[])
     }
     if(!strcmp(argv[1],"TREE"))
     {
-        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
@@ -227,16 +224,16 @@ int main(int argc,char* argv[])
     }
     if(!strcmp(argv[1],"Thread"))
     {
-        cout << "Test Thread\n" << endl;
-        cout<<"-------------------------------------------\n";
-        cout<<"Test param Null\n";
-        WorldHandler::RunFunctionInNewThread(foo,NULL);
+        // cout << "Test Thread\n" << endl;
+        // cout<<"-------------------------------------------\n";
+        // cout<<"Test param Null\n";
+        // WorldHandler::RunFunctionInNewThread(foo,NULL);
 
-        cout<<"-------------------------------------------\n";
-        cout<<"Test les pointeurs entier\n";
-        int* p=(int*)malloc(sizeof(int));
-        *p=60;
-        WorldHandler::RunFunctionInNewThread(foo,p);
+        // cout<<"-------------------------------------------\n";
+        // cout<<"Test les pointeurs entier\n";
+        // int* p=(int*)malloc(sizeof(int));
+        // *p=60;
+        // WorldHandler::RunFunctionInNewThread(foo,p);
 
     }  
     
