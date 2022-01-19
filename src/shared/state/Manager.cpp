@@ -96,6 +96,7 @@ state::Manager* state::Manager::GetMgrByName(std::string name)
         if(m->Name() == name)
             return m;
     }
+    //throw std::runtime_error("Mgr by name not found");
     return NULL;
 }
 state::Manager* state::Manager::GetMgrByID(int id)
@@ -105,6 +106,7 @@ state::Manager* state::Manager::GetMgrByID(int id)
         if(m->ID() == (char)(id & 0xFF))
             return m;
     }
+    //throw std::runtime_error("Mgr by id not found");
     return NULL;
 }
 
@@ -125,6 +127,7 @@ state::Manageable* state::Manager::GetByID(int id)
         if(m->ID() == id)
             return m;
     }
+    //throw std::runtime_error("id not found");
     return NULL;
 }
 
@@ -135,6 +138,7 @@ state::Manageable* state::Manager::GetByPos(int x,int y)
         if(m->Position().x == x && m->Position().y == y)
          return m;   
     }
+    //throw std::runtime_error("Error pos");
     return NULL;
 }
 

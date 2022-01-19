@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(TestState)
   m.AssignPosition(4,9);
   BOOST_CHECK_EQUAL(m.Position().x,4);
   BOOST_CHECK_EQUAL(m.Position().y,9);
-
+  //Manageable *m3 = new Manageable("ACTOR_REDMAGE","res/texture/Characters/Prototypes/MageRed.png");
   Manageable *m4=new Manageable({"ACTOR_REDMAGE","ASSET_MGR","1105","res/texture/Characters/Prototypes/MageRed.png","2","2"});
   Manageable *m5=new Manageable("ACTOR_CYANMAGE,ASSET_MGR,1106,res/texture/Characters/Prototypes/MageCyan.png,2,2");
   m4->OnSelectionAdd();
@@ -148,11 +148,17 @@ BOOST_AUTO_TEST_CASE(TestState)
   manager->Add(m5);
   manager->Remove(m5);
   manager->Add(m4);
-  manager->Add(m1);
+  manager->Add(&m);
+  //manager->Add(m1);
   manager->GetByName("ACTOR_REDMAGE");
   manager->GetByID(1105);
-  manager->GetByPos(4,5);
-  manager->GetByPos({4,5});
+  manager->GetByPos(5,10);
+  manager->GetByPos({5,10});
+  /*test avec runtime_error*/
+  /*BOOST_CHECK_THROW(manager->GetByPos(4,5),std::runtime_error);
+  BOOST_CHECK_THROW(manager->GetMgrByName("David"),std::runtime_error);
+  BOOST_CHECK_THROW(manager->GetMgrByID(85684),std::runtime_error);
+  BOOST_CHECK_THROW(manager->GetByID(5478),std::runtime_error);*/
   manager->Save();
   manager->Save("res/texture");
   manager->Load("res/texture");
