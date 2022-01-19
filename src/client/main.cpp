@@ -8,6 +8,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sio_client.h>
+#include <thread>
 
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
@@ -28,6 +29,9 @@ using namespace state;
 using namespace render;
 using namespace engine;
 using namespace ai;
+
+sio::client io;
+
 
 int main(int argc,char* argv[])
 {
@@ -90,18 +94,40 @@ int main(int argc,char* argv[])
 
     if(!strcmp(argv[1],"PROTOTYPE"))
     {
-        sio::client io;
-        io.set_open_listener([&]() {
-            cout << "CONNECTED" << endl;
-            io.socket()->emit("req_join_room", string("BackRoom;Fred"));
-            io.socket()->on("ack_join_room", [&](sio::event& ev)
+        cout << argv[2] << endl;
+        io.connect(string(argv[2]) + ":3000");
+        string username("FortuneSeeker");
+        io.set_open_listener([&]() 
+        {
+            io.socket()->emit("req_create_user",string("FortuneSeeker"));
+            io.socket()->emit("req_join_room",string("BackRoom;FortuneSeeker"));
+            io.socket()->on("ack_net_cmd",[&] (sio::event& ev)
             {
-                cout << "RESPONSE IS : " << ev.get_message()->get_string() << endl;
+                cout << "ACK_NET_CMD : " << ev.get_message()->get_string() << endl;
             });
+            io.socket()->on("ack_start_game",[&] (sio::event& ev)
+            {
+                MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+                FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+                for(Manager* m : Manager::Managers)
+                cout << m->Name() << endl;
+                Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+                mf->Start();
             });
-            io.connect("https://plastic-cat-14.loca.lt:3000");
-            while(1) usleep(500000);
-    }  
+            thread t([](){
+                while(1)
+                {
+                    io.socket()->emit("heartbeat",string("FortuneSeeker"));  
+                    usleep(2000000);
+                    io.socket()->emit("req_net_cmd",string("Net Cmd Fred"));  
+                }
+            });
+            t.detach();
+            cout << "CONNECTED" << endl;
+        });  
+
+        while(1) usleep(500000);
+    }
     if(!strcmp(argv[1],"TREE"))
     {
         MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
