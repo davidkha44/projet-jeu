@@ -9,6 +9,11 @@
 
 using namespace ::state;
 
+void foo(void *param){
+  printf("test thread\n");
+  
+}
+
 BOOST_AUTO_TEST_CASE(TestState)
 {
   /* Test class WorldHandler */
@@ -63,6 +68,7 @@ BOOST_AUTO_TEST_CASE(TestState)
   World w4=World("WORLD_RIVER,src/client/maps/WorldWithRiver.csv,40,40,30,19,LAYER_ACTO");
   
   WorldHandler::Initialize(&w3);
+  WorldHandler::RunFunctionInNewThread(foo,NULL);
   
 
   /*Test Actor*/
