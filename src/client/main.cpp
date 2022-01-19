@@ -107,6 +107,7 @@ int main(int argc,char* argv[])
             });
             io.socket()->on("ack_start_game",[&] (sio::event& ev)
             {
+                cout << "I AM " << ev.get_message()->get_string() << endl;
                 MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
                 FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
                 for(Manager* m : Manager::Managers)

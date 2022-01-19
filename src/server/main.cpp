@@ -12,6 +12,7 @@ using namespace state;
 using namespace engine;
 
 client io;
+int iter = 0;
 
 
 int main(int argc,char* argv[])
@@ -26,8 +27,13 @@ int main(int argc,char* argv[])
         thread t([](){
             while(1)
             {
-                    io.socket()->emit("heartbeat",string("HostServer"));  
-                    usleep(2000000);
+                if(iter == 30) 
+                    io.socket()->emit("req_start_game",string("BackRoom"));
+
+                io.socket()->emit("heartbeat",string("HostServer"));  
+                usleep(2000000);
+                iter++;
+
             }
             });
         t.detach();
@@ -38,11 +44,13 @@ int main(int argc,char* argv[])
         });
     
     io.socket()->emit("req_create_room", string("BackRoom;HostServer"));
-    io.socket()->emit("req_start_game", string("BackRoom"));
-    io.socket()->emit("req_start_game", string("BackRoom"));
     io.socket()->on("ack_create_room", [&](sio::event& ev)
         {
         cout << "RESPONSE IS : " << ev.get_message()->get_string() << endl;
+        });
+    io.socket()->on("ack_start_game", [&](sio::event& ev)
+        {
+            cout << "START GAME WITH : " << ev.get_message()->get_string() << endl;
         });
     });
     while(1) usleep(500000);
