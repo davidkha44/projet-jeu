@@ -41,6 +41,13 @@ std::vector<ai::Node*> ai::Tree::Level(int lvl)
     return output;
 }
 
+int ai::Tree::Level()
+{
+    int level = -1;
+    while(Level(level++).size());
+    return --level;
+}
+
 
 
 

@@ -7,10 +7,15 @@
 #include "state.h"
 #include <string.h>
 #include <unistd.h>
+<<<<<<< HEAD
 #include "../../extern/jsoncpp-1.8.0/json/json.h"
 #include "../../extern/jsoncpp-1.8.0/json/json-forwards.h"
 #include "../../extern/jsoncpp-1.8.0/jsoncpp.cpp"
 #include <fstream>
+=======
+#include <sio_client.h>
+#include <thread>
+>>>>>>> 465279770d29957a8e64fe784f647208f71d9b21
 
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
@@ -31,10 +36,14 @@ void testSFML() {
 //#include <state.h>
 
 using namespace std;
+using namespace sio;
 using namespace state;
 using namespace render;
 using namespace engine;
 using namespace ai;
+
+sio::client io;
+
 
 int main(int argc,char* argv[])
 {
@@ -97,8 +106,40 @@ int main(int argc,char* argv[])
 
     if(!strcmp(argv[1],"PROTOTYPE"))
     {
-        cout << "INDISPONIBLE" << endl;
-    }  
+        cout << argv[2] << endl;
+        io.connect(string(argv[2]) + ":3000");
+        string username("FortuneSeeker");
+        io.set_open_listener([&]() 
+        {
+            io.socket()->emit("req_create_user",string("FortuneSeeker"));
+            io.socket()->emit("req_join_room",string("BackRoom;FortuneSeeker"));
+            io.socket()->on("ack_net_cmd",[&] (sio::event& ev)
+            {
+                cout << "ACK_NET_CMD : " << ev.get_message()->get_string() << endl;
+            });
+            io.socket()->on("ack_start_game",[&] (sio::event& ev)
+            {
+                MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+                FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+                for(Manager* m : Manager::Managers)
+                cout << m->Name() << endl;
+                Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+                mf->Start();
+            });
+            thread t([](){
+                while(1)
+                {
+                    io.socket()->emit("heartbeat",string("FortuneSeeker"));  
+                    usleep(2000000);
+                    io.socket()->emit("req_net_cmd",string("Net Cmd Fred"));  
+                }
+            });
+            t.detach();
+            cout << "CONNECTED" << endl;
+        });  
+
+        while(1) usleep(500000);
+    }
     if(!strcmp(argv[1],"TREE"))
     {
         MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
@@ -169,13 +210,13 @@ int main(int argc,char* argv[])
         cout << "LEVEL I : " << endl;
         for(Node* n : bhv_tree->Level(2))
             cout << ((BehaviourLeaf*)n->Object)->ToString() << endl;
-        cout << "END LEVEL II : " << endl;
+        cout << "END LEVEL  : " << bhv_tree->Level() << endl;
         
         Node* choice = Node::chooseAction(root);
-        cout << "APRES ALPHA-BETA : \n" << endl;
-        root->Print(0);
-        cout << "ACTION CHOISIE : \n" << endl;
-        choice->Print(0);
+        //cout << "APRES ALPHA-BETA : \n" << endl;
+        //root->Print(0);
+        //cout << "ACTION CHOISIE : \n" << endl;
+        //choice->Print(0);
         /*root->BottomLevel(bhv_tree);
 
         root->Print(0);
