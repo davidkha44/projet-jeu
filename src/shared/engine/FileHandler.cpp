@@ -78,8 +78,11 @@ std::vector<T*> engine::FileHandler::DeserializeTable(std::string path, std::str
     }
     if(format == "CSV_SERVER_SIDE")
     {
+
         PARSE_CSV_LINES(path,'#',
-            Output.push_back(new T(SplitString(line,","),"CSV_SERVER_SIDE"));
+            std::vector<std::string> _args = SplitString(line,",");
+            _args.push_back("NO_RENDER");
+            Output.push_back(new T(_args));
         )
     }
     if(format == "CSV_FLUSH")

@@ -23,15 +23,17 @@ int main(int argc,char* argv[])
     std::vector<std::string> players_name;
     string endpoint(argv[1]);
     io.connect(endpoint + ":3000");
+    NetMessageHandler::UserName = "HostServer";
+    NetMessageHandler::IO = &io;
 
     io.set_open_listener([&]() {
 
         cout << "CONNECTED "  << endl;
-    io.socket()->emit("req_create_user",string("HostServer"));
+    io.socket()->emit("req_create_user",NetMessageHandler::UserName);
         thread t([](){
             while(1)
             {
-                io.socket()->emit("heartbeat",string("HostServer"));  
+                io.socket()->emit("heartbeat",NetMessageHandler::UserName);  
                 usleep(2000000);
                 iter++;
 
@@ -65,6 +67,7 @@ int main(int argc,char* argv[])
     io.socket()->on("ack_start_game", [&](sio::event& ev)
         {
             cout << "START GAME WITH : " << ev.get_message()->get_string() << endl;
+            
         });
     });
     while(1) usleep(500000);
