@@ -1,6 +1,7 @@
 #include "InstanceHandler.h"
 #include <sio_client.h>
 #include "../shared/engine.h"
+#include "../shared/state.h"
 
 
 void server::InstanceHandler::CreateRoom(std::string room_name)
@@ -11,6 +12,7 @@ void server::InstanceHandler::CreateRoom(std::string room_name)
 void server::InstanceHandler::NetCmd(std::string cmd)
 {
     sio::client* io = (sio::client*)engine::NetMessageHandler::IO;
+    state::WorldHandler::NetCommand(cmd);
     io->socket()->emit("ack_net_cmd",Name+"::"+ cmd);
 }
 void server::InstanceHandler::CreateUser()
