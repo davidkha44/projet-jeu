@@ -129,8 +129,14 @@ render::MainFrame* render::MainFrame::FromLaunchArgs (std::string path)
         state::WorldHandler::CurrentWorld->ApplyGridThickness(std::stoi(items[1]));
     if(items[0] == "RULES")
         state::WorldHandler::Behaviour = engine::Script::Scripts[items[1]];
+    if(items[0] == "AS_USER")
+        engine::NetMessageHandler::UserName = items[1];
     if(items[0] == "FLUSH_PATH")
         state::WorldHandler::BSPath = items[1];
+    if(items[0] == "IP")
+        engine::NetMessageHandler::IP = items[1];
+    if(items[0] == "PORT")
+        engine::NetMessageHandler::Port = items[1];
 
     )
     return new render::MainFrame("PLT",state::WorldHandler::CurrentWorld->CellN().x*state::WorldHandler::CurrentWorld->CellSize().x,

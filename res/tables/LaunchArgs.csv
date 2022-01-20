@@ -1,6 +1,8 @@
 SCENE,WORLD_RIVER
 GRID_THICKNESS,1
 RULES,REGLE
-IP_SERVER,127.0.0.1
-IP_PORT,XXXX
+IP,https://fredurlpwmp.loca.lt
+PORT,3000
+AS_USER,FortuneSeeker
+AS_HOST,FrontHost
 FLUSH_PATH,res/BoardSnapshot

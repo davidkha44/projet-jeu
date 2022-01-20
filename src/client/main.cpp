@@ -105,8 +105,10 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"PROTOTYPE"))
     {
         cout << argv[2] << endl;
-        io.connect(string(argv[2]) + ":3000");
-        NetMessageHandler::UserName = "FortuneSeeker";
+        MainFrame* mf = MainFrame::FromLaunchArgs("res/tables/LaunchArgs.csv");
+
+        io.connect(NetMessageHandler::Endpoint());
+        NetMessageHandler::UserName = NetMessageHandler::UserName;
         io.set_open_listener([&]() 
         {
 
@@ -114,7 +116,7 @@ int main(int argc,char* argv[])
             io.socket()->emit("req_create_user",NetMessageHandler::UserName );
             thread t(NetMessageHandler::KeepAlive);
             t.detach();
-            io.socket()->emit("req_join_room",string("FrontRoom;")+NetMessageHandler::UserName);
+            io.socket()->emit("req_join_room",string(argv[2])+";"+NetMessageHandler::UserName);
             io.socket()->on("ack_net_cmd",[&] (sio::event& ev)
             {
                 cout << "ACK_NET_CMD : " << ev.get_message()->get_string() << endl;
@@ -123,7 +125,6 @@ int main(int argc,char* argv[])
             io.socket()->on("ack_start_game",[&] (sio::event& ev)
             {
                 
-                MainFrame* mf = MainFrame::FromLaunchArgs("res/tables/LaunchArgs.csv");
                 FileHandler::DeserializeTable<Manager>("res/tables/Managers.csv","CSV");
                 for(Manager* m : Manager::Managers)
                     cout << m->Name() << endl;

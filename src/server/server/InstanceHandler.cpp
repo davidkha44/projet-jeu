@@ -79,3 +79,4 @@ void server::InstanceHandler::Start()
     sio::client* io = (sio::client*)engine::NetMessageHandler::IO;
     io->socket()->emit("req_start_game", Name);
 }
+

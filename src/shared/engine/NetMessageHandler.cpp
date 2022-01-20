@@ -56,6 +56,11 @@ void engine::NetMessageHandler::KeepAlive()
     {
         usleep(2000000);
         ((sio::client*)IO)->socket()->emit("heartbeat",UserName);  
-        PRINTLN("HEARTBEAT SENT");
+        //PRINTLN("HEARTBEAT SENT");
     }
+}
+
+std::string engine::NetMessageHandler::Endpoint()
+{
+    return IP+":"+Port;
 }
