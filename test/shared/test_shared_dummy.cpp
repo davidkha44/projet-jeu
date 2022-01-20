@@ -159,9 +159,21 @@ BOOST_AUTO_TEST_CASE(TestState)
   manager->GetByID(1105);
   manager->GetByPos(5,10);
   manager->GetByPos({5,10});
-  /*BOOST_CHECK_EQUAL(state::Manager::CheckPosition([0,5,10]),0);
-  BOOST_CHECK_EQUAL(state::Manager::CheckPosition([0,-5,10]),-1);
-  BOOST_CHECK_EQUAL(state::Manager::CheckPosition([0,10,10]),0);*/
+  int params0[3];
+  params0[0] = 0;
+  params0[1] = 5;
+  params0[2] = 10;
+  int params1[3];
+  params1[0] = 0;
+  params1[1] = -5;
+  params1[2] = 10;
+  int params2[3];
+  params2[0] = 0;
+  params2[1] = 10;
+  params2[2] = 10;
+  BOOST_CHECK_EQUAL(state::Manager::CheckPosition(params0),0);
+  BOOST_CHECK_EQUAL(state::Manager::CheckPosition(params1),-1);
+  BOOST_CHECK_EQUAL(state::Manager::CheckPosition(params2),0);
   BOOST_CHECK_EQUAL(manager->GetByPos(4,5),(state::Manageable*)NULL);
   BOOST_CHECK_EQUAL(manager->GetByID(14568),(state::Manageable*)NULL);
   BOOST_CHECK_EQUAL(manager->GetMgrByID(321548),(state::Manager*)NULL);
@@ -213,9 +225,17 @@ BOOST_AUTO_TEST_CASE(TestEngine){
   BOOST_CHECK_EQUAL(ncmd.Format().first,"Move:$X;$X;$X");
   BOOST_CHECK_EQUAL(ncmd.Format().second,"caster.ID;target.X;target.Y");
   engine::NetCommand ncmd2("NET_CMD_MOVE,Move:$X;$X;$X,caster.ID;target.X;target.Y");
+  ncmd2.Name("NET_CMD_MOVE_TOWARD_POS");
+  std::pair<std::string,std::string> pair = {"MoveTowardPos:$X;$X;$X","caster.ID;target.X;target.Y"};
+  ncmd2.Format(pair);
 
   engine::Pattern p({"PATTERN_SQUARE1","src/client/actions_patterns/PatternSquare1.csv","3","3"});
   engine::Pattern p2("PATTERN_SQUARE1,src/client/actions_patterns/PatternSquare1.csv,3,3");
+  
+  std::vector<std::string> scr = {"REGLE","src/client/scripts/Regle.bhv"};
+  engine::Script s(scr);
+  engine::Script s1("REGLE,src/client/scripts/Regle.bhv");
+  s.Run();
   
   
 }

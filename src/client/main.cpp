@@ -105,7 +105,7 @@ int main(int argc,char* argv[])
     {
         cout << argv[2] << endl;
         io.connect(string(argv[2]) + ":3000");
-        NetMessageHandler::UserName = "FortuneSeeker";
+        NetMessageHandler::UserName = "Flo";
         io.set_open_listener([&]() 
         {
 
