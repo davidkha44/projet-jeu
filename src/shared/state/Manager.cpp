@@ -46,8 +46,8 @@ state::Manager::Manager(std::vector<std::string> args)
 void state::Manager::Add(state::Manageable* m)
 {
     for(state::Manageable* _m : _Elements)
-        if(_m == m) return;
-        
+        if(_m->Name() == m->Name()) return;
+
     std::vector<state::Manageable*>* v = &_Elements;
     v->push_back(m);
 }
