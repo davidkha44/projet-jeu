@@ -1,8 +1,7 @@
 #include "FileHandler.h"
-#include "MainFrame.h"
-#include "../../shared/state.h"
-#include "../../shared/engine.h"
-#include "../../shared/ai.h"
+#include "../state.h"
+#include "../engine.h"
+#include "../ai.h"
 #include "../../client/client/Macro.hpp"
 
 
@@ -12,7 +11,7 @@
 #include <thread>
 #include <pthread.h>
 
-std::vector<std::string> render::FileHandler::SplitString(std::string str,std::string separator)
+std::vector<std::string> engine::FileHandler::SplitString(std::string str,std::string separator)
 {
     //Utile pour casser une chaine de caractères
     size_t pos_start = 0, pos_end, delim_len = separator.length();
@@ -29,10 +28,10 @@ std::vector<std::string> render::FileHandler::SplitString(std::string str,std::s
     return res;
 }
 
-render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
+void engine::FileHandler::LoadLaunchArgs (std::string path)
 {
     //Charge et parcours le fichiers de configuration LaunchArgs.csv
-    render::FileHandler::DeserializeTable<engine::Script>("src/client/tables/Scripts.csv","CSV");
+    engine::FileHandler::DeserializeTable<engine::Script>("src/client/tables/Scripts.csv","CSV");
     engine::Script::STATIC_FUNCTIONS["CheckPosition"] = state::Manager::CheckPosition;
     engine::Script::STATIC_FUNCTIONS["Destroy"] = state::Manager::Destroy;
     engine::Script::STATIC_FUNCTIONS["EndTurn"] = state::Player::EndTurn;
@@ -59,12 +58,12 @@ render::MainFrame* render::FileHandler::LoadLaunchArgs (std::string path)
         state::WorldHandler::BSPath = items[1];
 
     )
-    return new render::MainFrame("PLT",state::WorldHandler::CurrentWorld->CellN().x*state::WorldHandler::CurrentWorld->CellSize().x,
-    state::WorldHandler::CurrentWorld->CellN().y*state::WorldHandler::CurrentWorld->CellSize().y);
+    // return new render::MainFrame("PLT",state::WorldHandler::CurrentWorld->CellN().x*state::WorldHandler::CurrentWorld->CellSize().x,
+    // state::WorldHandler::CurrentWorld->CellN().y*state::WorldHandler::CurrentWorld->CellSize().y);
 }
 
 template <class T>
-std::vector<T*> render::FileHandler::DeserializeTable(std::string path, std::string format)
+std::vector<T*> engine::FileHandler::DeserializeTable(std::string path, std::string format)
 {   
     //Déserialise une classe en objet de classe T
     // Utile pour transformer une table en objets

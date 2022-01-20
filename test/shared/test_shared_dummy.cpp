@@ -9,6 +9,11 @@
 
 using namespace ::state;
 
+void foo(void *param){
+  printf("test thread\n");
+  
+}
+
 BOOST_AUTO_TEST_CASE(TestState)
 {
   /* Test class WorldHandler */
@@ -63,6 +68,7 @@ BOOST_AUTO_TEST_CASE(TestState)
   World w4=World("WORLD_RIVER,src/client/maps/WorldWithRiver.csv,40,40,30,19,LAYER_ACTO");
   
   WorldHandler::Initialize(&w3);
+  WorldHandler::RunFunctionInNewThread(foo,NULL);
   
 
   /*Test Actor*/
@@ -100,6 +106,7 @@ BOOST_AUTO_TEST_CASE(TestState)
   //actor->OnSelectionAdd();
     
   /*Test Manager*/
+  Manager *manager_base = new Manager();
   Manager *manager = new Manager("Bob", 1);
   BOOST_CHECK_EQUAL(manager->Name(), "Bob");
   BOOST_CHECK_EQUAL(manager->ID(), 1);
@@ -124,7 +131,7 @@ BOOST_AUTO_TEST_CASE(TestState)
   BOOST_CHECK_EQUAL(m.Position().y,0);
   BOOST_CHECK_EQUAL(m.Scale().x,0);
   BOOST_CHECK_EQUAL(m.Scale().x,0);
-  //BOOST_CHECK_EQUAL(m.ResPath(),"TEST_RESPATH");
+  BOOST_CHECK_EQUAL(m.ResPath(),"TEST_RESPATH");
   //Manageable *m1=new Manageable("Mana", "Bob","res/texture/");
   //Manageable m2("Mana2", 2,"TEST_RESPATH");
   m.AssignPosition(4,9);
@@ -145,15 +152,26 @@ BOOST_AUTO_TEST_CASE(TestState)
   manager->Remove(m5);
   manager->Add(m4);
   manager->Add(m1);*/
+  manager ->Add(&m);
+  manager->GetByName("TEST_OBJ");
+  manager->GetByID(0);
   manager->GetByName("ACTOR_REDMAGE");
   manager->GetByID(1105);
-  manager->GetByPos(4,5);
-  manager->GetByPos({4,5});
+  manager->GetByPos(5,10);
+  manager->GetByPos({5,10});
+  /*BOOST_CHECK_EQUAL(state::Manager::CheckPosition([0,5,10]),0);
+  BOOST_CHECK_EQUAL(state::Manager::CheckPosition([0,-5,10]),-1);
+  BOOST_CHECK_EQUAL(state::Manager::CheckPosition([0,10,10]),0);*/
+  BOOST_CHECK_EQUAL(manager->GetByPos(4,5),(state::Manageable*)NULL);
+  BOOST_CHECK_EQUAL(manager->GetByID(14568),(state::Manageable*)NULL);
+  BOOST_CHECK_EQUAL(manager->GetMgrByID(321548),(state::Manager*)NULL);
+  BOOST_CHECK_EQUAL(manager->GetMgrByName("rsdthy"),(state::Manager*)NULL);
   manager->Save();
   manager->Save("res/texture");
   manager->Load("res/texture");
   manager->OnTurnBegin();
   manager->OnTurnEnd();
+  manager->Remove(&m);
   
 
   //WorldHandler::OnTurnBegin();
@@ -183,21 +201,22 @@ BOOST_AUTO_TEST_CASE(TestEngine){
   BOOST_CHECK_EQUAL(ark.OPCode(),2020);
   BOOST_CHECK_EQUAL(ark.CostAP(),0);
   BOOST_CHECK_EQUAL(ark.CostMP(),1);
+  BOOST_CHECK_EQUAL(ark.BasePattern(),&p1);
+  BOOST_CHECK_EQUAL(ark.NetCmd()->Name(),"NET_CMD_MOVE_TOWARD_POS");
+  engine::Action *act = engine::Action::GetByNetCmd("NET_CMD_MOVE,Move:$X;$X;$X,caster.ID;target.X;target.Y");
+  BOOST_CHECK_EQUAL(engine::Action::GetByNetCmd("rxtcfyvgubhi"),(engine::Action*)NULL);
+  
+  
   
   engine::NetCommand ncmd({"NET_CMD_MOVE","Move:$X;$X;$X","caster.ID;target.X;target.Y"});
   BOOST_CHECK_EQUAL(ncmd.Name(),"NET_CMD_MOVE");
   BOOST_CHECK_EQUAL(ncmd.Format().first,"Move:$X;$X;$X");
   BOOST_CHECK_EQUAL(ncmd.Format().second,"caster.ID;target.X;target.Y");
+  engine::NetCommand ncmd2("NET_CMD_MOVE,Move:$X;$X;$X,caster.ID;target.X;target.Y");
 
   engine::Pattern p({"PATTERN_SQUARE1","src/client/actions_patterns/PatternSquare1.csv","3","3"});
+  engine::Pattern p2("PATTERN_SQUARE1,src/client/actions_patterns/PatternSquare1.csv,3,3");
   
-  //BOOST_CHECK_EQUAL(ark.BasePattern(),p);
-  //BOOST_CHECK_EQUAL(ark.NetCmd()->Name(),"NET_CMD_ATTACK");
-  //BOOST_CHECK_EQUAL(ark.RequireRangeCheck(),false);
-  //engine::Action ivk({"STD_INVOKE","3000","1","0","PATTERN_CROSS","NET_CMD_INVOKE_RED","1"});
-  //Actor* act2=new Actor({"BUILDING_REDKEEP","ACTOR_REDKEEP","100","20","70","100","0","STD_INVOKE"});
-  //engine::Action* a1 = engine::Action::GetByNetCmd("NET_CMD_MOVE");
-  //BOOST_CHECK_EQUAL(a1->Name(),"STD_MOVE");
   
 }
 

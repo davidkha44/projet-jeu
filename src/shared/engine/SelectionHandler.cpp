@@ -1,8 +1,8 @@
 #include "SelectionHandler.h"
 #include "../shared/state.h"
+#include "../shared/engine.h"
 #include "NetMessageHandler.h"
 #include "../../client/render.h"
-#include "../shared/state/Manageable.h"
 #include <iostream>
 #include <sstream>
 
@@ -19,7 +19,7 @@ void engine::SelectionHandler::Add(state::Manageable** m)
 void engine::SelectionHandler::Remove(state::Manageable** m)
 {
     int index = 0;
-    SelectionState = render::FileHandler::SplitString(SelectionMask[0]," ")[1];
+    SelectionState = engine::FileHandler::SplitString(SelectionMask[0]," ")[1];
     for(int i = 0; i < Selection.size();i++)
     {
         if(Selection.data()[i][0]->Position().x == m[0]->Position().x && Selection.data()[i][0]->Position().y == m[0]->Position().y )
@@ -47,7 +47,7 @@ int engine::SelectionHandler::ProcessSelection(state::Manageable** m)
     std::string _default;
     for(std::string s : SelectionMask)
     {
-        std::vector<std::string> items = render::FileHandler::SplitString(s," ");
+        std::vector<std::string> items = engine::FileHandler::SplitString(s," ");
         if(items[0] == "DEFAULT") _default = items[1];
 
         if(items[0] == SelectionState && m[state::Manager::GetMgrByName(items[2])->ID()]) 
@@ -67,7 +67,7 @@ int engine::SelectionHandler::ProcessSelection(state::Manageable** m)
             if(items[1] == "PROCESS")
             {
                 std::cout << NetFormat() << std::endl;
-                state::WorldHandler::NetCommand(NetFormat());
+                engine::NetMessageHandler::Send(NetFormat());
                 SelectionState = _default;
                 Trash();
                 //FilteredSelection.clear();
@@ -91,7 +91,7 @@ void engine::SelectionHandler::OnMouseLeft(int x,int y)
 
         if(m && !m->Selected() && m->Render())
         {
-            if(SelectionState == render::FileHandler::SplitString(SelectionMask[0]," ")[1]) m->OnSelectionAdd();
+            if(SelectionState == engine::FileHandler::SplitString(SelectionMask[0]," ")[1]) m->OnSelectionAdd();
             items[i] = m;
         }
         else items[i] = NULL;
@@ -126,10 +126,10 @@ void engine::SelectionHandler::PrintSelection()
 std::string engine::SelectionHandler::NetFormat()
 {
     char str[64];
-    std::vector<std::string> items = render::FileHandler::SplitString(Packet.second,";");
+    std::vector<std::string> items = engine::FileHandler::SplitString(Packet.second,";");
     int* args = (int*)malloc(items.size()*sizeof(int));
     for(int i = 0; i < items.size();i++)
-        args[i] = FilteredSelection[render::FileHandler::SplitString(items[i],".")[0]]->GetNetParam(render::FileHandler::SplitString(items[i],".")[1]);
+        args[i] = FilteredSelection[engine::FileHandler::SplitString(items[i],".")[0]]->GetNetParam(engine::FileHandler::SplitString(items[i],".")[1]);
     return std::string(engine::NetMessageHandler::Fill(Packet.first,args));
 }
 

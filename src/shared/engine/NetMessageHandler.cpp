@@ -3,6 +3,7 @@
 #include "../state.h"
 #include <algorithm>
 #include <string.h>
+#include <sio_client.h>
 
 
 std::string engine::NetMessageHandler::Fill(std::string format,int* args)
@@ -40,4 +41,11 @@ void engine::NetMessageHandler::ReplaceFirstOccurence(char* str,char before,char
             return;
         }
     }
+}
+void engine::NetMessageHandler::Send(std::string cmd)
+{
+    if(IO)
+       ((sio::client*)IO)->socket()->emit("req_net_cmd",cmd);    
+    else
+        state::WorldHandler::NetCommand(cmd);
 }

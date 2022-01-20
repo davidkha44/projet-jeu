@@ -1,15 +1,8 @@
 #include "../../client/client/Macro.hpp"
 #include "MainFrame.h"
-#include "FileHandler.h"
-#include "../shared/state/Manager.h"
-#include "../shared/state/WorldHandler.h"
-#include "../shared/state/World.h"
-#include "../shared/engine/InputHandler.h"
-#include "../shared/engine/SelectionHandler.h"
-#include "../shared/engine/Script.h"
-#include "../shared/state/Actor.h"
-#include "../shared/engine/Action.h"
-#include "../shared/engine/Pattern.h"
+#include "../shared/state.h"
+#include "../shared/engine.h"
+#include "../shared/ai.h"
 #include <iostream>
 
 
@@ -64,14 +57,27 @@ void render::MainFrame::Tick()
 
 }
 
+void render::MainFrame::WakeUp()
+{
+    engine::InputHandler::Initialize();
+    PRINTLN("WU IH OK");
+    state::WorldHandler::Initialize();
+    PRINTLN("WU WH OK");
+
+    engine::SelectionHandler::Selection = std::vector<state::Manageable**>();
+    PRINTLN("WU SH OK");
+
+    InitWorld();
+    PRINTLN("WU IW OK");
+
+    InitActors();
+    PRINTLN("WU IA OK");
+
+}
+
 void render::MainFrame::Start()
 {
     //Lancement de la fenetre + Remplissage des Managers 
-    engine::InputHandler::Initialize();
-    state::WorldHandler::Initialize();
-    engine::SelectionHandler::Selection = std::vector<state::Manageable**>();
-    InitWorld();
-    InitActors();
     sf::VideoMode frame_vm(Height(),Width());
     Window(new sf::RenderWindow(frame_vm, Name(), sf::Style::Default));
     Window()->setFramerateLimit(60);
@@ -97,6 +103,40 @@ void render::MainFrame::Resize(int x,int y)
     Window()->setSize(sf::Vector2u(x, y));
 }
 
+render::MainFrame* render::MainFrame::FromLaunchArgs (std::string path)
+{
+    //Charge et parcours le fichiers de configuration LaunchArgs.csv
+    engine::FileHandler::DeserializeTable<engine::Script>("src/client/tables/Scripts.csv","CSV");
+    engine::Script::STATIC_FUNCTIONS["CheckPosition"] = state::Manager::CheckPosition;
+    engine::Script::STATIC_FUNCTIONS["Destroy"] = state::Manager::Destroy;
+    engine::Script::STATIC_FUNCTIONS["EndTurn"] = state::Player::EndTurn;
+    engine::Script::STATIC_FUNCTIONS["RandomInt"] = ai::RandomAI::RandomInt;
+    engine::Script::STATIC_FUNCTIONS["MoveToward"] = ai::Heuristics::MoveToward;
+    engine::Script::STATIC_FUNCTIONS["IsInReach"] = engine::Action::IsInReach;
+    engine::Script::STATIC_FUNCTIONS["Exist"] = state::WorldHandler::Exist;
+    state::WorldHandler::Initialize();
+    PARSE_CSV_LINES(path,'#',
+    if(items[0] == "SCENE")
+    {
+        for(state::World* w : engine::FileHandler::DeserializeTable<state::World>("src/client/tables/Worlds.csv","CSV"))
+        {
+            PRINTLN(w->Name());
+            if(w->Name() == items[1])
+                state::WorldHandler::CurrentWorld = w;
+        }
+    }
+    if(items[0] == "GRID_THICKNESS")
+        state::WorldHandler::CurrentWorld->ApplyGridThickness(std::stoi(items[1]));
+    if(items[0] == "RULES")
+        state::WorldHandler::Behaviour = engine::Script::Scripts[items[1]];
+    if(items[0] == "FLUSH_PATH")
+        state::WorldHandler::BSPath = items[1];
+
+    )
+    return new render::MainFrame("PLT",state::WorldHandler::CurrentWorld->CellN().x*state::WorldHandler::CurrentWorld->CellSize().x,
+    state::WorldHandler::CurrentWorld->CellN().y*state::WorldHandler::CurrentWorld->CellSize().y);
+}
+
 void render::MainFrame::ResizeWindow()
 {
     state::World* w = state::WorldHandler::CurrentWorld;
@@ -110,9 +150,9 @@ void render::MainFrame::ResizeWindow()
 void render::MainFrame::InitActors()
 {
     //Initialise les acteurs sera rempli plus tard
-    render::FileHandler::DeserializeTable<engine::Pattern>("src/client/tables/Patterns.csv","CSV");
-    render::FileHandler::DeserializeTable<engine::NetCommand>("src/client/tables/NetMessage.csv","CSV");
-    render::FileHandler::DeserializeTable<engine::Action>("src/client/tables/Actions.csv","CSV");
+    engine::FileHandler::DeserializeTable<engine::Pattern>("src/client/tables/Patterns.csv","CSV");
+    engine::FileHandler::DeserializeTable<engine::NetCommand>("src/client/tables/NetMessage.csv","CSV");
+    engine::FileHandler::DeserializeTable<engine::Action>("src/client/tables/Actions.csv","CSV");
     if(state::WorldHandler::CurrentWorld->Behaviour())
         state::WorldHandler::CurrentWorld->Behaviour()->Run();
     if(state::WorldHandler::Behaviour)
@@ -121,7 +161,8 @@ void render::MainFrame::InitActors()
         state::WorldHandler::Behaviour->EVENTS["OnTurnEnd"] = state::WorldHandler::OnTurnEnd;
         state::WorldHandler::Behaviour->Run();
         for(state::Player* p : state::WorldHandler::Players)
-            p->Behaviour()->RunFunction("InitializePlayer",(int*)NULL);
+            if(p->Behaviour())
+                p->Behaviour()->RunFunction("InitializePlayer",(int*)NULL);
     }
 }
 
@@ -138,7 +179,7 @@ void render::MainFrame::InitWorld()
     {
         if(line.find('#') == std::string::npos)
         {
-            std::vector<std::string> strs = render::FileHandler::SplitString(line,",");
+            std::vector<std::string> strs = engine::FileHandler::SplitString(line,",");
             for(int i = 0; i < w->CellN().x;i++)
             {
                 state::Manageable* ref = mgr->GetByID(std::stoi(strs[i]));

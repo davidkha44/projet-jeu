@@ -1,6 +1,7 @@
 #include "Action.h"
 #include "Pattern.h"
 #include "../state.h"
+#include "../engine.h"
 #include "../../client/render.h"
 #include "../../client/client/Macro.hpp"
 #define COMMA ,
@@ -27,10 +28,10 @@ engine::Action::Action(std::vector<std::string> args)
 
 engine::Action *engine::Action::GetByNetCmd(std::string netcmd)
 {
-    std::vector<std::string> items = render::FileHandler::SplitString(netcmd, ":");
+    std::vector<std::string> items = engine::FileHandler::SplitString(netcmd, ":");
     PARSE_MAP(Actions, std::string, engine::Action *,
 
-        if (it->second && render::FileHandler::SplitString(it->second->NetCmd()->Format().first, ":")[0] == items[0]) return it->second;)
+        if (it->second && engine::FileHandler::SplitString(it->second->NetCmd()->Format().first, ":")[0] == items[0]) return it->second;)
     return NULL;
 }
 std::vector<sf::Vector2i> engine::Action::Reach(engine::Action *action, state::Actor *caster)

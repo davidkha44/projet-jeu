@@ -7,12 +7,22 @@
 #include "state.h"
 #include <string.h>
 #include <unistd.h>
-#include <../../extern/jsoncpp-1.8.0/json/json.h>
-#include <../../extern/jsoncpp-1.8.0/json/json-forwards.h>
-#include <../../extern/jsoncpp-1.8.0/jsoncpp.cpp>
+#include "../../extern/jsoncpp-1.8.0/json/json.h"
+#include "../../extern/jsoncpp-1.8.0/json/json-forwards.h"
+#include "../../extern/jsoncpp-1.8.0/jsoncpp.cpp"
+#include <fstream>
+#include <thread>
+#include <sio_client.h>
+
+
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 
+void foo(void* param){
+  printf("Test function foo\n");
+  printf("l'adresse est:%p\n",param);
+  printf("la valeur est:%d\n",&param);
+}
 
 void testSFML() {
     sf::Texture texture;
@@ -23,10 +33,14 @@ void testSFML() {
 //#include <state.h>
 
 using namespace std;
+using namespace sio;
 using namespace state;
 using namespace render;
 using namespace engine;
 using namespace ai;
+
+sio::client io;
+
 
 int main(int argc,char* argv[])
 {
@@ -42,7 +56,7 @@ int main(int argc,char* argv[])
     }
     if(!strcmp(argv[1],"render"))
     {
-        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
         cout << "RENDER" << endl;
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
@@ -56,7 +70,7 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"engine"))
     {
         cout << "ENGINE : "<< getpid() << endl;
-        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
@@ -67,7 +81,7 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"random_ai"))
     {
         cout << "RANDOM AI : "<< getpid() << endl;
-        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
@@ -78,7 +92,7 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"heuristic_ai"))
     {
         cout << "HEURISTIC AI : "<< getpid() << endl;
-        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
@@ -89,11 +103,73 @@ int main(int argc,char* argv[])
 
     if(!strcmp(argv[1],"PROTOTYPE"))
     {
-        cout << "INDISPONIBLE" << endl;
-    }  
+        cout << argv[2] << endl;
+        io.connect(string(argv[2]) + ":3000");
+        string username("FortuneSeeker");
+        io.set_open_listener([&]() 
+        {
+            NetMessageHandler::IO = &io;
+            io.socket()->emit("req_create_user",string("FortuneSeeker"));
+            io.socket()->emit("req_join_room",string("BackRoom;FortuneSeeker"));
+            io.socket()->on("ack_net_cmd",[&] (sio::event& ev)
+            {
+                cout << "ACK_NET_CMD : " << ev.get_message()->get_string() << endl;
+            });
+            io.socket()->on("ack_start_game",[&] (sio::event& ev)
+            {
+                MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
+                FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+                for(Manager* m : Manager::Managers)
+                    cout << m->Name() << endl;
+                Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+                PRINTLN("ASSIGNING PLAYER");
+                WorldHandler::Players = vector<Player*>();
+                if(ev.get_message()->get_string() == "PLAYER_1")
+                {
+                    WorldHandler::Players.push_back(new Player("PLAYER_1",1,NULL));
+                    WorldHandler::Players.push_back(new Player("PLAYER_2",0,NULL));
+                    WorldHandler::MyID = 1;
+                    cout << "I AM 1 " << ev.get_message()->get_string() << endl;
+
+                } 
+                else if(ev.get_message()->get_string() == "PLAYER_2")
+                {
+                    WorldHandler::Players.push_back(new Player("PLAYER_2",0,NULL));
+                    WorldHandler::Players.push_back(new Player("PLAYER_1",1,NULL));
+                    WorldHandler::MyID = 0;
+                    cout << "I AM 2 " << ev.get_message()->get_string() << endl;
+
+                } 
+                mf->WakeUp();
+                PRINTLN("WAKE UP OK");
+                WorldHandler::GetMyPlayer()->Behaviour(Script::Scripts["MNK"]);
+                for(Player* p : WorldHandler::Players)
+                {
+                    p->Behaviour()->INT("PlayerID",(int)p->ID());
+                    p->Behaviour()->STRING("PlayerName",p->Name());
+                }
+                PRINTLN("SCRIPT OK");
+                WorldHandler::CurrentWorld->Behaviour()->Run();
+                PRINTLN("WH BHV OK");
+                mf->Start();
+            });
+            thread t([](){
+                while(1)
+                {
+                    io.socket()->emit("heartbeat",string("FortuneSeeker"));  
+                    usleep(2000000);
+                    //io.socket()->emit("req_net_cmd",string("Net Cmd Fred"));  
+                }
+            });
+            t.detach();
+            cout << "CONNECTED" << endl;
+        });  
+
+        while(1) usleep(500000);
+    }
     if(!strcmp(argv[1],"TREE"))
     {
-        MainFrame* mf = FileHandler::LoadLaunchArgs("src/client/tables/LaunchArgs.csv");
+        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
         FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
@@ -161,13 +237,13 @@ int main(int argc,char* argv[])
         cout << "LEVEL I : " << endl;
         for(Node* n : bhv_tree->Level(2))
             cout << ((BehaviourLeaf*)n->Object)->ToString() << endl;
-        cout << "END LEVEL II : " << endl;
+        cout << "END LEVEL  : " << bhv_tree->Level() << endl;
         
         Node* choice = Node::chooseAction(root);
-        cout << "APRES ALPHA-BETA : \n" << endl;
-        root->Print(0);
-        cout << "ACTION CHOISIE : \n" << endl;
-        choice->Print(0);
+        //cout << "APRES ALPHA-BETA : \n" << endl;
+        //root->Print(0);
+        //cout << "ACTION CHOISIE : \n" << endl;
+        //choice->Print(0);
         /*root->BottomLevel(bhv_tree);
 
         root->Print(0);
@@ -175,7 +251,13 @@ int main(int argc,char* argv[])
 
             
     }
-
+    if(!strcmp(argv[1],"Thread"))
+    {
+        // cout << "Test Thread\n" << endl;
+        // cout<<"-------------------------------------------\n";
+        // cout<<"Test param Null\n";
+        // WorldHandler::RunFunctionInNewThread(foo,NULL);
+}
     if(!strcmp(argv[1],"json")){
         Json::Value rootJsonValue;
          Json::Value vec(Json::arrayValue);
@@ -237,5 +319,6 @@ int main(int argc,char* argv[])
         outputFileStream.close();
     }
 }
+    
     return 0;
 }

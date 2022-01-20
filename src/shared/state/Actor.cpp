@@ -2,7 +2,6 @@
 #include "Manager.h"
 #include <string.h>
 #include "../../client/client/Macro.hpp"
-#include "../../client/render/FileHandler.h"
 #include "../engine.h"
 #define COMMA ,
 
@@ -28,7 +27,7 @@ state::Actor::Actor(std::vector<std::string> args) : state::Manageable(args[0], 
     _Properties["AP"] = std::stoi(args[5]);
     _Properties["MP"] = std::stoi(args[6]);
     ID(ID()+ state::Manager::GetMgrByName("ACTOR_MGR")->Elements().size());
-    std::vector<std::string> _actions = render::FileHandler::SplitString(args[7],";");
+    std::vector<std::string> _actions = engine::FileHandler::SplitString(args[7],";");
     _CurrentAction = _actions[0];
     if(_actions.size())
     {
@@ -43,12 +42,12 @@ state::Actor::Actor(std::string args) : state::Manageable(args)
         Example : 
         Name=build_mausoleum2,ID=03E90000,ACTION=STD_INVOKE,AP=100,DEF=60,DMG=30,HP=100,MP=0,OWNER=0,X=5,Y=8
     */
-    for(std::string str : render::FileHandler::SplitString(args,","))
+    for(std::string str : engine::FileHandler::SplitString(args,","))
     {
-        std::vector<std::string> prop = render::FileHandler::SplitString(str,"=");
+        std::vector<std::string> prop = engine::FileHandler::SplitString(str,"=");
         if(prop[0] == "ACTION")
         {
-            std::vector<std::string> _actions = render::FileHandler::SplitString(prop[1],";");
+            std::vector<std::string> _actions = engine::FileHandler::SplitString(prop[1],";");
             _CurrentAction = _actions[0];
             if(_actions.size())
                 for(std::string s : _actions)

@@ -15,6 +15,6 @@ add_dependencies(${lib_shared_target} generate-headers)
 target_include_directories(${lib_shared_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
   )
-
+target_link_libraries(${lib_shared_target} libsioclient.a)
 # vim: set sw=2 sts=2 et:
 

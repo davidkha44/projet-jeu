@@ -2,7 +2,7 @@
 set(lib_server_target server_static)
 
 # Generate header files from dia UML files
-#generate_dia_header("${CMAKE_CURRENT_SOURCE_DIR}/../server.dia")
+generate_dia_header("${CMAKE_CURRENT_SOURCE_DIR}/../server.dia")
 
 # Find all source files to include in library
 file(GLOB_RECURSE server_sources *.cpp)
@@ -23,7 +23,7 @@ target_link_libraries(${lib_server_target} PUBLIC
 # Compile "server" executable
 set(server_target server)
 add_executable(${server_target} main.cpp)
-target_link_libraries(${server_target} ${lib_server_target})
+target_link_libraries(${server_target} ${lib_server_target} libsioclient.a)
 if(BUILD_CODE_COVERAGE)
   add_dependencies(code-coverage ${server_target})
 endif()

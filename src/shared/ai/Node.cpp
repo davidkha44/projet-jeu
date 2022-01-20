@@ -52,7 +52,7 @@ void ai::Node::BigBang(std::vector<ai::Node*> nodes)
 }
 void ai::Node::RecursiveInsert(std::vector<ai::Node*> nodes,int depth)
 {
-    if(depth > 1)
+    if(depth > 3)
         return;
     int _depth = depth + 1;
     for(ai::Node* n : nodes)
@@ -63,7 +63,7 @@ void ai::Node::RecursiveInsert(std::vector<ai::Node*> nodes,int depth)
 }
 void ai::Node::RecursiveInsert(std::vector<std::vector<ai::Node*>> lnodes,int depth)
 {
-    if(depth > 1)
+    if(depth > 3)
         return;
     int _depth = depth + 1;
     for(ai::Node* n : lnodes[depth%2])
@@ -74,7 +74,7 @@ void ai::Node::RecursiveInsert(std::vector<std::vector<ai::Node*>> lnodes,int de
 template <class T>
 void ai::Node::RecursiveInsertWithCallback(std::vector<std::vector<ai::Node*>> lnodes,int depth)
 {
-    if(depth > 1)
+    if(depth > 3)
         return;
     int _depth = depth + 1;
     for(ai::Node* n : lnodes[depth%2])
@@ -82,7 +82,8 @@ void ai::Node::RecursiveInsertWithCallback(std::vector<std::vector<ai::Node*>> l
             Children.push_back(node);     
     for(ai::Node* c : Children)
     {
-        ((ai::BehaviourLeaf*)c->Object)->Outcome += ((ai::BehaviourLeaf*)Object)->Outcome;
+        ((ai::BehaviourLeaf*)c->Object)->Outcome = ((ai::BehaviourLeaf*)Object)->Outcome - (depth % 2 ? ((ai::BehaviourLeaf*)c->Object)->Outcome : -((ai::BehaviourLeaf*)c->Object)->Outcome);
+        
         if(depth) ((ai::BehaviourLeaf*)c->Object)->Target = ((ai::BehaviourLeaf*)Object)->Caster;
         c->Parent = this;
         c->RecursiveInsertWithCallback<T>(lnodes,_depth);
@@ -91,7 +92,7 @@ void ai::Node::RecursiveInsertWithCallback(std::vector<std::vector<ai::Node*>> l
 template <class T>
 void ai::Node::RecursiveInsertWithCallback(std::vector<ai::Node*> nodes,int depth)
 {
-    if(depth > 1)
+    if(depth > 3)
         return;
     int _depth = depth + 1;
     for(ai::Node* n : nodes)
@@ -152,6 +153,14 @@ ai::Node* ai::Node::chooseAction(ai::Node* node){
 		}
 	}
 }
+
+ai::Node* ai::Node::Root()
+{
+    ai::Node* currentNode = this;
+    while(currentNode->Parent) currentNode = currentNode->Parent;
+    return currentNode;
+}
+
 
 template void ai::Node::RecursiveInsertWithCallback<engine::Action>(std::vector<std::vector<ai::Node*>> lnodes,int depth);
 template void ai::Node::RecursiveInsertWithCallback<ai::BehaviourTree>(std::vector<std::vector<ai::Node*>> lnodes,int depth);

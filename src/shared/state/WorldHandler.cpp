@@ -5,6 +5,7 @@
 #include <iostream>
 //#include <ifstream>
 #include "../../client/client/Macro.hpp"
+#include <thread>
 
 
 void state::WorldHandler::OnTurnBegin()
@@ -13,7 +14,8 @@ void state::WorldHandler::OnTurnBegin()
     for(std::function<void()> f : TurnBeginEvents)
         f();
     for(int i = 0; i < Players.size();i++)
-        Players[i]->Behaviour()->RunFunction("TurnBegin",(int*)NULL);
+        if(Players[i]->Behaviour())
+            Players[i]->Behaviour()->RunFunction("TurnBegin",(int*)NULL);
     Turn = Behaviour->INT("TURN");    
     std::cout << "ON_TURN_BEGIN_WH" << std::endl;
 }
@@ -63,7 +65,7 @@ void state::WorldHandler::Initialize()
     Turn = 0;
     Instance = 0;
     Status = 0;
-    Players = std::vector<state::Player*>();
+    //Players = std::vector<state::Player*>();
     Subscribe2TurnBegin<state::Manager>();
 }
 void state::WorldHandler::Initialize(World* w)
@@ -101,8 +103,8 @@ state::Player* state::WorldHandler::GetPlayerByID(int id)
 
 void state::WorldHandler::NetCommand(std::string cmd)
 {
-    std::vector<std::string> items = render::FileHandler::SplitString(cmd,":");
-    std::vector<std::string> _s = render::FileHandler::SplitString(items[1],";");
+    std::vector<std::string> items = engine::FileHandler::SplitString(cmd,":");
+    std::vector<std::string> _s = engine::FileHandler::SplitString(items[1],";");
     int* args = (int*)malloc(_s.size()*sizeof(int));
     for(int i = 0; i < _s.size();i++)
         args[i] = std::stol(_s[i],nullptr,16);
@@ -126,10 +128,24 @@ void state::WorldHandler::LoadTurn(int turn)
             for (auto ptr : mgr->Elements())
                 delete ptr;
             mgr->Elements().clear();
-            for(state::Actor* a : render::FileHandler::DeserializeTable<state::Actor>(state::WorldHandler::BSPath+"/" +mgr->Name()+"::"+std::to_string(turn)+".csv","CSV_FLUSH"))
+            for(state::Actor* a : engine::FileHandler::DeserializeTable<state::Actor>(state::WorldHandler::BSPath+"/" +mgr->Name()+"::"+std::to_string(turn)+".csv","CSV_FLUSH"))
                 mgr->Add(a);
         }
 }
+
+void state::WorldHandler::RunFunctionInNewThread (std::function<void(void*)> func, void* param){
+
+    std::thread first(func, param);
+    std::cout<<"func excute en parallèle\n";
+    
+
+    //synchronize threads
+    first.join();
+    std::cout<<"synchronize threads\n";
+    
+
+}
+
 template <class T> 
 void state::WorldHandler::Subscribe2TurnBegin()
 {
