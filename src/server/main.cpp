@@ -27,7 +27,7 @@ int main(int argc,char* argv[])
     io.connect(endpoint + ":3000");
     NetMessageHandler::UserName = "HostServer";
     NetMessageHandler::IO = &io;
-    FileHandler::LoadLaunchArgs("");
+    FileHandler::LoadLaunchArgs("res/tables/LaunchArgs.csv");
     FileHandler::DeserializeTable<Manager>("res/tables/Managers.csv","CSV");
     Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("res/tables/ManageablesVisuals.csv","CSV_SERVER_SIDE"));
     WorldHandler::Initialize();
@@ -35,6 +35,7 @@ int main(int argc,char* argv[])
 
         cout << "CONNECTED "  << endl;
         InstanceHandler::CreateUser();
+        InstanceHandler::CreateRoom("BackRoom");
         thread t(NetMessageHandler::KeepAlive);
         t.detach();
         io.socket()->on("req_net_cmd",[&](sio::event& ev)
