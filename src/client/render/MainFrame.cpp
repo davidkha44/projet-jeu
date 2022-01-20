@@ -57,14 +57,19 @@ void render::MainFrame::Tick()
 
 }
 
-void render::MainFrame::Start()
+void render::MainFrame::WakeUp()
 {
-    //Lancement de la fenetre + Remplissage des Managers 
     engine::InputHandler::Initialize();
     state::WorldHandler::Initialize();
     engine::SelectionHandler::Selection = std::vector<state::Manageable**>();
     InitWorld();
     InitActors();
+}
+
+void render::MainFrame::Start()
+{
+    //Lancement de la fenetre + Remplissage des Managers 
+
     sf::VideoMode frame_vm(Height(),Width());
     Window(new sf::RenderWindow(frame_vm, Name(), sf::Style::Default));
     Window()->setFramerateLimit(60);
@@ -148,7 +153,8 @@ void render::MainFrame::InitActors()
         state::WorldHandler::Behaviour->EVENTS["OnTurnEnd"] = state::WorldHandler::OnTurnEnd;
         state::WorldHandler::Behaviour->Run();
         for(state::Player* p : state::WorldHandler::Players)
-            p->Behaviour()->RunFunction("InitializePlayer",(int*)NULL);
+            if(p->Behaviour())
+                p->Behaviour()->RunFunction("InitializePlayer",(int*)NULL);
     }
 }
 
