@@ -5,8 +5,11 @@
 #include <thread>
 #include <engine.h>
 #include <state.h>
+#include <SFML/Graphics.hpp>
+
 
 using namespace sio;
+using namespace sf;
 using namespace std;
 using namespace state;
 using namespace engine;
