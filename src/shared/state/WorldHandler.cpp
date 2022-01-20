@@ -65,7 +65,7 @@ void state::WorldHandler::Initialize()
     Turn = 0;
     Instance = 0;
     Status = 0;
-    Players = std::vector<state::Player*>();
+    //Players = std::vector<state::Player*>();
     Subscribe2TurnBegin<state::Manager>();
 }
 void state::WorldHandler::Initialize(World* w)

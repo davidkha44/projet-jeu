@@ -117,26 +117,40 @@ int main(int argc,char* argv[])
             });
             io.socket()->on("ack_start_game",[&] (sio::event& ev)
             {
-                cout << "I AM " << ev.get_message()->get_string() << endl;
                 MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
                 FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
                 for(Manager* m : Manager::Managers)
                     cout << m->Name() << endl;
                 Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+                PRINTLN("ASSIGNING PLAYER");
+                WorldHandler::Players = vector<Player*>();
                 if(ev.get_message()->get_string() == "PLAYER_1")
                 {
-                    WorldHandler::Players.push_back(new Player("PLAYER_1",1,Script::Scripts["MNK"]));
+                    WorldHandler::Players.push_back(new Player("PLAYER_1",1,NULL));
                     WorldHandler::Players.push_back(new Player("PLAYER_2",0,NULL));
                     WorldHandler::MyID = 1;
+                    cout << "I AM 1 " << ev.get_message()->get_string() << endl;
+
                 } 
                 else if(ev.get_message()->get_string() == "PLAYER_2")
                 {
-                    WorldHandler::Players.push_back(new Player("PLAYER_2",0,Script::Scripts["MNK"]));
+                    WorldHandler::Players.push_back(new Player("PLAYER_2",0,NULL));
                     WorldHandler::Players.push_back(new Player("PLAYER_1",1,NULL));
                     WorldHandler::MyID = 0;
+                    cout << "I AM 2 " << ev.get_message()->get_string() << endl;
+
                 } 
-                WorldHandler::CurrentWorld->Behaviour()->Run();
                 mf->WakeUp();
+                PRINTLN("WAKE UP OK");
+                WorldHandler::GetMyPlayer()->Behaviour(Script::Scripts["MNK"]);
+                for(Player* p : WorldHandler::Players)
+                {
+                    p->Behaviour()->INT("PlayerID",(int)p->ID());
+                    p->Behaviour()->STRING("PlayerName",p->Name());
+                }
+                PRINTLN("SCRIPT OK");
+                WorldHandler::CurrentWorld->Behaviour()->Run();
+                PRINTLN("WH BHV OK");
                 mf->Start();
             });
             thread t([](){

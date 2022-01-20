@@ -60,10 +60,19 @@ void render::MainFrame::Tick()
 void render::MainFrame::WakeUp()
 {
     engine::InputHandler::Initialize();
+    PRINTLN("WU IH OK");
     state::WorldHandler::Initialize();
+    PRINTLN("WU WH OK");
+
     engine::SelectionHandler::Selection = std::vector<state::Manageable**>();
+    PRINTLN("WU SH OK");
+
     InitWorld();
+    PRINTLN("WU IW OK");
+
     InitActors();
+    PRINTLN("WU IA OK");
+
 }
 
 void render::MainFrame::Start()

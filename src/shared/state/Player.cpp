@@ -24,8 +24,12 @@ state::Player::Player(std::string name,char id,engine::Script* behaviour)
     Name(name);
     ID(id);
     _Behaviour = behaviour;
-    _Behaviour->INT("PlayerID",(int)ID());
-    _Behaviour->STRING("PlayerName",Name());
+    if(_Behaviour)
+    {
+        _Behaviour->INT("PlayerID",(int)ID());
+        _Behaviour->STRING("PlayerName",Name());
+    }
+
 }
 
 void state::Player::AttachPawn(state::Actor* pawn)
