@@ -59,6 +59,6 @@ int state::Player::EndTurn(int* params)
     char str[32];
     sprintf(str,"EndTurn:%X",params[0] << 8);
     std::cout << str << std::endl;
-    state::WorldHandler::NetCommand(std::string(str));
+    engine::NetMessageHandler::Send(std::string(str));
     return 0;
 }
