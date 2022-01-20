@@ -1,0 +1,13 @@
+#SCRIPT_NAME,PATH
+#IS_BHV,res/scripts/InputSourceKeyboard.bhv
+STD_WORLD,res/scripts/STD_WORLD.bhv
+STD_SCENARIO,res/scripts/StandardScenario.bhv
+LAYER_ACTOR,res/scripts/Layer_Actor.bhv
+REGLE,res/scripts/Regle.bhv
+SCRIPT_ACTIONS,res/scripts/Script_Actions.bhv
+HOME,res/scripts/Home.bhv
+MNK,res/scripts/MNK.bhv
+RandomAI,res/scripts/RandomAI.bhv
+HEURISTIX,res/scripts/Heuristix.bhv
+HEURISTIXRED,res/scripts/HeuristixRed.bhv
+HEURISTIXCYAN,res/scripts/HeuristixCyan.bhv

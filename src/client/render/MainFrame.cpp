@@ -106,7 +106,7 @@ void render::MainFrame::Resize(int x,int y)
 render::MainFrame* render::MainFrame::FromLaunchArgs (std::string path)
 {
     //Charge et parcours le fichiers de configuration LaunchArgs.csv
-    engine::FileHandler::DeserializeTable<engine::Script>("res/Scripts/tables/Scripts.csv","CSV");
+    engine::FileHandler::DeserializeTable<engine::Script>("res/tables/Scripts.csv","CSV");
     engine::Script::STATIC_FUNCTIONS["CheckPosition"] = state::Manager::CheckPosition;
     engine::Script::STATIC_FUNCTIONS["Destroy"] = state::Manager::Destroy;
     engine::Script::STATIC_FUNCTIONS["EndTurn"] = state::Player::EndTurn;
@@ -118,7 +118,7 @@ render::MainFrame* render::MainFrame::FromLaunchArgs (std::string path)
     PARSE_CSV_LINES(path,'#',
     if(items[0] == "SCENE")
     {
-        for(state::World* w : engine::FileHandler::DeserializeTable<state::World>("res/Scripts/tables/Worlds.csv","CSV"))
+        for(state::World* w : engine::FileHandler::DeserializeTable<state::World>("res/tables/Worlds.csv","CSV"))
         {
             PRINTLN(w->Name());
             if(w->Name() == items[1])
@@ -150,9 +150,9 @@ void render::MainFrame::ResizeWindow()
 void render::MainFrame::InitActors()
 {
     //Initialise les acteurs sera rempli plus tard
-    engine::FileHandler::DeserializeTable<engine::Pattern>("res/Scripts/tables/Patterns.csv","CSV");
-    engine::FileHandler::DeserializeTable<engine::NetCommand>("res/Scripts/tables/NetMessage.csv","CSV");
-    engine::FileHandler::DeserializeTable<engine::Action>("res/Scripts/tables/Actions.csv","CSV");
+    engine::FileHandler::DeserializeTable<engine::Pattern>("res/tables/Patterns.csv","CSV");
+    engine::FileHandler::DeserializeTable<engine::NetCommand>("res/tables/NetMessage.csv","CSV");
+    engine::FileHandler::DeserializeTable<engine::Action>("res/tables/Actions.csv","CSV");
     if(state::WorldHandler::CurrentWorld->Behaviour())
         state::WorldHandler::CurrentWorld->Behaviour()->Run();
     if(state::WorldHandler::Behaviour)

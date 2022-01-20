@@ -13,10 +13,12 @@ add_library(${lib_server_target} STATIC ${server_sources} ${jsoncpp_sources})
 add_dependencies(${lib_server_target} generate-headers)
 target_include_directories(${lib_server_target} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ${SFML_INCLUDE_DIR}
   ${jsoncpp_include_dir}
   )
 target_link_libraries(${lib_server_target} PUBLIC
-  ${MHD_LIBRARY}
+  ${MHD_LIBRARY} 
+  ${SFML_LIBRARIES}
   $<TARGET_NAME:shared_static>
   )
 

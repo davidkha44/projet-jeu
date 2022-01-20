@@ -5,6 +5,7 @@
 #include <thread>
 #include <engine.h>
 #include <state.h>
+#include <server.h>
 #include <SFML/Graphics.hpp>
 
 
@@ -13,6 +14,7 @@ using namespace sf;
 using namespace std;
 using namespace state;
 using namespace engine;
+using namespace server;
 
 client io;
 int iter = 0;
@@ -25,29 +27,24 @@ int main(int argc,char* argv[])
     io.connect(endpoint + ":3000");
     NetMessageHandler::UserName = "HostServer";
     NetMessageHandler::IO = &io;
-
+    FileHandler::LoadLaunchArgs("");
+    FileHandler::DeserializeTable<Manager>("res/tables/Managers.csv","CSV");
+    Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("res/tables/ManageablesVisuals.csv","CSV_SERVER_SIDE"));
+    WorldHandler::Initialize();
     io.set_open_listener([&]() {
 
         cout << "CONNECTED "  << endl;
-    io.socket()->emit("req_create_user",NetMessageHandler::UserName);
-        thread t([](){
-            while(1)
-            {
-                io.socket()->emit("heartbeat",NetMessageHandler::UserName);  
-                usleep(2000000);
-                iter++;
-
-            }
-            });
+        InstanceHandler::CreateUser();
+        thread t(NetMessageHandler::KeepAlive);
         t.detach();
-    io.socket()->on("req_net_cmd",[&](sio::event& ev)
+        io.socket()->on("req_net_cmd",[&](sio::event& ev)
         {
         cout << "NET_CMD IS : " << ev.get_message()->get_string() << endl;
-        io.socket()->emit("ack_net_cmd", string("BackRoom::") + ev.get_message()->get_string());
+            InstanceHandler::NetCmd(ev.get_message()->get_string());
         });
     
-    io.socket()->emit("req_create_room", string("BackRoom;HostServer"));
-    io.socket()->on("ack_create_room", [&](sio::event& ev)
+
+        io.socket()->on("ack_create_room", [&](sio::event& ev)
         {
             cout << "RESPONSE IS : " << ev.get_message()->get_string() << endl;
 
@@ -59,7 +56,7 @@ int main(int argc,char* argv[])
         if(players_name.size() == 2) 
         {
             usleep(2000000);
-            io.socket()->emit("req_start_game",string("BackRoom"));
+            InstanceHandler::Start();
 
         }
 

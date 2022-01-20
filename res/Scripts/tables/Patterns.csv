@@ -1,8 +1,0 @@
-#PATTERN_NAME,PATTERN_PATH,SIZE_X,SIZE_Y
-PATTERN_CROSS,res/Scripts/actions_patterns/PatternCrossSimple.csv,3,3
-PATTERN_DIAMOND4,res/Scripts/actions_patterns/PatternDiamond4.csv,9,9
-PATTERN_DIAMOND2,res/Scripts/actions_patterns/PatternDiamond2.csv,5,5
-PATTERN_CONE,res/Scripts/actions_patterns/PatternCone.csv,9,9
-PATTERN_CROSS3,res/Scripts/actions_patterns/PatternCross3.csv,7,7
-PATTERN_SQUARE1,res/Scripts/actions_patterns/PatternSquare1.csv,3,3
-PATTERN_SQUARE3,res/Scripts/actions_patterns/PatternSquare3.csv,7,7
