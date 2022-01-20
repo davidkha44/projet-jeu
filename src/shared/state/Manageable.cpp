@@ -42,9 +42,13 @@ state::Manageable::Manageable(std::string name,std::string visual)
     Render(true);
     Scale(state::Manager::GetMgrByID(0)->GetByName(visual).front()->Scale());
     Texture(state::Manager::GetMgrByID(0)->GetByName(visual).front()->Texture());
-    Sprite(new sf::Sprite());
-    Sprite()->setTexture(*(Texture()));
-    Sprite()->setScale(state::Manager::GetMgrByID(0)->GetByName(visual).front()->Scale());
+    if(Texture())
+    {
+        Sprite(new sf::Sprite());
+        Sprite()->setTexture(*(Texture()));
+        Sprite()->setScale(state::Manager::GetMgrByID(0)->GetByName(visual).front()->Scale());
+    }
+
 }
 state::Manageable::Manageable(std::string name,std::string mgr_name,std::string path)
 {  
@@ -67,15 +71,27 @@ state::Manageable::Manageable(std::vector<std::string> args)
     ResPath(args[3]);
     ID(std::stoi(args[2]));
     Position(sf::Vector2i(0,0));
-    Texture(new sf::Texture());
-    Sprite(new sf::Sprite());
     Render(false);
-    if(!Texture()->loadFromFile(ResPath()))
-        std::cout << "FAIL 2 LOAD" << std::endl;
-    Sprite()->setTexture(*Texture());
     Scale(sf::Vector2f(std::stof(args[4]),std::stof(args[5])));
-    Sprite()->setScale(Scale().x,Scale().y);
+
+    if(args.back() != "NO_RENDER")
+    {
+        Texture(new sf::Texture());
+        Sprite(new sf::Sprite());
+        if(!Texture()->loadFromFile(ResPath()))
+            std::cout << "FAIL 2 LOAD" << std::endl;
+        Sprite()->setTexture(*Texture());
+        Sprite()->setScale(Scale().x,Scale().y);
+    }
+    else
+    {
+        Texture(NULL);
+        Sprite(NULL);
+    }
+
 }
+
+
 state::Manageable::Manageable(std::string args)
 {
     /*

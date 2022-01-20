@@ -36,6 +36,7 @@ state::Actor::Actor(std::vector<std::string> args) : state::Manageable(args[0], 
     }
 
 }
+
 state::Actor::Actor(std::string args) : state::Manageable(args)
 {
     /*
