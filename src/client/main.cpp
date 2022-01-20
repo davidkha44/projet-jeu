@@ -123,8 +123,6 @@ int main(int argc,char* argv[])
                 for(Manager* m : Manager::Managers)
                     cout << m->Name() << endl;
                 Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
-                mf->WakeUp();
-                WorldHandler::Players.clear();
                 if(ev.get_message()->get_string() == "PLAYER_1")
                 {
                     WorldHandler::Players.push_back(new Player("PLAYER_1",1,Script::Scripts["MNK"]));
@@ -138,6 +136,7 @@ int main(int argc,char* argv[])
                     WorldHandler::MyID = 0;
                 } 
                 WorldHandler::CurrentWorld->Behaviour()->Run();
+                mf->WakeUp();
                 mf->Start();
             });
             thread t([](){

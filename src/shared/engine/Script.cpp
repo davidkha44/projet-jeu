@@ -398,7 +398,7 @@ void engine::Script::Run(std::string line,int* args)
         state::WorldHandler::GetPlayerByID(s)->AttachPawn((state::Actor*)state::Manager::GetMgrByName("ACTOR_MGR")->GetByID(f));
         
     }
-    if(items[0] == "PLAYER")
+    if(items[0] == "PLAYER" && !state::WorldHandler::GetPlayerByName(items[1]))
     {
         state::WorldHandler::Players.push_back(new state::Player(items[1],(char)(std::stoi(items[2]) & 0xFF),Scripts[items[3]]));
     }

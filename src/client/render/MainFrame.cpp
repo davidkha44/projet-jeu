@@ -69,7 +69,6 @@ void render::MainFrame::WakeUp()
 void render::MainFrame::Start()
 {
     //Lancement de la fenetre + Remplissage des Managers 
-
     sf::VideoMode frame_vm(Height(),Width());
     Window(new sf::RenderWindow(frame_vm, Name(), sf::Style::Default));
     Window()->setFramerateLimit(60);
