@@ -106,7 +106,7 @@ int main(int argc,char* argv[])
     {
         cout << argv[2] << endl;
         io.connect(string(argv[2]) + ":3000");
-        NetMessageHandler::UserName = "Flo";
+        NetMessageHandler::UserName = "FortuneSeeker";
         io.set_open_listener([&]() 
         {
 
@@ -114,7 +114,7 @@ int main(int argc,char* argv[])
             io.socket()->emit("req_create_user",NetMessageHandler::UserName );
             thread t(NetMessageHandler::KeepAlive);
             t.detach();
-            io.socket()->emit("req_join_room",string("BackRoom;")+NetMessageHandler::UserName);
+            io.socket()->emit("req_join_room",string("FrontRoom;")+NetMessageHandler::UserName);
             io.socket()->on("ack_net_cmd",[&] (sio::event& ev)
             {
                 cout << "ACK_NET_CMD : " << ev.get_message()->get_string() << endl;

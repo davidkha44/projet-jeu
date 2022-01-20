@@ -7,6 +7,7 @@
 void server::InstanceHandler::CreateRoom(std::string room_name)
 {
     sio::client* io = (sio::client*)engine::NetMessageHandler::IO;
+    Name = room_name;
    io->socket()->emit("req_create_room", room_name+";"+engine::NetMessageHandler::UserName);
 }
 void server::InstanceHandler::NetCmd(std::string cmd)

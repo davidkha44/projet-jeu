@@ -25,7 +25,7 @@ int main(int argc,char* argv[])
     std::vector<std::string> players_name;
     string endpoint(argv[1]);
     io.connect(endpoint + ":3000");
-    NetMessageHandler::UserName = "HostServer";
+    NetMessageHandler::UserName = "FrontHost";
     NetMessageHandler::IO = &io;
     FileHandler::LoadLaunchArgs("res/tables/LaunchArgs.csv");
     FileHandler::DeserializeTable<Manager>("res/tables/Managers.csv","CSV");
@@ -35,7 +35,7 @@ int main(int argc,char* argv[])
 
         cout << "CONNECTED "  << endl;
         InstanceHandler::CreateUser();
-        InstanceHandler::CreateRoom("BackRoom");
+        InstanceHandler::CreateRoom("FrontRoom");
         thread t(NetMessageHandler::KeepAlive);
         t.detach();
         io.socket()->on("req_net_cmd",[&](sio::event& ev)
