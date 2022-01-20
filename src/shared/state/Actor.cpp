@@ -80,7 +80,7 @@ void state::Actor::Property(std::string prop,int value)
 
 void state::Actor::OnSelectionAdd()
 {
-    if(Property("OWNER") != state::WorldHandler::Behaviour->INT("TURN"))
+    if(Property("OWNER") != state::WorldHandler::MyID)
         return;
     Selected(true);
     state::Manageable* bg = state::Manager::GetMgrByID(1)->GetByPos(Position());

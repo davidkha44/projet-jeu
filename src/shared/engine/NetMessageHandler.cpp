@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <string.h>
 #include <sio_client.h>
+#include <unistd.h>
 
 
 std::string engine::NetMessageHandler::Fill(std::string format,int* args)
@@ -48,4 +49,12 @@ void engine::NetMessageHandler::Send(std::string cmd)
        ((sio::client*)IO)->socket()->emit("req_net_cmd",cmd);    
     else
         state::WorldHandler::NetCommand(cmd);
+}
+void engine::NetMessageHandler::KeepAlive()
+{
+    while(IO)
+    {
+        usleep(2000000);
+        ((sio::client*)IO)->socket()->emit("heartbeat",UserName);    
+    }
 }

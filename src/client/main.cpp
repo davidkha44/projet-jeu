@@ -105,18 +105,22 @@ int main(int argc,char* argv[])
     {
         cout << argv[2] << endl;
         io.connect(string(argv[2]) + ":3000");
-        string username("FortuneSeeker");
+        NetMessageHandler::UserName = "FortuneSeeker";
         io.set_open_listener([&]() 
         {
+
             NetMessageHandler::IO = &io;
-            io.socket()->emit("req_create_user",string("FortuneSeeker"));
-            io.socket()->emit("req_join_room",string("BackRoom;FortuneSeeker"));
+            io.socket()->emit("req_create_user",NetMessageHandler::UserName );
+            thread t(NetMessageHandler::KeepAlive);
+            t.detach();
+            io.socket()->emit("req_join_room",string("BackRoom;")+NetMessageHandler::UserName);
             io.socket()->on("ack_net_cmd",[&] (sio::event& ev)
             {
                 cout << "ACK_NET_CMD : " << ev.get_message()->get_string() << endl;
             });
             io.socket()->on("ack_start_game",[&] (sio::event& ev)
             {
+                
                 MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
                 FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
                 for(Manager* m : Manager::Managers)
@@ -145,23 +149,18 @@ int main(int argc,char* argv[])
                 WorldHandler::GetMyPlayer()->Behaviour(Script::Scripts["MNK"]);
                 for(Player* p : WorldHandler::Players)
                 {
-                    p->Behaviour()->INT("PlayerID",(int)p->ID());
-                    p->Behaviour()->STRING("PlayerName",p->Name());
+                    if(p->Behaviour())
+                    {
+                        p->Behaviour()->INT("PlayerID",(int)p->ID());
+                        p->Behaviour()->STRING("PlayerName",p->Name());
+                    }
                 }
                 PRINTLN("SCRIPT OK");
                 WorldHandler::CurrentWorld->Behaviour()->Run();
                 PRINTLN("WH BHV OK");
                 mf->Start();
             });
-            thread t([](){
-                while(1)
-                {
-                    io.socket()->emit("heartbeat",string("FortuneSeeker"));  
-                    usleep(2000000);
-                    //io.socket()->emit("req_net_cmd",string("Net Cmd Fred"));  
-                }
-            });
-            t.detach();
+            
             cout << "CONNECTED" << endl;
         });  
 
