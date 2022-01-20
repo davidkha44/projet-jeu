@@ -450,7 +450,7 @@ void engine::Script::Run(std::string line,int* args)
         int* params = (int*)calloc(items.size() - 2,sizeof(int));
         for(int i = 2; i < items.size();i++)
             params[i-2] = EvaluateINT(items[i],args);
-        state::WorldHandler::NetCommand(engine::NetMessageHandler::Fill(engine::Action::Actions[items[1]]->NetCmd()->Format().first,params));
+        engine::NetMessageHandler::Send(engine::NetMessageHandler::Fill(engine::Action::Actions[items[1]]->NetCmd()->Format().first,params));
     }
     if(items[0] == "SAVE_MGR")
     {

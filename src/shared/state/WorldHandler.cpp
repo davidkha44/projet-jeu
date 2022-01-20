@@ -108,9 +108,10 @@ void state::WorldHandler::NetCommand(std::string cmd)
     int* args = (int*)malloc(_s.size()*sizeof(int));
     for(int i = 0; i < _s.size();i++)
         args[i] = std::stol(_s[i],nullptr,16);
-    if(Behaviour->INT("TURN") == ((args[0] >> 8) & 0xFF) && !Behaviour->INT("STATUS"))
+    if( !Behaviour->INT("STATUS"))
         Behaviour->RunFunction(items[0],args);
     delete args;
+    //Behaviour->INT("TURN") == ((args[0] >> 8) & 0xFF) &&
 }
 
 int state::WorldHandler::Exist(int* args)

@@ -117,6 +117,7 @@ int main(int argc,char* argv[])
             io.socket()->on("ack_net_cmd",[&] (sio::event& ev)
             {
                 cout << "ACK_NET_CMD : " << ev.get_message()->get_string() << endl;
+                WorldHandler::NetCommand(ev.get_message()->get_string());
             });
             io.socket()->on("ack_start_game",[&] (sio::event& ev)
             {
