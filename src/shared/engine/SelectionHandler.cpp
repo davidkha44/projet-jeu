@@ -67,7 +67,7 @@ int engine::SelectionHandler::ProcessSelection(state::Manageable** m)
             if(items[1] == "PROCESS")
             {
                 std::cout << NetFormat() << std::endl;
-                state::WorldHandler::NetCommand(NetFormat());
+                engine::NetMessageHandler::Send(NetFormat());
                 SelectionState = _default;
                 Trash();
                 //FilteredSelection.clear();

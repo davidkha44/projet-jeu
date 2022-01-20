@@ -14,7 +14,8 @@ void state::WorldHandler::OnTurnBegin()
     for(std::function<void()> f : TurnBeginEvents)
         f();
     for(int i = 0; i < Players.size();i++)
-        Players[i]->Behaviour()->RunFunction("TurnBegin",(int*)NULL);
+        if(Players[i]->Behaviour())
+            Players[i]->Behaviour()->RunFunction("TurnBegin",(int*)NULL);
     Turn = Behaviour->INT("TURN");    
     std::cout << "ON_TURN_BEGIN_WH" << std::endl;
 }

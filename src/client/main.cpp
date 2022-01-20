@@ -108,6 +108,7 @@ int main(int argc,char* argv[])
         string username("FortuneSeeker");
         io.set_open_listener([&]() 
         {
+            NetMessageHandler::IO = &io;
             io.socket()->emit("req_create_user",string("FortuneSeeker"));
             io.socket()->emit("req_join_room",string("BackRoom;FortuneSeeker"));
             io.socket()->on("ack_net_cmd",[&] (sio::event& ev)
@@ -117,6 +118,16 @@ int main(int argc,char* argv[])
             io.socket()->on("ack_start_game",[&] (sio::event& ev)
             {
                 cout << "I AM " << ev.get_message()->get_string() << endl;
+                if(ev.get_message()->get_string() == "PLAYER_1")
+                {
+                    WorldHandler::Players.push_back(new Player("PLAYER_1",1,Script::Scripts["MNK"]));
+                    WorldHandler::Players.push_back(new Player("PLAYER_2",0,NULL));
+                } 
+                else if(ev.get_message()->get_string() == "PLAYER_2")
+                {
+                    WorldHandler::Players.push_back(new Player("PLAYER_2",0,Script::Scripts["MNK"]));
+                    WorldHandler::Players.push_back(new Player("PLAYER_1",1,NULL));
+                } 
                 MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
                 FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
                 for(Manager* m : Manager::Managers)
@@ -129,7 +140,7 @@ int main(int argc,char* argv[])
                 {
                     io.socket()->emit("heartbeat",string("FortuneSeeker"));  
                     usleep(2000000);
-                    io.socket()->emit("req_net_cmd",string("Net Cmd Fred"));  
+                    //io.socket()->emit("req_net_cmd",string("Net Cmd Fred"));  
                 }
             });
             t.detach();
