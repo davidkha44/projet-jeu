@@ -24,13 +24,14 @@ int main(int argc,char* argv[])
 {
     std::vector<std::string> players_name;
     string endpoint(argv[1]);
-    io.connect(endpoint + ":3000");
+    //io.connect(endpoint + ":3000");
     NetMessageHandler::UserName = "FrontHost";
     NetMessageHandler::IO = &io;
     FileHandler::LoadLaunchArgs("res/tables/LaunchArgs.csv");
     FileHandler::DeserializeTable<Manager>("res/tables/Managers.csv","CSV");
     Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("res/tables/ManageablesVisuals.csv","CSV_SERVER_SIDE"));
     WorldHandler::Initialize();
+
     io.set_open_listener([&]() {
 
         cout << "CONNECTED "  << endl;

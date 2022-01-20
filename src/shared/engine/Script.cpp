@@ -20,7 +20,7 @@ engine::Script::Script(std::vector<std::string> args)
 }
 engine::Script::Script(std::string args) 
 {
-
+    
 }
 int engine::Script::INT(std::string key)
 {
@@ -381,9 +381,10 @@ void engine::Script::Run(std::string line,int* args)
         if(_actor)
         {
             _actor->Name(items[1]);
-            _actor->AssignPosition(x,y);
+           _actor->AssignPosition(x,y);
         }
         state::Manager::GetMgrByName(items[3])->Add(_actor);
+
     }
     if(items[0] == "ATTACH_PAWN")
     {
