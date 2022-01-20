@@ -414,7 +414,7 @@ void engine::Script::Run(std::string line,int* args)
             if(_items[0] == "FILTERED_SELECTION")
             {
                 std::vector<std::string> __items = engine::FileHandler::SplitString(_items[1],".");
-                if(__items[1] == "ACTION") {((state::Actor*)engine::SelectionHandler::FilteredSelection[__items[0]])->ChangeAction(items[2]);return;}
+                if(__items[1] == "ACTION" && engine::SelectionHandler::FilteredSelection[__items[0]]) {((state::Actor*)engine::SelectionHandler::FilteredSelection[__items[0]])->ChangeAction(items[2]);return;}
                 else ((state::Actor*)engine::SelectionHandler::FilteredSelection[__items[0]])->Property(__items[1],EvaluateINT(items[2],args));
             }
             if(_items[0] == "NET_VAR")

@@ -55,6 +55,7 @@ void engine::NetMessageHandler::KeepAlive()
     while(IO)
     {
         usleep(2000000);
-        ((sio::client*)IO)->socket()->emit("heartbeat",UserName);    
+        ((sio::client*)IO)->socket()->emit("heartbeat",UserName);  
+        PRINTLN("HEARTBEAT SENT");
     }
 }

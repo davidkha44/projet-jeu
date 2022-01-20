@@ -158,7 +158,9 @@ int main(int argc,char* argv[])
                 PRINTLN("SCRIPT OK");
                 WorldHandler::CurrentWorld->Behaviour()->Run();
                 PRINTLN("WH BHV OK");
-                mf->Start();
+                //mf->Start();
+                thread mfth(&MainFrame::Start,mf);
+                mfth.detach();
             });
             
             cout << "CONNECTED" << endl;
