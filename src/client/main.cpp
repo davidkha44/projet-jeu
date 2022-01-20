@@ -7,7 +7,9 @@
 #include "state.h"
 #include <string.h>
 #include <unistd.h>
-
+#include <../../extern/jsoncpp-1.8.0/json/json.h>
+#include <../../extern/jsoncpp-1.8.0/json/json-forwards.h>
+#include <../../extern/jsoncpp-1.8.0/jsoncpp.cpp>
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 
@@ -174,6 +176,66 @@ int main(int argc,char* argv[])
             
     }
 
-    
+    if(!strcmp(argv[1],"json")){
+        Json::Value rootJsonValue;
+         Json::Value vec(Json::arrayValue);
+		vec.append(Json::Value(1));
+		vec.append(Json::Value(2));
+		vec.append(Json::Value(3));
+        rootJsonValue["String"] = "bar";
+        rootJsonValue["int"] = 1;
+        rootJsonValue["array"] = vec;
+		std::vector<std::string> v;
+		v.push_back("Action1");
+		v.push_back("attack");
+		v.push_back("Action2");
+		v.push_back("move");
+		
+		for(int i=0;i<2;i++){
+			rootJsonValue[v[2*i]] = v[2*i+1]; 
+		}
+		
+        Json::StreamWriterBuilder builder;
+        builder["commentStyle"] = "None";
+        builder["indentation"] = "   ";
+
+        std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+        std::ofstream outputFileStream("test.json");
+        writer -> write(rootJsonValue, &outputFileStream);
+        outputFileStream.close();
+        
+        std::ifstream JsonFile("test.json");
+         if (JsonFile){
+			 Json::Value root;
+             Json::Reader reader;
+             if (!reader.parse(JsonFile, root)){
+				cout << "Failed to parse \n"<< reader.getFormattedErrorMessages();
+                return 0;
+                }
+                cout << "Pre modif\n" << endl;
+                cout << root<<"\n"<<endl;
+               root["new"] = "new";
+               root["Action1"] = "defense";
+             JsonFile.close();
+             root["new2"] = 2;
+             engine::NetCommand ncmd({"NET_CMD_MOVE","Move:$X;$X;$X","caster.ID;target.X;target.Y"});
+             Json::Value cmd(Json::arrayValue);
+             cmd.append(Json::Value(ncmd.Name()));
+             cmd.append(Json::Value(ncmd.Format().first));
+             cmd.append(Json::Value(ncmd.Format().second));
+             root["cmd"] = cmd;
+             cout << "Post modif\n" << endl;
+             cout << root<<"\n"<<endl;
+             cout << "JSON in string : " << root.toStyledString() << "\n" << endl;
+             std::string v2;
+             v2 = root.toStyledString();
+             //cout << "2e élément" << root.get(Json::ArrayIndex 1,Json::ValueType::stringValue) << "\n" << endl;
+             engine::NetCommand cmd2({root["cmd"][0].asString(),root["cmd"][1].asString(),root["cmd"][2].asString()});
+             cout << cmd2.Name() << endl;
+        std::ofstream outputFileStream("test.json");
+        writer -> write(root, &outputFileStream);
+        outputFileStream.close();
+    }
+}
     return 0;
 }

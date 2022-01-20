@@ -1,0 +1,10 @@
+{
+   "Action1" : "defense",
+   "Action2" : "move",
+   "String" : "bar",
+   "array" : [ 1, 2, 3 ],
+   "cmd" : [ "NET_CMD_MOVE", "Move:$X;$X;$X", "caster.ID;target.X;target.Y" ],
+   "int" : 1,
+   "new" : "new",
+   "new2" : 2
+}

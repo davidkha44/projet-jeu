@@ -5,7 +5,7 @@
 #include "../../src/shared/state.h"
 #include "../../src/client/render.h"
 #include "../../src/shared/engine.h"
-
+#include "../../src/shared/ai.h"
 
 using namespace ::state;
 
@@ -124,27 +124,27 @@ BOOST_AUTO_TEST_CASE(TestState)
   BOOST_CHECK_EQUAL(m.Position().y,0);
   BOOST_CHECK_EQUAL(m.Scale().x,0);
   BOOST_CHECK_EQUAL(m.Scale().x,0);
-  BOOST_CHECK_EQUAL(m.ResPath(),"TEST_RESPATH");
-  Manageable *m1=new Manageable("Mana", "Bob","res/texture/");
-  Manageable m2("Mana2", 2,"TEST_RESPATH");
+  //BOOST_CHECK_EQUAL(m.ResPath(),"TEST_RESPATH");
+  //Manageable *m1=new Manageable("Mana", "Bob","res/texture/");
+  //Manageable m2("Mana2", 2,"TEST_RESPATH");
   m.AssignPosition(4,9);
   BOOST_CHECK_EQUAL(m.Position().x,4);
   BOOST_CHECK_EQUAL(m.Position().y,9);
 
-  Manageable *m4=new Manageable({"ACTOR_REDMAGE","ASSET_MGR","1105","res/texture/Characters/Prototypes/MageRed.png","2","2"});
+  /*Manageable *m4=new Manageable({"ACTOR_REDMAGE","ASSET_MGR","1105","res/texture/Characters/Prototypes/MageRed.png","2","2"});
   Manageable *m5=new Manageable("ACTOR_CYANMAGE,ASSET_MGR,1106,res/texture/Characters/Prototypes/MageCyan.png,2,2");
   m4->OnSelectionAdd();
-  m4->OnSelectionRemove();
+  m4->OnSelectionRemove();*/
   m.AssignPosition({5,10});
 
   //Actor act2({"HERO_REDMAGE","ACTOR_REDMAGE","100","70","35","5","3","STD_ATTACK;STD_MOVE"});
 
 
   /*vérification des fonctions de manager qui ont relation avec Manageable*/
-  manager->Add(m5);
+  /*manager->Add(m5);
   manager->Remove(m5);
   manager->Add(m4);
-  manager->Add(m1);
+  manager->Add(m1);*/
   manager->GetByName("ACTOR_REDMAGE");
   manager->GetByID(1105);
   manager->GetByPos(4,5);
@@ -201,7 +201,27 @@ BOOST_AUTO_TEST_CASE(TestEngine){
   
 }
 
+BOOST_AUTO_TEST_CASE(TestAi){
+  int tab[2];
+  tab[0]=2;
+  tab[1]=3;
+  int rand = ai::RandomAI::RandomInt(tab);
+  BOOST_CHECK_GE(rand,2);
+  BOOST_CHECK_LE(rand,3);
 
+  int norm0 = ai::Heuristics::Norm1(-2,5);
+  sf::Vector2i dir(-2,5);
+  int norm1 = ai::Heuristics::Norm1(dir);
+  BOOST_CHECK_EQUAL(norm0,7);
+  BOOST_CHECK_EQUAL(norm1,7);
+  BOOST_CHECK_EQUAL(norm0,norm1);
 
+  int test = 10;
+  void* obj = &test;
+  ai::Node root = new ai::Node(obj);
+  ai::Node node1 = new ai::Node(obj,&root);
+
+  
+}
 
 /* vim: set sw=2 sts=2 et : */
