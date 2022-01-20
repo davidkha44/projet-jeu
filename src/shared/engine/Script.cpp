@@ -371,7 +371,7 @@ void engine::Script::Run(std::string line,int* args)
         int x = EvaluateINT(items[4],args);
         int y = EvaluateINT(items[5],args);
         
-        std::vector<state::Actor*> _actors = engine::FileHandler::DeserializeTable<state::Actor>("src/client/tables/Actors.csv","CSV");
+        std::vector<state::Actor*> _actors = engine::FileHandler::DeserializeTable<state::Actor>("res/Scripts/tables/Actors.csv","CSV");
         state::Actor* _actor = NULL;
         for(state::Actor* a : _actors)
         {

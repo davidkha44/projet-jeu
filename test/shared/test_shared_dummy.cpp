@@ -62,10 +62,10 @@ BOOST_AUTO_TEST_CASE(TestState)
   BOOST_CHECK_EQUAL(w2.CellSize().x, 1);
   BOOST_CHECK_EQUAL(w2.CellSize().y, 6);
 
-  World w3=World({"WORLD_TEST","src/client/maps/WorldTest.csv","40","40","30","19","LAYER_ACTOR"});
+  World w3=World({"WORLD_TEST","res/Scripts/maps/WorldTest.csv","40","40","30","19","LAYER_ACTOR"});
   w3.ApplyGridThickness(3);
 
-  World w4=World("WORLD_RIVER,src/client/maps/WorldWithRiver.csv,40,40,30,19,LAYER_ACTO");
+  World w4=World("WORLD_RIVER,res/Scripts/maps/WorldWithRiver.csv,40,40,30,19,LAYER_ACTO");
   
   WorldHandler::Initialize(&w3);
   WorldHandler::RunFunctionInNewThread(foo,NULL);
@@ -205,7 +205,7 @@ BOOST_AUTO_TEST_CASE(TestEngine){
   ark.OPCode(2020);
   ark.CostAP(0);
   ark.CostMP(1);
-  engine::Pattern p1({"PATTERN_SQUARE1","src/client/actions_patterns/PatternSquare1.csv","3","3"});
+  engine::Pattern p1({"PATTERN_SQUARE1","res/Scripts/actions_patterns/PatternSquare1.csv","3","3"});
   ark.BasePattern(&p1);
   engine::NetCommand cmd({"NET_CMD_MOVE_TOWARD_POS","MoveTowardPos:$X;$X;$X","caster.ID;target.X;target.Y"});
   ark.NetCmd(&cmd);
@@ -229,12 +229,12 @@ BOOST_AUTO_TEST_CASE(TestEngine){
   std::pair<std::string,std::string> pair = {"MoveTowardPos:$X;$X;$X","caster.ID;target.X;target.Y"};
   ncmd2.Format(pair);
 
-  engine::Pattern p({"PATTERN_SQUARE1","src/client/actions_patterns/PatternSquare1.csv","3","3"});
-  engine::Pattern p2("PATTERN_SQUARE1,src/client/actions_patterns/PatternSquare1.csv,3,3");
+  engine::Pattern p({"PATTERN_SQUARE1","res/Scripts/actions_patterns/PatternSquare1.csv","3","3"});
+  engine::Pattern p2("PATTERN_SQUARE1,res/Scripts/actions_patterns/PatternSquare1.csv,3,3");
   
-  std::vector<std::string> scr = {"REGLE","src/client/scripts/Regle.bhv"};
+  std::vector<std::string> scr = {"REGLE","res/Scripts/scripts/Regle.bhv"};
   engine::Script s(scr);
-  engine::Script s1("REGLE,src/client/scripts/Regle.bhv");
+  engine::Script s1("REGLE,res/Scripts/scripts/Regle.bhv");
   s.Run();
   
   

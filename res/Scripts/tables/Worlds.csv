@@ -1,0 +1,9 @@
+#WORLD_NAME,MAP_PATH,CELL_X,CELL_Y,N_CELL_X,N_CELL_Y,SCRIPT
+STD_WORLD,res/Scripts/maps/DefaultWorld.csv,40,40,19,19,STD_WORLD
+O_WORLD,res/Scripts/maps/OtherWorld.csv,40,40,19,19,0
+EVERGREEN,res/Scripts/maps/Evergreen.csv,40,40,10,10,0
+POOL,res/Scripts/maps/Pool.csv,40,40,11,10,0
+WORLD_TEST,res/Scripts/maps/WorldTest.csv,40,40,30,19,LAYER_ACTOR
+WORLD_RIVER,res/Scripts/maps/WorldWithRiver.csv,40,40,30,19,LAYER_ACTOR
+BEACH,res/Scripts/maps/Beach.csv,40,40,26,12,LAYER_ACTOR
+HOME,res/Scripts/maps/Home.csv,256,64,5,9,0

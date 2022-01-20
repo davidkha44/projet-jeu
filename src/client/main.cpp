@@ -56,12 +56,12 @@ int main(int argc,char* argv[])
     }
     if(!strcmp(argv[1],"render"))
     {
-        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
+        MainFrame* mf = MainFrame::FromLaunchArgs("res/Scripts/tables/LaunchArgs.csv");
         cout << "RENDER" << endl;
-        FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+        FileHandler::DeserializeTable<Manager>("res/Scripts/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
-        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("res/Scripts/tables/ManageablesVisuals.csv","CSV"));
 
         
         mf->Start();
@@ -70,33 +70,33 @@ int main(int argc,char* argv[])
     if(!strcmp(argv[1],"engine"))
     {
         cout << "ENGINE : "<< getpid() << endl;
-        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
-        FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+        MainFrame* mf = MainFrame::FromLaunchArgs("res/Scripts/tables/LaunchArgs.csv");
+        FileHandler::DeserializeTable<Manager>("res/Scripts/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
-        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("res/Scripts/tables/ManageablesVisuals.csv","CSV"));
         mf->Start();
     }
 
     if(!strcmp(argv[1],"random_ai"))
     {
         cout << "RANDOM AI : "<< getpid() << endl;
-        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
-        FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+        MainFrame* mf = MainFrame::FromLaunchArgs("res/Scripts/tables/LaunchArgs.csv");
+        FileHandler::DeserializeTable<Manager>("res/Scripts/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
-        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("res/Scripts/tables/ManageablesVisuals.csv","CSV"));
         mf->Start();
     } 
 
     if(!strcmp(argv[1],"heuristic_ai"))
     {
         cout << "HEURISTIC AI : "<< getpid() << endl;
-        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
-        FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+        MainFrame* mf = MainFrame::FromLaunchArgs("res/Scripts/tables/LaunchArgs.csv");
+        FileHandler::DeserializeTable<Manager>("res/Scripts/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
-        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("res/Scripts/tables/ManageablesVisuals.csv","CSV"));
         mf->Start();
         WorldHandler::OnTurnBegin();
     }
@@ -122,11 +122,11 @@ int main(int argc,char* argv[])
             io.socket()->on("ack_start_game",[&] (sio::event& ev)
             {
                 
-                MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
-                FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+                MainFrame* mf = MainFrame::FromLaunchArgs("res/Scripts/tables/LaunchArgs.csv");
+                FileHandler::DeserializeTable<Manager>("res/Scripts/tables/Managers.csv","CSV");
                 for(Manager* m : Manager::Managers)
                     cout << m->Name() << endl;
-                Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+                Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("res/Scripts/tables/ManageablesVisuals.csv","CSV"));
                 PRINTLN("ASSIGNING PLAYER");
                 WorldHandler::Players = vector<Player*>();
                 if(ev.get_message()->get_string() == "PLAYER_1")
@@ -171,11 +171,11 @@ int main(int argc,char* argv[])
     }
     if(!strcmp(argv[1],"TREE"))
     {
-        MainFrame* mf = MainFrame::FromLaunchArgs("src/client/tables/LaunchArgs.csv");
-        FileHandler::DeserializeTable<Manager>("src/client/tables/Managers.csv","CSV");
+        MainFrame* mf = MainFrame::FromLaunchArgs("res/Scripts/tables/LaunchArgs.csv");
+        FileHandler::DeserializeTable<Manager>("res/Scripts/tables/Managers.csv","CSV");
         for(Manager* m : Manager::Managers)
             cout << m->Name() << endl;
-        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("src/client/tables/ManageablesVisuals.csv","CSV"));
+        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("res/Scripts/tables/ManageablesVisuals.csv","CSV"));
         InputHandler::Initialize();
         WorldHandler::Initialize();
         SelectionHandler::Selection = std::vector<state::Manageable**>();

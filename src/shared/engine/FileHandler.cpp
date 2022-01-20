@@ -31,7 +31,7 @@ std::vector<std::string> engine::FileHandler::SplitString(std::string str,std::s
 void engine::FileHandler::LoadLaunchArgs (std::string path)
 {
     //Charge et parcours le fichiers de configuration LaunchArgs.csv
-    engine::FileHandler::DeserializeTable<engine::Script>("src/client/tables/Scripts.csv","CSV");
+    engine::FileHandler::DeserializeTable<engine::Script>("res/Scripts/tables/Scripts.csv","CSV");
     engine::Script::STATIC_FUNCTIONS["CheckPosition"] = state::Manager::CheckPosition;
     engine::Script::STATIC_FUNCTIONS["Destroy"] = state::Manager::Destroy;
     engine::Script::STATIC_FUNCTIONS["EndTurn"] = state::Player::EndTurn;
@@ -43,7 +43,7 @@ void engine::FileHandler::LoadLaunchArgs (std::string path)
     PARSE_CSV_LINES(path,'#',
     if(items[0] == "SCENE")
     {
-        for(state::World* w : DeserializeTable<state::World>("src/client/tables/Worlds.csv","CSV"))
+        for(state::World* w : DeserializeTable<state::World>("res/Scripts/tables/Worlds.csv","CSV"))
         {
             PRINTLN(w->Name());
             if(w->Name() == items[1])
