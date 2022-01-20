@@ -85,7 +85,6 @@ state::Manageable::Manageable(std::vector<std::string> args)
     }
     else
     {
-        PRINTLN("NO_RENDER" << args[0]);
         Texture(NULL);
         Sprite(NULL);
     }
@@ -141,16 +140,16 @@ void state::Manageable::OnSelectionRemove()
 
 void state::Manageable::AssignPosition(int posx,int posy)
 {
-        PRINTLN("WRONG B4");
+
 
     Position(sf::Vector2i(posx,posy));
 
     if(Texture() && Sprite()){
-        PRINTLN("WRONG PATH");
+
 
         Sprite()->setPosition(posx*WorldHandler::CurrentWorld->CellSize().x,posy*WorldHandler::CurrentWorld->CellSize().y);
     }
-        PRINTLN("WRONG AFTER");
+ 
 
     Position(sf::Vector2i(posx,posy));
 }

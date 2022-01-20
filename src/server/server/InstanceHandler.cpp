@@ -15,7 +15,7 @@ void server::InstanceHandler::CreateRoom(std::string room_name)
 void server::InstanceHandler::NetCmd(std::string cmd)
 {
     sio::client* io = (sio::client*)engine::NetMessageHandler::IO;
-    //state::WorldHandler::NetCommand(cmd);
+    state::WorldHandler::NetCommand(cmd);
     io->socket()->emit("ack_net_cmd",Name+"::"+ cmd);
 }
 void server::InstanceHandler::CreateUser()
@@ -76,6 +76,6 @@ void server::InstanceHandler::Start()
             if(p->Behaviour())
                 p->Behaviour()->RunFunction("InitializePlayer",(int*)NULL);
     }
-    //sio::client* io = (sio::client*)engine::NetMessageHandler::IO;
-    //io->socket()->emit("req_start_game", Name);
+    sio::client* io = (sio::client*)engine::NetMessageHandler::IO;
+    io->socket()->emit("req_start_game", Name);
 }

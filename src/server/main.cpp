@@ -24,7 +24,7 @@ int main(int argc,char* argv[])
 {
     std::vector<std::string> players_name;
     string endpoint(argv[1]);
-    //io.connect(endpoint + ":3000");
+    io.connect(endpoint + ":3000");
     NetMessageHandler::UserName = "FrontHost";
     NetMessageHandler::IO = &io;
     FileHandler::LoadLaunchArgs("res/tables/LaunchArgs.csv");
