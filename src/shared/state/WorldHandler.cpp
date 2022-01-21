@@ -6,6 +6,7 @@
 //#include <ifstream>
 #include "../../client/client/Macro.hpp"
 #include <thread>
+#include <sio_client.h>
 
 
 void state::WorldHandler::OnTurnBegin()
@@ -109,7 +110,7 @@ void state::WorldHandler::NetCommand(std::string cmd)
     for(int i = 0; i < _s.size();i++)
         args[i] = std::stol(_s[i],nullptr,16);
     if( !Behaviour->INT("STATUS"))
-        Behaviour->RunFunction(items[0],args);
+        Behaviour->RunFunction(items[0],args);        
     delete args;
     //Behaviour->INT("TURN") == ((args[0] >> 8) & 0xFF) &&
 }

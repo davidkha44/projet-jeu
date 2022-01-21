@@ -17,6 +17,8 @@ void server::InstanceHandler::NetCmd(std::string cmd)
     sio::client* io = (sio::client*)engine::NetMessageHandler::IO;
     state::WorldHandler::NetCommand(cmd);
     io->socket()->emit("ack_net_cmd",Name+"::"+ cmd);
+    if(state::WorldHandler::Behaviour->INT("STATUS"))
+        io->socket()->emit("req_victory",Name+";"+ state::WorldHandler::GetPlayerByID(state::WorldHandler::Behaviour->INT("TURN"))->Name());
 }
 void server::InstanceHandler::CreateUser()
 {
