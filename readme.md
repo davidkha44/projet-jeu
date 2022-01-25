@@ -218,7 +218,7 @@ inspire, and create. Any contributions you make are **greatly appreciated**.
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See [LICENSE](license-url) for more information.
+Distributed under the MIT License. See [LICENSE][license-url] for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
