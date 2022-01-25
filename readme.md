@@ -18,7 +18,6 @@
 
   [![c++ version][cpp-ver-shield]][cpp-ver]
   [![software version][version-shield]][cpp-ver]
-  [![build status][build-status-shield]][build-status]
 
   </div>
 </p>
@@ -57,28 +56,18 @@ Royal War is a strategy game that can be played solo against the AI or against a
 Your main objective is to destroy your opponent base.
 
 You have a base and several buildings where you can spawn your troops.
-To spawn your troops, you need the right buildings and enough gold. 
-You get 100 gold / turn and you can get more by capturing a special building.
 Each troops have their own strength and weakness, it falls to you to choose what kind of troops you want.
 
 ## Rules
 
 ### Starting
 
-You start with 500 gold, you base, a farm and a garrison. 
-It's just enough to get you started with a few low tier units or one high tier unit.
+You start with a dragon, a mage, a knight, an archer and a soldier, just like your opponent.
  
 ### Permitted moves
- 
-*There are ... moves possible ...*
-
-#### move 1
-
-*Players can make a "move 1" ...*
- 
-#### move 2
-
-*Players can make a "move 2" ...*
+* Key ``M`` : move mode for the selected character
+* Key ``A`` : attack mode for the selected character
+* Key ``T`` : pass your turn to your opponent
 
 <!-- GETTING STARTED -->
 ## Getting Started
@@ -106,6 +95,13 @@ Install python package with pip (or pip3)
 pip install gcovr
 ```
 
+Install socket.io and its dependencies
+1. Use `git clone --recurse-submodules https://github.com/socketio/socket.io-client-cpp.git` to clone your local repo.
+2. Run `cmake  ./`
+3. Run `make install`(if makefile generated) or open generated project (if project file generated) to build.
+4. Outputs is under `./build`, link with the all static libs under `./build/lib` and  include headers under `./build/include` in your client code where you want to use it.
+5. Install the dependencies with ``sudo apt-get install libjsoncpp-dev rapidjson-dev libasio-dev libwebsocketpp-dev catch``
+
 ### Installation
 
 1. Clone the repo
@@ -118,11 +114,6 @@ cd projet-jeu
 ```sh
 projet-jeu$ make
 ```
-
-3. Test it
-```sh
-projet-jeu$ make test
-``` 
 
 <!-- USAGE -->
 ## Usage
@@ -152,11 +143,6 @@ Heuristic AI demo
 ```sh
 projet-jeu$ bin/client heuristic_ai
 ```
-
-## Commands
-* Key ``M`` : mode move for the selected character
-* Key ``A`` : attack move for the selected character
-* Key ``T`` : next turn and allow the AI to play
 
 <!-- RELEASE HISTORY-->
 ## Release History
@@ -215,6 +201,7 @@ projet-jeu$ bin/client heuristic_ai
 * [dia2code](http://dia2code.sourceforge.net/)
 * [libxml2](http://www.xmlsoft.org/)
 * [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
+* [Socket.io-client-cpp](https://github.com/socketio/socket.io-client-cpp)
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -231,7 +218,7 @@ inspire, and create. Any contributions you make are **greatly appreciated**.
 <!-- LICENSE -->
 ## License
 
-Distributed under the *license* License. See [LICENSE](license-url) for more information.
+Distributed under the MIT License. See [LICENSE](license-url) for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
@@ -248,12 +235,9 @@ Distributed under the *license* License. See [LICENSE](license-url) for more inf
 [issues-url]: https://github.com/davidkha44/projet-jeu/issues
 
 [license-shield]: https://img.shields.io/github/license/davidkha44/projet-jeu.svg?style=flat-square
-[license-url]: https://github.com/davidkha44/projet-jeu/blob/[branch]/LICENSE
+[license-url]: https://github.com/davidkha44/projet-jeu/blob/master/LICENSE
 
 [cpp-ver-shield]: https://img.shields.io/badge/C%2B%2B-11-blue.svg
 [cpp-ver]: https://en.wikipedia.org/wiki/C%2B%2B11
-
-[build-status-shield]: https://github.com/davidkha44/projet-jeu/workflows/CI/badge.svg
-[build-status]: https://github.com/davidkha44/projet-jeu/actions
 
 [version-shield]: https://img.shields.io/badge/version-0.0-blue.svg?cacheSeconds=2592000
