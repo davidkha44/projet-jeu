@@ -11,6 +11,8 @@
 
 void state::WorldHandler::OnTurnBegin()
 {
+    //if(Behaviour->INT("STATUS")) return;
+
     //Behaviour->RunFunction("OnTurnBegin",(int*)NULL);
     for(std::function<void()> f : TurnBeginEvents)
         f();
@@ -29,6 +31,8 @@ void state::WorldHandler::OnTurnEnd()
 {
     //Behaviour->RunFunction("OnTurnEnd",(int*)NULL);
     //if(Behaviour->INT("STATUS"));
+        //if(Behaviour->INT("STATUS")) return;
+
     std::cout << "ON_TURN_END_WH" << std::endl;
 }
 void state::WorldHandler::OnTurnEndAsync()

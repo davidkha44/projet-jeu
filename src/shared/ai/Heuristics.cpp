@@ -35,7 +35,7 @@ int ai::Heuristics::MoveToward(int* args)
     // args 2 3 is target pos
     state::Manager* mgr = state::Manager::GetMgrByID(args[0]);
     state::Actor* caster = (state::Actor*)mgr->GetByID(args[1]);
-    //state::Actor* target = (state::Actor*)mgr->GetByPos(args[2],args[3]);
+    state::Actor* target = (state::Actor*)mgr->GetByPos(args[2],args[3]);
     engine::Action* mvtoward = engine::Action::Actions["STD_MOVE_TOWARD_POS"];
     std::vector<sf::Vector2i> poss = engine::Action::Reach(mvtoward,caster);
     sf::Vector2i fpos = poss[0];

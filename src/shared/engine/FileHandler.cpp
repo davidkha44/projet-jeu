@@ -37,6 +37,7 @@ void engine::FileHandler::LoadLaunchArgs (std::string path)
     engine::Script::STATIC_FUNCTIONS["EndTurn"] = state::Player::EndTurn;
     engine::Script::STATIC_FUNCTIONS["RandomInt"] = ai::RandomAI::RandomInt;
     engine::Script::STATIC_FUNCTIONS["MoveToward"] = ai::Heuristics::MoveToward;
+    engine::Script::STATIC_FUNCTIONS["ProcessActorTree"] = ai::DeepAI::ProcessActorTree;
     engine::Script::STATIC_FUNCTIONS["IsInReach"] = engine::Action::IsInReach;
     engine::Script::STATIC_FUNCTIONS["Exist"] = state::WorldHandler::Exist;
     state::WorldHandler::Initialize();

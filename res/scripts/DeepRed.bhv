@@ -1,0 +1,58 @@
+INT enemy_base_id = 0
+INT friendly_base_id = 0
+INT caster_red_spearman = 0
+INT caster_red_bowman = 0
+INT caster_red_mage = 0
+INT caster_red_knight = 0
+INT caster_red_dragon = 0
+INT init_done = 0
+
+
+FUNCTION InitializePlayer
+CALL FUNC::Exist 3 red_bowman.ID
+EQUAL RET:Exist 0 JMP:1
+ADD caster_red_bowman red_bowman.ID
+
+CALL FUNC::Exist 3 red_spearman.ID
+EQUAL RET:Exist 0 JMP:1
+ADD caster_red_spearman red_spearman.ID
+
+CALL FUNC::Exist 3 red_mage.ID
+EQUAL RET:Exist 0 JMP:1
+ADD caster_red_mage red_mage.ID
+
+CALL FUNC::Exist 3 red_dragon.ID
+EQUAL RET:Exist 0 JMP:1
+ADD caster_red_dragon red_dragon.ID
+
+CALL FUNC::Exist 3 red_knight.ID
+EQUAL RET:Exist 0 JMP:1
+ADD caster_red_knight red_knight.ID
+
+CALL FUNC::Exist 3 build_cyan_keep.ID
+EQUAL RET:Exist 0 JMP:1
+ADD enemy_base_id build_cyan_keep.ID
+
+CALL FUNC::Exist 3 build_red_keep.ID
+EQUAL RET:Exist 0 JMP:1
+ADD friendly_base_id build_red_keep.ID
+
+INT init_done = 1
+END FUNCTION
+
+FUNCTION TurnBegin
+EQUAL init_done 1 JMP:1
+CALL InitializePlayer 
+CALL STD_DEEP_BHV caster_red_spearman 
+CALL STD_DEEP_BHV caster_red_bowman 
+CALL STD_DEEP_BHV caster_red_mage 
+CALL STD_DEEP_BHV caster_red_knight 
+CALL STD_DEEP_BHV caster_red_dragon 
+CALL FUNC::EndTurn PlayerID
+END FUNCTION
+
+FUNCTION STD_DEEP_BHV
+CALL FUNC::Exist 3 ARGS:0
+EQUAL RET:Exist 0 EXIT
+CALL FUNC::ProcessActorTree 3 ARGS:0 friendly_base_id enemy_base_id
+END FUNCTION
