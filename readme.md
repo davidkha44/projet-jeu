@@ -167,18 +167,17 @@ projet-jeu$ bin/client heuristic_ai
 
 * <a href="https://github.com/davidkha44/projet-jeu/releases/tag/2.final">2.final</a>
     * Rapport section 5 : Intelligence Artificielle
-    * Code : IA `./bin/client random_ai`
+    * Code : IA random
 
 * <a href="https://github.com/davidkha44/projet-jeu/releases/tag/3.1">3.1</a>
     * Rapport section 5 : Intelligence Artificielle
-    * Code : IA `./bin/client heuristic_ai`
+    * Code : IA heuristique
 
 * <a href="https://github.com/davidkha44/projet-jeu/releases/tag/3.final">3.final</a>
     * Rapport section 5 : Intelligence Artificielle
-    * Code : IA `./bin/client rollback`
-    * Code : IA `./bin/client deep_ai`
+    * Code : IA avancée basé sur un arbre de recherche
 
-* <a href="https://github.com/davidkha44/projet-jeu/releases/tag/4.1">4.1</a>
+<!-- * <a href="https://github.com/davidkha44/projet-jeu/releases/tag/4.1">4.1</a>
     * Rapport section 6 : Modularisation
     * Code : Threads `./bin/client thread`
     * Code : Enregistrer `./bin/server record`
@@ -192,7 +191,7 @@ projet-jeu$ bin/client heuristic_ai
 * <a href="https://github.com/davidkha44/projet-jeu/releases/tag/4.final">4.final</a>
     * Rapport section 6 : Modularisation
     * Code : Serveur `./bin/server listen`
-    * Code : Client réseau  `./bin/client network`
+    * Code : Client réseau  `./bin/client network` -->
 
 ## Built With
 
