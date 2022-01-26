@@ -83,21 +83,6 @@ int engine::Action::IsInReach(int *args)
             return 1;
     return 0;
 }
-ai::Node* engine::Action::RecursiveInsertCallback (void* args)
-{
-    ai::ActionLeaf* al = (ai::ActionLeaf*)args;
-    al->Weight += 0;
-    PRINTLN(al->Name);
-    if(al->ActionPerformed->Name().find("ATTACK") != std::string::npos)
-    {
-        if(al->ActionPerformed->HostileVicinity(al->Caster).size())
-            return new ai::Node(args);
-        return NULL;
-    }
-    else
-        return new ai::Node(args);
-    
-}
 engine::Action::Action(std::string args) 
 {
 

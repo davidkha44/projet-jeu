@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define DEPTH 3
+#define DEPTH 2
 
 const int MAX = 100000;
 const int MIN = -100000;
@@ -165,6 +165,5 @@ ai::Node* ai::Node::Root()
 }
 
 
-template void ai::Node::RecursiveInsertWithCallback<engine::Action>(std::vector<std::vector<ai::Node*>> lnodes,int depth);
 template void ai::Node::RecursiveInsertWithCallback<ai::BehaviourTree>(std::vector<std::vector<ai::Node*>> lnodes,int depth);
 template void ai::Node::RecursiveInsertWithCallback<ai::BehaviourTree>(std::vector<ai::Node*> lnodes,int depth);

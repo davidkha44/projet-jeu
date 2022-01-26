@@ -6,25 +6,7 @@
 
 #define OFFENSE_BIAS 10
 #define DEFENSE_BIAS 2
-void ai::DeepAI::Process(state::Manager* mgr)
-{
-    std::vector<state::Actor*> player0,player1;
-    std::vector<ai::ActionLeaf*> al0,al1;
 
-    for(state::Manageable* m : mgr->Elements())
-        ((state::Actor*)m)->Property("OWNER") ? player1.push_back((state::Actor*) m) : player0.push_back((state::Actor*) m);
-        
-}
-
-void ai::DeepAI::ProcessActors(std::vector<state::Actor*> actors)
-{
-    
-}
-void ai::DeepAI::ProcessActor(state::Actor* actor)
-{
-
-    
-}
 int ai::DeepAI::ProcessActorTree(int* args)
 {
     state::Manager* mgr = state::Manager::GetMgrByID(args[0]);
@@ -120,40 +102,3 @@ int ai::DeepAI::RateOutcome(void** args)
 }
 
 
-int ai::DeepAI::DeepAI_Offense(int* args)
-{
-    state::Manager* mgr = state::Manager::GetMgrByID(args[0]);
-    state::Actor* caster = (state::Actor*)mgr->GetByID(args[1]);
-    if(!caster->ActionOfType(1000))
-        return 0;
-    std::vector<state::Actor*> vicinity =  caster->ActionOfType(1000)->HostileVicinity(caster);
-    if(!vicinity.size())
-        ai::Heuristics::MoveToward(args);
-    else
-    {
-        args[2] = vicinity[0]->Position().x;
-        args[3] = vicinity[0]->Position().y;
-        state::WorldHandler::Behaviour->RunFunction("Attack",args);
-    }
-        
-
-
-}
-
-int ai::DeepAI::DeepAI_Defense(int* args)
-{
-    state::Manager* mgr = state::Manager::GetMgrByID(args[0]);
-    state::Actor* caster = (state::Actor*)mgr->GetByID(args[1]);
-    state::Actor* target = (state::Actor*)mgr->GetByPos(args[2],args[3]);
-    if(!caster->ActionOfType(1000))
-        return 0;
-    std::vector<state::Actor*> vicinity =  caster->ActionOfType(1000)->HostileVicinity(caster);
-    if(!vicinity.size())
-        ai::Heuristics::MoveToward(args);
-    else
-    {
-        args[2] = vicinity[0]->Position().x;
-        args[3] = vicinity[0]->Position().y;
-        state::WorldHandler::Behaviour->RunFunction("Attack",args);
-    }
-}

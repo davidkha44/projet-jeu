@@ -228,7 +228,7 @@ int main(int argc,char* argv[])
         mf->InitWorld();
         mf->InitActors();
 
-        Actor* actor = (Actor*)Manager::GetMgrByID(3)->GetByName("cyan_bowman").front();
+        Actor* actor = (Actor*)Manager::GetMgrByID(3)->GetByName("cyan_dragon").front();
         std::vector<Actor*> enemies;
         enemies.push_back((Actor*)Manager::GetMgrByID(3)->GetByName("red_knight").front());
         enemies.push_back((Actor*)Manager::GetMgrByID(3)->GetByName("red_mage").front());
