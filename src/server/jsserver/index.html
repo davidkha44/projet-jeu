@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Rakkas&display=swap"
+    rel="stylesheet">
+  <title>Dashboard</title>
+</head>
+
+<body>
+  <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+    integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+    crossorigin="anonymous"></script>
+  <script>
+    const socket = io('ws://localhost:3000');
+
+    setInterval(() => {
+      socket.emit('heartbeat', 'dashboard');
+    }, 2000);
+
+    socket.on("connect", () => {
+      socket.emit("req_create_user", "dashboard");
+      socket.emit("req_rooms");
+      socket.emit("req_clients");
+    })
+
+    socket.on('ack_rooms', data => {
+      let rooms = data;
+      const roomsDiv = document.getElementById('tableRooms');
+
+      roomsDiv.innerHTML = "<tr><th>Nom</th><th>Host</th><th>Players</th><th>Status</th></tr>";
+      rooms.forEach(element => {
+        let statusName = "";
+        switch (element.status) {
+          case 0:
+            statusName = 'En attente';
+            break;
+          case -1:
+            statusName = 'Partie en cours';
+            break;
+          case 1:
+            statusName = 'Joueur 1 gagne';
+            break;
+          case 2:
+            statusName = 'Joueur 2 gagne';
+            break;
+          default:
+            statusName = '';
+            break;
+        }
+        roomsDiv.innerHTML += `<tr><td>${element.name}</td><td>${element.host}</td><td>${element.players}</td><td id="status">${statusName}</td></tr>`;
+      });
+    });
+
+    socket.on('ack_victory', victoriousPlayer => {
+      console.log(victoriousPlayer);
+      document.getElementById('status').innerHTML = victoriousPlayer;
+    })
+
+    socket.on('ack_clients', data => {
+      let clients = data;
+      const clientsTable = document.getElementById('tableClients');
+      clientsTable.innerHTML = "<tr><th>Nom</th><th>Salle</th></tr>";
+      clients.forEach(element => {
+        clientsTable.innerHTML += `<tr><td>${element.name}</td><td>${element.room.length === 0 ? "/" : element.room}</td></tr>`;
+      });
+    })
+
+    socket.on('message', data => {
+      console.log(data);
+    })
+    socket.on('new connection', () => {
+      console.log("Someone just joined");
+    })
+
+  </script>
+  <div class="titleContainer">
+    <h2>Dashboard</h2>
+  </div>
+
+  <div class="contentsContainer">
+    <div class="clientsContainer container">
+      <h3>Clients</h3>
+      <table id="tableClients">
+        <tr>
+          <th>Nom</th>
+          <th>Salle</th>
+        </tr>
+      </table>
+    </div>
+
+    <div class="roomsContainer container">
+      <h3>ROOMS</h3>
+      <table id="tableRooms">
+        <tr>
+          <th>Nom</th>
+          <th>Host</th>
+          <th>Players</th>
+          <th>Status</th>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+
+</html>
