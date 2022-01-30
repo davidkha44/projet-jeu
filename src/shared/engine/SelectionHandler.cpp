@@ -5,6 +5,7 @@
 #include "../../client/render.h"
 #include <iostream>
 #include <sstream>
+#include <thread>
 
 void engine::SelectionHandler::Add(state::Manageable** m)
 {
@@ -67,7 +68,10 @@ int engine::SelectionHandler::ProcessSelection(state::Manageable** m)
             if(items[1] == "PROCESS")
             {
                 std::cout << NetFormat() << std::endl;
-                engine::NetMessageHandler::Send(NetFormat());
+                if(engine::NetMessageHandler::MutualExclusion)
+                    std::thread ngin_th(engine::NetMessageHandler::Send,NetFormat());
+                else
+                    engine::NetMessageHandler::Send(NetFormat());
                 SelectionState = _default;
                 Trash();
                 //FilteredSelection.clear();
