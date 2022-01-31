@@ -95,6 +95,17 @@ Install python package with pip (or pip3)
 pip install gcovr
 ```
 
+Install NodeJS
+``sh
+sudo apt install nodejs
+``
+
+Install the server dependencies
+``sh
+npm install express socket.io
+npm install -g localtunnel
+``
+
 Install socket.io and its dependencies
 1. Use `git clone --recurse-submodules https://github.com/socketio/socket.io-client-cpp.git` to clone your local repo.
 2. Run `cmake  ./`
@@ -105,7 +116,7 @@ Install socket.io and its dependencies
 ### Installation
 
 1. Clone the repo
-```sh
+npm install socket.ionpm install socket.io```sh
 git clone https://github.com/davidkha44/projet-jeu
 cd projet-jeu
 ```
@@ -143,6 +154,11 @@ Heuristic AI demo
 ```sh
 projet-jeu$ bin/client heuristic_ai
 ```
+
+Server
+1. Launch the server with `node ./src/server/jsserver/index.js`
+2. Run `lt --port 3000 --subdomain fredurl`
+3. 
 
 <!-- RELEASE HISTORY-->
 ## Release History
@@ -186,12 +202,10 @@ projet-jeu$ bin/client heuristic_ai
 * <a href="https://github.com/davidkha44/projet-jeu/releases/tag/4.2">4.2</a>
     * Rapport section 6 : Modularisation
     * Code : Serveur `./bin/server listen`
-    * Code : Client réseau `./bin/client network`
+    * Code : Client réseau `./bin/client network` -->
 
 * <a href="https://github.com/davidkha44/projet-jeu/releases/tag/4.final">4.final</a>
     * Rapport section 6 : Modularisation
-    * Code : Serveur `./bin/server listen`
-    * Code : Client réseau  `./bin/client network` -->
 
 ## Built With
 
