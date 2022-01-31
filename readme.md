@@ -159,7 +159,7 @@ Server
 1. Launch the server with `node ./src/server/jsserver/index.js`
 2. Run `lt --port 3000 --subdomain fredurl`
 3. Launch your server with `./bin/server listen <ROOM_NAME>`
-4. Join the created room with `./bin/client <ROOM_NAME>`
+4. Join the created room with `./bin/client network <ROOM_NAME>`
 
 <!-- RELEASE HISTORY-->
 ## Release History
