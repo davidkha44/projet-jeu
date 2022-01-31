@@ -12,6 +12,7 @@
 #include "../../extern/jsoncpp-1.8.0/jsoncpp.cpp"
 #include <fstream>
 #include <thread>
+#include <mutex>
 #include <sio_client.h>
 
 
@@ -40,6 +41,7 @@ using namespace engine;
 using namespace ai;
 
 sio::client io;
+mutex mtx;
 
 
 int main(int argc,char* argv[])
@@ -103,6 +105,35 @@ int main(int argc,char* argv[])
 
         mf->WakeUp();
         WorldHandler::GetPlayerByID(0)->Behaviour(Script::Scripts["MNK"]);
+        WorldHandler::GetPlayerByID(1)->Behaviour(Script::Scripts["HEURISTIXRED"]);
+        for(Player* p : WorldHandler::Players)
+        {
+            if(p->Behaviour())
+            {
+                p->Behaviour()->INT("PlayerID",(int)p->ID());
+                p->Behaviour()->STRING("PlayerName",p->Name());
+            }
+        }
+        PRINTLN("SCRIPT OK");
+        WorldHandler::CurrentWorld->Behaviour()->Run();
+        mf->Start();
+        WorldHandler::OnTurnBegin();
+    }  
+    if(!strcmp(argv[1],"thread"))
+    {
+        cout << "THREAD : "<< getpid() << endl;
+        NetMessageHandler::MutualExclusion = &mtx;
+        MainFrame* mf = MainFrame::FromLaunchArgs("res/tables/LaunchArgs.csv");
+        FileHandler::DeserializeTable<Manager>("res/tables/Managers.csv","CSV");
+        for(Manager* m : Manager::Managers)
+            cout << m->Name() << endl;
+        Manager::GetMgrByID(0)->Elements(FileHandler::DeserializeTable<Manageable>("res/tables/ManageablesVisuals.csv","CSV"));
+        WorldHandler::Players.push_back(new Player("PLAYER_2",0,NULL));
+        WorldHandler::Players.push_back(new Player("PLAYER_1",1,NULL));
+        WorldHandler::MyID = 0;
+
+        mf->WakeUp();
+        WorldHandler::GetPlayerByID(0)->Behaviour(Script::Scripts["HEURISTIXCYAN"]);
         WorldHandler::GetPlayerByID(1)->Behaviour(Script::Scripts["HEURISTIXRED"]);
         for(Player* p : WorldHandler::Players)
         {
